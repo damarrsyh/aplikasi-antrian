@@ -20,6 +20,9 @@ const ServiceSelection = () => {
 
   const handleServiceSelect = (serviceId) => {
     setSelectedService(services.find(service => service.id === serviceId));
+    if (!enableForm) {
+      handleSubmit(new Event("submit"));
+    }
   };
 
   const handleSubmit = (e) => {
@@ -50,13 +53,8 @@ const ServiceSelection = () => {
                 return (
                   <Col key={service.id} md={6} className="mb-3">
                     <Card
-                      className={`h-100 ${isSelected ? "bg-primary text-white border-primary shadow-sm" : "bg-light"}`}
-                      onClick={() => {
-                        handleServiceSelect(service.id);
-                        if (!enableForm) {
-                          handleSubmit(new Event("submit"));
-                        }
-                      }}
+                      className={`h-100 shadow rounded-3 ${isSelected ? "bg-primary text-white border-primary" : "bg-light"}`}
+                      onClick={() => handleServiceSelect(service.id)}
                     >
                       <Card.Body className="d-flex flex-column justify-content-center align-items-center">
                         {service.icon}
@@ -82,7 +80,7 @@ const ServiceSelection = () => {
                 Beri tanda centang untuk mengisi form
               </p>
             </div>
-            <Card className={`flex-grow-1 ${enableForm ? "" : "bg-secondary bg-opacity-10"}`}>
+            <Card className={`flex-grow-1 shadow rounded-3 ${enableForm ? "" : "bg-secondary bg-opacity-10"}`}>
               <Card.Body className="d-flex flex-column">
                 <Form onSubmit={handleSubmit} className="flex-grow-1 d-flex flex-column">
                   <Form.Group className="mb-3" controlId="formName">
@@ -115,34 +113,18 @@ const ServiceSelection = () => {
             </Card>
             <div className="d-flex flex-grow-1 my-3 align-items-center justify-content-center">
               <Carousel>
-                <Carousel.Item interval={3000}>
-                  <img className="d-block w-100" src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=800&h=400&fit=crop" alt="First slide" height={400} />
-                  <Carousel.Caption>
-                    <h3>First Slide Label</h3>
-                    <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
-                  </Carousel.Caption>
-                </Carousel.Item>
-                <Carousel.Item interval={3000}>
-                  <img className="d-block w-100" src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=800&h=400&fit=crop" alt="Second slide" height={400} />
-                  <Carousel.Caption>
-                    <h3>Second Slide Label</h3>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                  </Carousel.Caption>
-                </Carousel.Item>
-                <Carousel.Item interval={3000}>
-                  <img className="d-block w-100" src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=800&h=400&fit=crop" alt="Third slide" height={400} />
-                  <Carousel.Caption>
-                    <h3>Third Slide Label</h3>
-                    <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur.</p>
-                  </Carousel.Caption>
-                </Carousel.Item>
+                {["c1.png", "c2.jpg", "c3.jpg"].map((image, index) => (
+                  <Carousel.Item key={index} interval={3000}>
+                    <img className="d-block w-100" src={`/public/${image}`} alt={`Slide ${index + 1}`} height={300} />
+                  </Carousel.Item>
+                ))}
               </Carousel>
             </div>
           </Col>
         </Row>
       ) : (
         <Container className="d-flex justify-content-center align-items-center vh-100">
-          <Card className="p-4 text-center" style={{ maxWidth: "400px", width: "100%" }}>
+          <Card className="p-4 text-center shadow-lg rounded-3" style={{ maxWidth: "400px", width: "100%" }}>
             <Card.Body>
               <Card.Title className="fw-bold fs-3">Tiket Antrian</Card.Title>
               <hr />

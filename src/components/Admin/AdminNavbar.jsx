@@ -2,7 +2,7 @@ import { Navbar, Container } from "react-bootstrap";
 
 const AdminNavbar = () => {
   return (
-    <Navbar bg="dark" variant="dark" expand="lg">
+    <Navbar bg="light" variant="light" expand="lg" className="shadow-sm">
       <Container>
         <Navbar.Brand href="/admin">Admin Dashboard</Navbar.Brand>
       </Container>

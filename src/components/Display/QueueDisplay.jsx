@@ -42,11 +42,11 @@ const QueueDisplay = () => {
             style={{ borderRadius: "10px" }}
           >
             <div className="flex-grow-1">
-              <h3>Pandawa24Jam</h3>
-              <p>Call Center: 081234567891</p>
+              <h5>Pandawa24Jam</h5>
+              <p>CS: 081234567891</p>
             </div>
             <div className="position-absolute top-50 end-0 translate-middle-y me-3">
-              <h2 className="mb-0">{currentTime.toLocaleTimeString()}</h2>
+              <h4 className="mb-0">{currentTime.toLocaleTimeString()}</h4>
             </div>
           </div>
 
