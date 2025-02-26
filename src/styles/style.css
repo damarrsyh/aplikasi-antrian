@@ -1,3 +1,16 @@
 :root {
   --bs-body-font-family: 'Poppins', sans-serif;
 }
+
+.close-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  /* opacity: 0; */
+  transition: opacity 0.3s ease-in-out;
+  border-radius: 50%;
+}
+
+.mb-3.p-3.text-white.bg-dark:hover .close-btn {
+  opacity: 1;
+}

@@ -1,35 +1,65 @@
+import { useState, useEffect } from "react";
 import { Container, Row, Col, Card } from "react-bootstrap";
 import ReactPlayer from "react-player";
-
-const sampleTickets = [
-  { number: "A1", counter: "1" },
-  { number: "A2", counter: "2" },
-  { number: "A3", counter: "3" },
-  { number: "A4", counter: "4" },
-  { number: "A5", counter: "5" },
-  { number: "A6", counter: "6" },
-  { number: "A7", counter: "7" },
-  { number: "A8", counter: "8" },
-  { number: "A9", counter: "9" },
-  { number: "A10", counter: "10" },
-];
+import { getQueueDisplayData } from "../Admin/QueueActions";
 
 const QueueDisplay = () => {
+  const [queueData, setQueueData] = useState([]);
+  const [startIndex, setStartIndex] = useState(0);
+  const [currentTime, setCurrentTime] = useState(new Date());
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentTime(new Date());
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  useEffect(() => {
+    setQueueData(getQueueDisplayData());
+  }, []);
+
+  // Pindah data setiap 5 detik
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setStartIndex((prevIndex) => (prevIndex + 1) % queueData.length);
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, [queueData]);
+
+  // Data antrian yang akan ditampilkan (5 antrian dari total 25)
+  const currentTicket = queueData[startIndex] || { number: "-", counter: "-" };
+
   return (
     <Container fluid className="p-3" style={{ overflowX: "hidden" }}>
       <Row className="mb-3 g-0">
         {/* Informasi Bisnis & Nomor Antrian Utama */}
         <Col md={4} className="px-3 d-flex flex-column justify-content-between">
-          <div className="mb-3 p-3 text-white bg-dark text-center" style={{ borderRadius: "10px" }}>
-            <h4 className="mb-1">Jagowebdev.com</h4>
-            <p className="mb-1">Jl. Zebra III No. 32, Pedurungan Kidul, Semarang</p>
-            <p>Telp: 08561363962</p>
+          <div 
+            className="mb-3 p-3 text-white bg-dark d-flex justify-content-between align-items-center position-relative"
+            style={{ borderRadius: "10px" }}
+          >
+            <div className="flex-grow-1">
+              <h3>Pandawa24Jam</h3>
+              <p>Call Center: 081234567891</p>
+            </div>
+            <div className="position-absolute top-50 end-0 translate-middle-y me-3">
+              <h2 className="mb-0">{currentTime.toLocaleTimeString()}</h2>
+            </div>
           </div>
+
           <Card className="flex-grow-1 d-flex align-items-center justify-content-center text-center"
-                style={{ borderRadius: "10px", padding: "20px", width: "100%", minHeight: "250px" }}>
+                style={{ borderRadius: "10px", padding: "30px", width: "100%", minHeight: "250px" }}>
             <Card.Body>
               <h5 className="mb-2"><strong>NOMOR ANTRIAN</strong></h5>
-              <h1 style={{ fontSize: "80px", fontWeight: "bold", margin: "10px 0" }}>A0</h1>
+              <p style={{ fontSize: "50px", fontWeight: "bold", margin: "10px 0" }}>
+                {currentTicket.number}
+              </p>
+              <h5 className="mt-2">
+                <strong>Menuju Loket: {currentTicket.counter}</strong>
+              </h5>
             </Card.Body>
           </Card>
         </Col>
@@ -50,20 +80,23 @@ const QueueDisplay = () => {
       </Row>
 
       {/* Loket Antrian */}
-      <Row className="text-center d-flex flex-wrap justify-content-center row-cols-2 row-cols-md-3 row-cols-lg-5 g-0 px-2">
-        {sampleTickets.map((ticket, index) => (
-          <Col key={index} className="d-flex justify-content-center p-2">
-            <Card className="d-flex align-items-center justify-content-center text-center flex-grow-1"
-                  style={{ borderRadius: "10px", width: "100%", minHeight: "150px" }}>
-              <Card.Body>
-                <Card.Title>Nomor Antrian</Card.Title>
-                <h2 style={{ fontSize: "40px", fontWeight: "bold" }}>{ticket.number}</h2>
-              </Card.Body>
-            </Card>
-          </Col>
-        ))}
+      <Row className="text-center d-flex flex-wrap justify-content-center g-0">
+        <Col className="d-flex justify-content-center p-2">
+          <Card className="d-flex align-items-center justify-content-center text-center flex-grow-1"
+                style={{ borderRadius: "10px", width: "100%", minHeight: "150px" }}>
+                  <Card.Title>List Antrian Layanan</Card.Title>
+                  <Row>
+                    <Col>
+                      <Card.Body>
+                        <Card.Title>List Antrian Layanan</Card.Title>
+                        <h2 style={{ fontSize: "40px", fontWeight: "bold" }}></h2>
+                      </Card.Body>
+                    </Col>
+                  </Row>
+          </Card>
+        </Col>
       </Row>
-      </Container>
+    </Container>
   );
 };
 
