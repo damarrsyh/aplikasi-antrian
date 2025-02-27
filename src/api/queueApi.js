@@ -24,7 +24,7 @@ export const updateQueueStatus = async (queueId, status) => {
   }
 };
 
-export const createQueue = async (customerData) => {
+export const createTicketApi = async (customerData) => {
     try {
       const response = await axios.post(`${API_URL}/queues`, customerData);
       return response.data;

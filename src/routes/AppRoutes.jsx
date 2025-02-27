@@ -13,7 +13,7 @@ const AppRoutes = () => {
     <Router>
       <Routes>
         {/* Redirect default ke queue-list */}
-        <Route path="/admin" element={<Navigate to="/admin/queue-list" replace />} />
+        <Route path="/" element={<Navigate to="/admin/queue-list" replace />} />
         
         {/* Rute untuk Admin */}
         <Route path="/admin" element={<AdminLayout />}> 

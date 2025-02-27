@@ -45,7 +45,7 @@ const TestQueueTable = () => {
   };
 
   return (
-    <Container className="mt-4">
+    <Container>
       <Card className="shadow">
         <Card.Header className="bg-primary text-white">
           <h5 className="mb-0">List Antrian</h5>
@@ -85,7 +85,7 @@ const TestQueueTable = () => {
                       </span>
                     </td>
                     <td>{new Date(queue.createdAt).toLocaleString()}</td>
-                    <td>
+                    <td className="text-center p-2">
                       {queue.status !== "In Progress" && queue.status !== "Completed" && (
                         <Button
                           variant="info"

@@ -1,11 +1,12 @@
 import TestQueueDisplay from "../../components/Display/TestQueueDisplay"
-import QueueDisplay from "../../components/Display/QueueDisplay"
+// import QueueDisplay from "../../components/Display/QueueDisplay"
 
 const QueueDisplayPage = () => {
   return (
     <>
-    {/* <TestQueueDisplay/> INI ADALAH UNTUK TEST DATA DENGAN API */}
-    <QueueDisplay/>
+    <TestQueueDisplay/>
+    {/* Atas Data dengan API bawah Data Static */}
+    {/* <QueueDisplay/> */}
     </>
   )
 }

@@ -34,12 +34,12 @@ const AdminSidebar = () => {
             {/* <NavLink to="/admin/queue-report" className="btn btn-light shadow-sm d-flex align-items-center">
               <FaChartBar className="me-2" /> Laporan Antrian
             </NavLink> */}
-            <NavLink to="/admin/queue-settings-display" className="btn btn-light shadow-sm d-flex align-items-center">
+            {/* <NavLink to="/admin/queue-settings-display" className="btn btn-light shadow-sm d-flex align-items-center">
               <FaCog className="me-2" /> Pengaturan Layar
             </NavLink>
             <NavLink to="/admin/queue-settings-menu" className="btn btn-light shadow-sm d-flex align-items-center">
               <FaTools className="me-2" /> Pengaturan Menu
-            </NavLink>
+            </NavLink> */}
           </div>
         )}
       </div>

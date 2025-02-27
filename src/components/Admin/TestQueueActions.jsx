@@ -1,7 +1,6 @@
-
 // FILE INI UNTUK TEST TAMPILAN DATA DENGAN API
 
-import { fetchQueues, updateQueueStatus } from "../../api/queueApi";
+import { fetchQueues, updateQueueStatus, createTicketApi } from "../../api/queueApi";
 
 export const getProcessedQueues = async () => {
   const data = await fetchQueues();
@@ -27,4 +26,8 @@ export const getProcessedQueues = async () => {
 
 export const changeQueueStatus = async (queueId, newStatus) => {
   return await updateQueueStatus(queueId, newStatus);
+};
+
+export const createTicket = async (ticketData) => {
+  return await createTicketApi(ticketData);
 };
