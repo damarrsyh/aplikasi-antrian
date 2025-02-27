@@ -1,142 +1,143 @@
-import { Table, Button, Form, Pagination, InputGroup, FormControl } from "react-bootstrap";
+import { useState } from "react";
+import { Card, Table, Button, Form, Pagination, InputGroup, FormControl, Modal } from "react-bootstrap";
 import { FaSearch } from "react-icons/fa";
-import { handleCall, toggleServiceStatus, handleDelete, handleEdit, useQueueData } from "./QueueActions";
+import { handleCall, useQueueData } from "./QueueActions";
 
 // eslint-disable-next-line react/prop-types
-const QueueTable = ({ showActions = true, reportView = false, settingsView = false, displayView = false, callQueueView = false }) => {
-  
-  const { currentItems, currentPage, totalPages, searchQuery, setSearchQuery, setCurrentPage, indexOfFirstItem } = useQueueData(settingsView, callQueueView);
+const QueueTable = ({ settingsView = false, displayView = false }) => {
+  const { currentItems, currentPage, totalPages, searchQuery, setSearchQuery, setCurrentPage, indexOfFirstItem } = useQueueData(settingsView);
+
+  // State untuk modal
+  const [showModal, setShowModal] = useState(false);
+  const [selectedQueue, setSelectedQueue] = useState(null);
+  const [selectedLocket, setSelectedLocket] = useState("");
+
+  // Data loket operator (bisa diganti dengan API)
+  const availableLockets = ["Loket 1", "Loket 2", "Loket 3", "Loket 4", "Loket 5", "Loket 6", "Loket 7", "Loket 8", "Loket 9"];
+
+  // Fungsi membuka modal dan menyimpan antrian yang dipilih
+  const handleOpenModal = (queue) => {
+    setSelectedQueue(queue);
+    setShowModal(true);
+  };
+
+  // Fungsi menutup modal
+  const handleCloseModal = () => {
+    setShowModal(false);
+    setSelectedQueue(null);
+    setSelectedLocket("");
+  };
+
+  // Fungsi memilih loket dan panggil antrian
+  const handleSelectLocket = () => {
+    if (selectedLocket) {
+      handleCall(selectedQueue.id, selectedLocket); // Panggil dengan loket
+      handleCloseModal(); // Tutup modal setelah memilih
+    }
+  };
 
   return (
     <>
-      {(callQueueView || reportView || (!settingsView && !displayView)) && (
-        <InputGroup className="mb-3">
-          <InputGroup.Text>
-            <FaSearch />
-          </InputGroup.Text>
-          <FormControl
-            type="text"
-            placeholder="Cari nama atau layanan..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-          />
-        </InputGroup>
-      )}
-      <Table striped bordered hover responsive>
-        <thead>
-          <tr>
-            <th>#</th>
-            {displayView ? (
-              <>
-                <th>Pengaturan Suara</th>
-                <th>Video Komersil</th>
-                <th className="text-center">Aksi</th>
-              </>
-            ) : settingsView ? (
-              <>
-                <th>Nama Layanan</th>
-                <th>ID Layanan</th>
-                <th>Status</th>
-                <th className="text-center">Aksi</th>
-              </>
-            ) : reportView ? (
-              <>
-                <th>Nama</th>
-                <th>No. Telepon</th>
-                <th>Layanan</th>
-                <th>Loket</th>
-                <th>Cetak Antrian</th>
-                <th>Selesai Antrian</th>
-                <th className="text-center">Aksi</th>
-              </>
-            ) : (
-              <>
-                <th>Nama</th>
-                <th>Layanan</th>
-                <th>Kode Layanan</th>
-                <th>Nomor Antrian</th>
-                <th>Loket</th>
-                <th>Status</th>
-                {showActions && <th className="text-center">Aksi</th>}
-              </>
-            )}
-          </tr>
-        </thead>
-        <tbody>
-          {currentItems.map((item, index) => (
-            <tr key={item.id}>
-              <td>{index + 1 + indexOfFirstItem}</td>
-              {displayView ? (
-                <>
-                  <td>
-                    <Form.Select defaultValue={item.audio}>
-                      <option>Default</option>
-                      <option>Beep</option>
-                      <option>Bell</option>
-                    </Form.Select>
-                  </td>
-                  <td>{item.video}</td>
-                  <td className="text-center">
-                    <Button variant="info" size="sm" className="me-2">View</Button>
-                    <Button variant="warning" size="sm" className="me-2">Edit</Button>
-                    <Button variant="danger" size="sm">Hapus</Button>
-                  </td>
-                </>
-              ) : settingsView ? (
-                <>
-                  <td>{item.service}</td>
-                  <td>{item.serviceId}</td>
-                  <td>{item.active ? "Aktif" : "Nonaktif"}</td>
-                  <td className="text-center">
-                    <Button variant={item.active ? "danger" : "success"} size="sm" onClick={() => toggleServiceStatus(item.id)}>
-                      {item.active ? "Nonaktifkan" : "Aktifkan"}
-                    </Button>
-                  </td>
-                </>
-              ) : reportView ? (
-                <>
-                  <td>{item.name}</td>
-                  <td>{item.phone}</td>
-                  <td>{item.service}</td>
-                  <td>{item.locket}</td>
-                  <td>{item.startAt}</td>
-                  <td>{item.completedAt}</td>
-                  <td className="text-center">
-                    <Button variant="warning" size="sm" className="me-2" onClick={() => handleEdit(item.id)}>Edit</Button>
-                    <Button variant="danger" size="sm" onClick={() => handleDelete(item.id)}>Hapus</Button>
-                  </td>
-                </>
-              ) : (
-                <>
-                  <td>{item.name}</td>
-                  <td>{item.service}</td>
-                  <td>{item.serviceId}</td>
-                  <td>{item.queueNumber}</td>
-                  <td>{item.status === "Dilayani" ? item.locket : "-"}</td>
-                  <td>{item.status}</td>
-                  {showActions && (
+      <Card className="shadow-sm">
+        <Card.Header className="d-flex justify-content-between align-items-center">
+          {(!settingsView && !displayView) && (
+            <InputGroup className="w-auto">
+              <InputGroup.Text>
+                <FaSearch />
+              </InputGroup.Text>
+              <FormControl
+                type="text"
+                placeholder="Cari nama atau layanan..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+            </InputGroup>
+          )}
+          <Pagination className="mb-0">
+            <Pagination.Prev onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))} disabled={currentPage === 1} />
+            {[...Array(totalPages)].map((_, index) => (
+              <Pagination.Item key={index + 1} active={index + 1 === currentPage} onClick={() => setCurrentPage(index + 1)}>
+                {index + 1}
+              </Pagination.Item>
+            ))}
+            <Pagination.Next onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))} disabled={currentPage === totalPages} />
+          </Pagination>
+        </Card.Header>
+
+        <Card.Body style={{ minHeight: "500px", display: "flex", flexDirection: "column" }}>
+          <div style={{ flex: "1", overflowY: "auto" }}>
+            <Table striped bordered hover responsive>
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Nama</th>
+                  <th>Layanan</th>
+                  <th>Kode Layanan</th>
+                  <th>Nomor Antrian</th>
+                  <th>Pengambilan</th>
+                  <th>Loket</th>
+                  <th>Status</th>
+                  <th className="text-center">Aksi</th>
+                </tr>
+              </thead>
+              <tbody>
+                {currentItems.map((item, index) => (
+                  <tr key={item.id}>
+                    <td>{index + 1 + indexOfFirstItem}</td>
+                    <td>{item.name}</td>
+                    <td>{item.service}</td>
+                    <td>{item.serviceId}</td>
+                    <td>{item.queueNumber}</td>
+                    <td>{item.startAt}</td>
+                    <td>{item.status === "Dilayani" ? item.locket : "-"}</td>
+                    <td>{item.status}</td>
                     <td className="text-center">
-                      <Button variant={item.called ? "warning" : "primary"} size="sm" className="me-2" onClick={() => handleCall(item.id)}>
-                        {item.called ? "Panggil Ulang" : "Panggil"}
+                      <Button variant="primary" size="sm" className="me-2" onClick={() => handleOpenModal(item)}>
+                        Panggil
                       </Button>
-                      <Button variant="danger" size="sm">Hapus</Button>
                     </td>
-                  )}
-                </>
-              )}
-            </tr>
-          ))}
-        </tbody>
-      </Table>
-      <Pagination className="justify-content-center">
-        <Pagination.Prev onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))} disabled={currentPage === 1} />
-        {[...Array(totalPages)].map((_, index) => (
-          <Pagination.Item key={index + 1} active={index + 1 === currentPage} onClick={() => setCurrentPage(index + 1)}>
-            {index + 1}
-          </Pagination.Item>
-        ))}
-        <Pagination.Next onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))} disabled={currentPage === totalPages} />
-      </Pagination>
+                  </tr>
+                ))}
+                {Array.from({ length: Math.max(0, 10 - currentItems.length) }).map((_, index) => (
+                  <tr key={`empty-${index}`} className="empty-row">
+                    <td colSpan="9">&nbsp;</td>
+                  </tr>
+                ))}
+              </tbody>
+            </Table>
+          </div>
+        </Card.Body>
+      </Card>
+
+      {/* Modal untuk memilih loket */}
+      <Modal show={showModal} onHide={handleCloseModal} centered>
+        <Modal.Header closeButton>
+          <Modal.Title>Pilih Loket Operator</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form>
+            {availableLockets.map((locket, index) => (
+              <Form.Check
+                key={index}
+                type="radio"
+                label={locket}
+                name="locket"
+                value={locket}
+                checked={selectedLocket === locket}
+                onChange={(e) => setSelectedLocket(e.target.value)}
+              />
+            ))}
+          </Form>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleCloseModal}>
+            Batal
+          </Button>
+          <Button variant="primary" onClick={handleSelectLocket} disabled={!selectedLocket}>
+            Panggil
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </>
   );
 };

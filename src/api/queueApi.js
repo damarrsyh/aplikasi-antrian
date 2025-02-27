@@ -1,56 +1,35 @@
 import axios from "axios";
 
-const API_URL = "http://localhost:5000/queue"; 
+const API_URL = import.meta.env.VITE_API_URL;
 
-export const fetchOperators = async () => {
-    try {
-        const response = await axios.get(API_URL);
-        return response.data;
-    } catch (error) {
-        console.error("Error fetching operators", error);
-        return [];
-    }
+export const fetchQueues = async () => {
+  try {
+    const response = await axios.get(`${API_URL}/operators`);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching queues:", error);
+    return [];
+  }
 };
 
-export const addCustomerToOperator = async (operatorId, customerData) => {
-    try {
-        const response = await axios.get(`${API_URL}/${operatorId}`);
-        const operator = response.data;
-
-        operator.customers.push(customerData);
-
-        const updateResponse = await axios.put(`${API_URL}/${operatorId}`, operator);
-        return updateResponse.data;
-    } catch (error) {
-        console.error("Error adding customer", error);
-    }
+export const updateQueueStatus = async (queueId, status) => {
+  try {
+    const response = await axios.put(`${API_URL}/queues/${queueId}`, {
+      status,
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error updating queue status:", error);
+    return null;
+  }
 };
 
-export const updateCustomerStatus = async (operatorId, customerId, updatedData) => {
+export const createQueue = async (customerData) => {
     try {
-        const response = await axios.get(`${API_URL}/${operatorId}`);
-        const operator = response.data;
-
-        operator.customers = operator.customers.map(customer =>
-            customer.id === customerId ? { ...customer, ...updatedData } : customer
-        );
-
-        const updateResponse = await axios.put(`${API_URL}/${operatorId}`, operator);
-        return updateResponse.data;
+      const response = await axios.post(`${API_URL}/queues`, customerData);
+      return response.data;
     } catch (error) {
-        console.error("Error updating customer status", error);
+      console.error("Error creating queue:", error);
+      return null;
     }
-};
-
-export const deleteCustomerFromOperator = async (operatorId, customerId) => {
-    try {
-        const response = await axios.get(`${API_URL}/${operatorId}`);
-        const operator = response.data;
-
-        operator.customers = operator.customers.filter(customer => customer.id !== customerId);
-
-        await axios.put(`${API_URL}/${operatorId}`, operator);
-    } catch (error) {
-        console.error("Error deleting customer", error);
-    }
-};
+  };

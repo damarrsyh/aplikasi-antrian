@@ -1,16 +1,115 @@
 {
-  "queue": [
-    { "id": 1, "number": "P001", "counter": 1, "service": "Siap Print", "customer": { "name": "John Doe", "phone": "081234567890" }, "startTime": "2025-02-26T08:00:00", "endTime": null, "status": "waiting" },
-    { "id": 2, "number": "D001", "counter": 2, "service": "Design", "customer": { "name": "Jane Smith", "phone": "081298765432" }, "startTime": "2025-02-26T08:05:00", "endTime": null, "status": "called" },
-    { "id": 3, "number": "F001", "counter": 3, "service": "Fotocopy", "customer": { "name": "Emily Davis", "phone": "081678901234" }, "startTime": "2025-02-26T08:30:00", "endTime": "2025-02-26T08:45:00", "status": "completed" },
-    { "id": 4, "number": "R001", "counter": 4, "service": "Retur Barang", "customer": { "name": "Sophia Lee", "phone": "081789012345" }, "startTime": "2025-02-26T08:35:00", "endTime": null, "status": "called" },
-    { "id": 5, "number": "O001", "counter": 5, "service": "Online Pickup", "customer": { "name": "Daniel Martinez", "phone": "081890123456" }, "startTime": "2025-02-26T08:40:00", "endTime": null, "status": "waiting" },
-    { "id": 6, "number": "T001", "counter": 6, "service": "Tamu", "customer": { "name": "Henry Adams", "phone": "081901234567" }, "startTime": "2025-02-26T08:50:00", "endTime": null, "status": "waiting" },
-    { "id": 7, "number": "P002", "counter": 1, "service": "Siap Print", "customer": { "name": "James Thompson", "phone": "081234567891" }, "startTime": "2025-02-26T09:00:00", "endTime": null, "status": "waiting" },
-    { "id": 8, "number": "D002", "counter": 2, "service": "Design", "customer": { "name": "Benjamin Clark", "phone": "081456789013" }, "startTime": "2025-02-26T09:10:00", "endTime": "2025-02-26T09:20:00", "status": "completed" },
-    { "id": 9, "number": "F002", "counter": 3, "service": "Fotocopy", "customer": { "name": "Olivia Brown", "phone": "081567890124" }, "startTime": "2025-02-26T09:15:00", "endTime": null, "status": "waiting" },
-    { "id": 10, "number": "R002", "counter": 4, "service": "Retur Barang", "customer": { "name": "William White", "phone": "081678901235" }, "startTime": "2025-02-26T09:20:00", "endTime": null, "status": "called" },
-    { "id": 11, "number": "O002", "counter": 5, "service": "Online Pickup", "customer": { "name": "Sophia Harris", "phone": "081789012346" }, "startTime": "2025-02-26T09:25:00", "endTime": null, "status": "waiting" },
-    { "id": 12, "number": "T002", "counter": 6, "service": "Tamu", "customer": { "name": "Alexander Nelson", "phone": "081890123457" }, "startTime": "2025-02-26T09:30:00", "endTime": null, "status": "waiting" }
+  "operators": [
+    {
+      "id": "O001",
+      "name": "Rina Wijaya",
+      "email": "rina@example.com",
+      "queues": [
+        {
+          "queue_id": "Q12345",
+          "customer": {
+            "id": "C001",
+            "name": "Budi Santoso",
+            "phone": "+628123456789",
+            "email": "budi@example.com"
+          },
+          "service": {
+            "id": "J0001",
+            "name": "siap_print"
+          },
+          "status": "In Progress",
+          "created_at": "2025-02-27T08:30:00Z"
+        },
+        {
+          "queue_id": "Q12346",
+          "customer": {
+            "id": "C002",
+            "name": "Siti Aminah",
+            "phone": "+628987654321",
+            "email": "siti@example.com"
+          },
+          "service": {
+            "id": "J0001",
+            "name": "siap_print"
+          },
+          "status": "Waiting",
+          "created_at": "2025-02-27T09:00:00Z"
+        }
+      ]
+    },
+    {
+      "id": "O002",
+      "name": "Doni Saputra",
+      "email": "doni@example.com",
+      "queues": [
+        {
+          "queue_id": "Q12347",
+          "customer": {
+            "id": "C003",
+            "name": "Ahmad Fauzi",
+            "phone": "+6285566778899",
+            "email": "ahmad@example.com"
+          },
+          "service": {
+            "id": "J0002",
+            "name": "design"
+          },
+          "status": "Completed",
+          "created_at": "2025-02-27T09:30:00Z"
+        },
+        {
+          "queue_id": "Q12348",
+          "customer": {
+            "id": "C004",
+            "name": "Lina Kusuma",
+            "phone": "+6289988776655",
+            "email": "lina@example.com"
+          },
+          "service": {
+            "id": "J0003",
+            "name": "fotocopy"
+          },
+          "status": "In Progress",
+          "created_at": "2025-02-27T10:00:00Z"
+        }
+      ]
+    },
+    {
+      "id": "O003",
+      "name": "Sari Ningsih",
+      "email": "sari@example.com",
+      "queues": [
+        {
+          "queue_id": "Q12349",
+          "customer": {
+            "id": "j000",
+            "name": "Rudi Hartono",
+            "phone": "+6287711223344",
+            "email": "rudi@example.com"
+          },
+          "service": {
+            "id": "J0002",
+            "name": "design"
+          },
+          "status": "Waiting",
+          "created_at": "2025-02-27T10:30:00Z"
+        },
+        {
+          "queue_id": "Q12350",
+          "customer": {
+            "id": "C006",
+            "name": "Dewi Anggraini",
+            "phone": "+6286677889900",
+            "email": "dewi@example.com"
+          },
+          "service": {
+            "id": "J0001",
+            "name": "siap_print"
+          },
+          "status": "Completed",
+          "created_at": "2025-02-27T11:00:00Z"
+        }
+      ]
+    }
   ]
 }

@@ -1,5 +1,5 @@
 import { Container, Card, Button, Row, Col, Form, Carousel } from 'react-bootstrap';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { FaPrint, FaPalette, FaFileAlt, FaUndo, FaTruck, FaUser } from 'react-icons/fa';
 
 const services = [
@@ -18,15 +18,17 @@ const ServiceSelection = () => {
   const [ticket, setTicket] = useState(null);
   const [enableForm, setEnableForm] = useState(false);
 
+  useEffect(() => {
+    if (selectedService && !enableForm) {
+      generateTicket();
+    }
+  }, [selectedService]);
+
   const handleServiceSelect = (serviceId) => {
     setSelectedService(services.find(service => service.id === serviceId));
-    if (!enableForm) {
-      handleSubmit(new Event("submit"));
-    }
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const generateTicket = () => {
     if (selectedService) {
       const queueNumber = `${selectedService.id}-${Math.floor(1000 + Math.random() * 9000)}`;
       const newTicket = {
@@ -41,31 +43,35 @@ const ServiceSelection = () => {
     }
   };
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    generateTicket();
+  };
+
   return (
     <Container>
       {!ticket ? (
         <Row className="vh-100">
           <Col md={6} className="d-flex flex-column">
-            <h3 className="my-4">Pilih Layanan</h3>
+          <div className="my-4">
+            <h3>Pilih Layanan</h3>
+          </div>
             <Row className="flex-grow-1">
-              {services.map(service => {
-                const isSelected = selectedService?.id === service.id;
-                return (
-                  <Col key={service.id} md={6} className="mb-3">
-                    <Card
-                      className={`h-100 shadow rounded-3 ${isSelected ? "bg-primary text-white border-primary" : "bg-light"}`}
-                      onClick={() => handleServiceSelect(service.id)}
-                    >
-                      <Card.Body className="d-flex flex-column justify-content-center align-items-center">
-                        {service.icon}
-                        <Card.Text className="text-center mt-5">
-                          <h5>{service.name}</h5>
-                        </Card.Text>
-                      </Card.Body>
-                    </Card>
-                  </Col>
-                );
-              })}
+              {services.map(service => (
+                <Col key={service.id} md={6} className="mb-3">
+                  <Card
+                    className="h-100 shadow rounded-3 bg-light"
+                    onClick={() => handleServiceSelect(service.id)}
+                  >
+                    <Card.Body className="d-flex flex-column justify-content-center align-items-center">
+                      {service.icon}
+                      <Card.Text className="text-center mt-5">
+                        <h5>{service.name}</h5>
+                      </Card.Text>
+                    </Card.Body>
+                  </Card>
+                </Col>
+              ))}
             </Row>
           </Col>
           <Col md={6} className="d-flex flex-column">
@@ -91,7 +97,6 @@ const ServiceSelection = () => {
                       value={name}
                       onChange={(e) => setName(e.target.value)}
                       disabled={!enableForm}
-                      className={`border ${enableForm ? "border-primary" : "border-secondary"} ${enableForm ? "" : "bg-light text-secondary"}`}
                     />
                   </Form.Group>
                   <Form.Group className="mb-3" controlId="formPhone">
@@ -102,7 +107,6 @@ const ServiceSelection = () => {
                       value={phone}
                       onChange={(e) => setPhone(e.target.value)}
                       disabled={!enableForm}
-                      className={`border ${enableForm ? "border-primary" : "border-secondary"} ${enableForm ? "" : "bg-light text-secondary"}`}
                     />
                   </Form.Group>
                   <Button variant={enableForm ? "primary" : "secondary"} type="submit" disabled={!enableForm}>
@@ -111,11 +115,11 @@ const ServiceSelection = () => {
                 </Form>
               </Card.Body>
             </Card>
-            <div className="d-flex flex-grow-1 my-3 align-items-center justify-content-center">
-              <Carousel>
+            <div className="d-flex flex-grow-1 align-items-center justify-content-center">
+              <Carousel className='w-100'>
                 {["c1.png", "c2.jpg", "c3.jpg"].map((image, index) => (
-                  <Carousel.Item key={index} interval={3000}>
-                    <img className="d-block w-100" src={`/public/${image}`} alt={`Slide ${index + 1}`} height={300} />
+                  <Carousel.Item key={index} interval={3000} className='rounded'>
+                    <img className="d-block w-100 img-fluid rounded" src={`/public/${image}`} alt={`Slide ${index + 1}`}/>
                   </Carousel.Item>
                 ))}
               </Carousel>

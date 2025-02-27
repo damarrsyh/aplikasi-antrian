@@ -28,9 +28,9 @@ const AdminSidebar = () => {
             <NavLink to="/admin/queue-list" className="btn btn-light shadow-sm d-flex align-items-center">
               <FaList className="me-2" /> Daftar Antrian
             </NavLink>
-            <NavLink to="/admin/call-queue" className="btn btn-light shadow-sm d-flex align-items-center">
+            {/* <NavLink to="/admin/call-queue" className="btn btn-light shadow-sm d-flex align-items-center">
               <FaPhone className="me-2" /> Panggil Antrian
-            </NavLink>
+            </NavLink> */}
             {/* <NavLink to="/admin/queue-report" className="btn btn-light shadow-sm d-flex align-items-center">
               <FaChartBar className="me-2" /> Laporan Antrian
             </NavLink> */}

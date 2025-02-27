@@ -80,19 +80,53 @@ const QueueDisplay = () => {
       </Row>
 
       {/* Loket Antrian */}
-      <Row className="text-center d-flex flex-wrap justify-content-center g-0">
-        <Col className="d-flex justify-content-center p-2">
-          <Card className="d-flex align-items-center justify-content-center text-center flex-grow-1"
-                style={{ borderRadius: "10px", width: "100%", minHeight: "150px" }}>
+      <Row className="d-flex flex-wrap g-0">
+        <Col className="d-flex p-2">
+          <Card className="flex-grow-1"
+          style={{ borderRadius: "10px", width: "100%", minHeight: "150px" }}>
+            <Card.Title className="p-3">
+              <h2>
+                List Antrian Layanan
+              </h2>
+              </Card.Title>
+            <Row>
+              <Col>
+                <Card.Body>
                   <Card.Title>List Antrian Layanan</Card.Title>
-                  <Row>
-                    <Col>
-                      <Card.Body>
-                        <Card.Title>List Antrian Layanan</Card.Title>
-                        <h2 style={{ fontSize: "40px", fontWeight: "bold" }}></h2>
-                      </Card.Body>
-                    </Col>
-                  </Row>
+                  <p>data antrian</p>
+                </Card.Body>
+              </Col>
+              <Col>
+                <Card.Body>
+                  <Card.Title>List Antrian Layanan</Card.Title>
+                  <p>data antrian</p>
+                </Card.Body>
+              </Col>
+              <Col>
+                <Card.Body>
+                  <Card.Title>List Antrian Layanan</Card.Title>
+                  <p>data antrian</p>
+                </Card.Body>
+              </Col>
+              <Col>
+                <Card.Body>
+                  <Card.Title>List Antrian Layanan</Card.Title>
+                  <p>data antrian</p>
+                </Card.Body>
+              </Col>
+              <Col>
+                <Card.Body>
+                  <Card.Title>List Antrian Layanan</Card.Title>
+                  <p>data antrian</p>
+                </Card.Body>
+              </Col>
+              <Col>
+                <Card.Body>
+                  <Card.Title>List Antrian Layanan</Card.Title>
+                  <p>data antrian</p>
+                </Card.Body>
+              </Col>
+            </Row>
           </Card>
         </Col>
       </Row>

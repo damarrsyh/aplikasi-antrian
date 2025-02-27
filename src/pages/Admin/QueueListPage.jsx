@@ -1,11 +1,14 @@
+import TestQueueTable from "../../components/Admin/TestQueueTable";
 import QueueTable from "../../components/Admin/QueueTable";
 
 const QueueListPage = () => {
 
   return (
     <div>
-      <h2>Daftar Antrian</h2>
-      <QueueTable showActions={false}/>
+      
+      {/* <TestQueueTable/> INI ADALAH UNTUK TEST DATA DENGAN API */}
+
+      <QueueTable/>
     </div>
   );
 };
