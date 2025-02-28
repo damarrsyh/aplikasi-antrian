@@ -18,6 +18,7 @@ const ServiceSelection = () => {
   const [phone, setPhone] = useState("");
   const [ticket, setTicket] = useState(null);
   const [enableForm, setEnableForm] = useState(false);
+  // eslint-disable-next-line no-unused-vars
   const [queues, setQueues] = useState([]);
 
   useEffect(() => {
@@ -57,7 +58,7 @@ const ServiceSelection = () => {
   };
 
   return (
-    <Container fluid className="bg-dark text-light">
+    <Container fluid style={{backgroundColor: "#E3F2FD"}}>
       {!ticket ? (
         <Row className="vh-100">
           <Col md={6} className="d-flex flex-column">
@@ -65,13 +66,15 @@ const ServiceSelection = () => {
               {services.map(service => (
                 <Col key={service.id} md={6} className="my-2">
                   <Card
-                    className="h-100 shadow rounded-3 bg-secondary"
+                    className="h-100 shadow rounded-3 bg-light"
                     onClick={() => handleServiceSelect(service.id)}
                   >
-                    <Card.Body className="d-flex flex-column justify-content-center align-items-center">
+                    <Card.Body className="d-flex flex-column justify-content-center align-items-center text-primary">
                       {service.icon}
-                      <Card.Text className="text-center mt-5">
-                        {service.name}
+                      <Card.Text>
+                        <h5 className="text-center mt-4 text-dark fw-bold">
+                          {service.name}
+                        </h5>
                       </Card.Text>
                     </Card.Body>
                   </Card>
@@ -79,54 +82,54 @@ const ServiceSelection = () => {
               ))}
             </Row>
           </Col>
-          <Col md={6} className="d-flex flex-column my-2">
-            <Card className={`flex-grow-1 shadow rounded-3 ${enableForm ? "bg-secondary" : "bg-dark"}`}>
-              <Card.Body className="d-flex flex-column">
+          <Col md={6} className="d-flex flex-column mt-2">
+          <Card className={`flex-grow-1 shadow rounded-3 ${enableForm ? "bg-light" : "bg-transparent"}`}>
+            <Card.Body className="d-flex flex-column">
               <div className="d-flex align-items-center ">
-              <h3 className="mb-0 me-3 text-uppercase text-white">Data Diri</h3>
-              <Form.Check
-                type="checkbox"
-                onChange={() => setEnableForm(!enableForm)}
-                style={{ transform: "scale(1.5)" }}
-              />
-              <p className="my-2 text-white" style={{ transform: "scale(0.9)" }}>
-                Beri tanda centang untuk mengisi form
-              </p>
-            </div>
-                <Form onSubmit={handleSubmit} className="flex-grow-1">
-                  <Form.Group className="mb-3" controlId="formName">
-                    <Form.Label className={enableForm ? "text-light" : "text-muted"}>Nama</Form.Label>
-                    <Form.Control
-                      type="text"
-                      placeholder="@example: pandawa"
-                      value={name}
-                      onChange={(e) => setName(e.target.value)}
-                      disabled={!enableForm}
-                      className={enableForm ? "bg-light text-dark" : "bg-dark text-muted"}
-                    />
-                  </Form.Group>
-                  <Form.Group className="mb-3" controlId="formPhone">
-                    <Form.Label className={enableForm ? "text-light" : "text-muted"}>No Telepon</Form.Label>
-                    <Form.Control
-                      type="text"
-                      placeholder="@example: 08xxxxxxxxxxx"
-                      value={phone}
-                      onChange={(e) => setPhone(e.target.value)}
-                      disabled={!enableForm}
-                      className={enableForm ? "bg-light text-dark" : "bg-dark text-muted"}
-                    />
-                  </Form.Group>
-                  <Button variant={enableForm ? "primary" : "secondary"} type="submit" disabled={!enableForm} className="p-4">
-                    Submit
-                  </Button>
-                </Form>
-              </Card.Body>
-            </Card>
-            <div className="d-flex flex-grow-1 align-items-center justify-content-center">
+                <h3 className={`mb-0 me-3 text-uppercase ${enableForm ? "text-dark" : "text-muted"}`}>Data Diri</h3>
+                <Form.Check
+                  type="checkbox"
+                  onChange={() => setEnableForm(!enableForm)}
+                  style={{ transform: "scale(1.5)" }}
+                />
+                <p className={`my-2 ${enableForm ? "text-dark" : "text-muted"}`} style={{ transform: "scale(0.9)" }}>
+                  Beri tanda centang untuk mengisi form
+                </p>
+              </div>
+              <Form onSubmit={handleSubmit} className="flex-grow-1">
+                <Form.Group className="mb-3 mt-3" controlId="formName">
+                  <Form.Label className={enableForm ? "text-dark" : "text-muted"}>Nama</Form.Label>
+                  <Form.Control
+                    type="text"
+                    placeholder="@example: pandawa"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    disabled={!enableForm}
+                    className={enableForm ? "bg-light text-dark" : "bg-transparent text-muted"}
+                  />
+                </Form.Group>
+                <Form.Group className="mb-3" controlId="formPhone">
+                  <Form.Label className={enableForm ? "text-dark" : "text-muted"}>No Telepon</Form.Label>
+                  <Form.Control
+                    type="text"
+                    placeholder="@example: 08xxxxxxxxxxx"
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value)}
+                    disabled={!enableForm}
+                    className={enableForm ? "bg-light text-dark" : "bg-transparent text-muted"}
+                  />
+                </Form.Group>
+                <Button variant={enableForm ? "primary" : "text-muted"} type="submit" disabled={!enableForm}>
+                  Submit
+                </Button>
+              </Form>
+            </Card.Body>
+          </Card>
+            <div className="d-flex my-2 align-items-center justify-content-center">
               <Carousel>
                 {["c1.png", "c2.jpg", "c3.jpg"].map((image, index) => (
                   <Carousel.Item key={index} interval={3000} className='rounded'>
-                    <img className="d-block img-fluid rounded" src={`/public/${image}`} alt={`Slide ${index + 1}`}/>
+                    <img className="img-fluid rounded" src={`/public/${image}`} alt={`Slide ${index + 1}`}/>
                   </Carousel.Item>
                 ))}
               </Carousel>

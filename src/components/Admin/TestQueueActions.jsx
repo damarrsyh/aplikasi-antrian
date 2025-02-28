@@ -9,6 +9,7 @@ export const getProcessedQueues = async () => {
   const processedData = data.map((operator) => ({
     operatorId: operator.id,
     operatorName: operator.name,
+    operatorCounter: operator.counters,
     queues: operator.queues.map((queue) => ({
       id: queue.queue_id,
       customerName: queue.customer.name,
@@ -17,6 +18,7 @@ export const getProcessedQueues = async () => {
       serviceId: queue.service.id,
       serviceName: queue.service.name,
       status: queue.status,
+      operatorCounter: operator.counters,
       createdAt: queue.created_at,
     })),
   }));

@@ -2,15 +2,22 @@
   --bs-body-font-family: 'Poppins', sans-serif;
 }
 
-.close-btn {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  /* opacity: 0; */
-  transition: opacity 0.3s ease-in-out;
-  border-radius: 50%;
+.custom-pagination .page-item .page-link {
+  color: #007bff;
+  border: 1px solid #007bff;
+  transition: all 0.3s ease;
+  padding: 3px 10px;
 }
 
-.mb-3.p-3.text-white.bg-dark:hover .close-btn {
-  opacity: 1;
+.custom-pagination .page-item.active .page-link {
+  background-color: #007bff;
+  color: white;
+  font-weight: bold;
 }
+
+.custom-pagination .page-item .page-link:hover {
+  background-color: #0056b3;
+  color: white;
+}
+
+
