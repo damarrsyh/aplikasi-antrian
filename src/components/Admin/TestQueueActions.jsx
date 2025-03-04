@@ -6,11 +6,8 @@ export const getProcessedQueues = async () => {
   const data = await fetchQueues();
 
   // Ubah struktur data jika diperlukan
-  const processedData = data.map((operator) => ({
-    operatorId: operator.id,
-    operatorName: operator.name,
-    operatorCounter: operator.counters,
-    queues: operator.queues.map((queue) => ({
+  const processedData = data.flatMap((operator) =>
+    operator.queues.map((queue) => ({
       id: queue.queue_id,
       customerName: queue.customer.name,
       customerEmail: queue.customer.email,
@@ -18,10 +15,9 @@ export const getProcessedQueues = async () => {
       serviceId: queue.service.id,
       serviceName: queue.service.name,
       status: queue.status,
-      operatorCounter: operator.counters,
       createdAt: queue.created_at,
-    })),
-  }));
+    }))
+  );
 
   return processedData;
 };
@@ -31,5 +27,11 @@ export const changeQueueStatus = async (queueId, newStatus) => {
 };
 
 export const createTicket = async (ticketData) => {
-  return await createTicketApi(ticketData);
+  try {
+    const response = await createTicketApi(ticketData);
+    return response;
+  } catch (error) {
+    console.error("Error in createTicket:", error);
+    throw error;
+  }
 };

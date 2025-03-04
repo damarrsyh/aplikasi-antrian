@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = import.meta.env.VITE_API_URL;
+const API_URL = import.meta.env.VITE_API_TEST_URL;
 
 export const fetchQueues = async () => {
   try {
@@ -25,11 +25,13 @@ export const updateQueueStatus = async (queueId, status) => {
 };
 
 export const createTicketApi = async (customerData) => {
-    try {
-      const response = await axios.post(`${API_URL}/queues`, customerData);
-      return response.data;
-    } catch (error) {
-      console.error("Error creating queue:", error);
-      return null;
-    }
-  };
+  console.log("Request ke API:", customerData);
+  try {
+    const response = await axios.post(`${API_URL}/queues`, customerData);
+    console.log("Response dari API:", response.data);
+    return response.data;
+  } catch (error) {
+    console.error("Error creating queue:", error.response?.data || error.message);
+    return null; // Jangan return undefined agar tidak menyebabkan error di TestServiceSelection
+  }
+};

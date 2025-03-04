@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import { getProcessedQueues, createTicket } from "../Admin/TestQueueActions";
-import { Container, Card, Row, Col, Form, Button, Carousel } from "react-bootstrap";
+import { Container, Card, Row, Col, Form, Button, Carousel, Modal } from "react-bootstrap";
 import { FaPrint, FaPalette, FaFileAlt, FaUndo, FaTruck, FaUser } from 'react-icons/fa';
 
 const services = [
   { id: "j0001", name: "Siap Print", icon: <FaPrint size={50} /> },
-  { id: "j0002", name: "Design/Edit/Kreatif", icon: <FaPalette size={50} /> },
-  { id: "j0003", name: "FotoCopy/Jilid/Scan", icon: <FaFileAlt size={50} /> },
+  { id: "j0002", name: "Design", icon: <FaPalette size={50} /> },
+  { id: "j0003", name: "FotoCopy", icon: <FaFileAlt size={50} /> },
   { id: "j0004", name: "Retur Penjualan", icon: <FaUndo size={50} /> },
   { id: "j0005", name: "Online Pickup", icon: <FaTruck size={50} /> },
   { id: "j0006", name: "Tamu", icon: <FaUser size={50} /> }
@@ -20,6 +20,9 @@ const ServiceSelection = () => {
   const [enableForm, setEnableForm] = useState(false);
   // eslint-disable-next-line no-unused-vars
   const [queues, setQueues] = useState([]);
+  const [showErrorModal, setShowErrorModal] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  
 
   useEffect(() => {
     if (selectedService && !enableForm) {
@@ -34,23 +37,48 @@ const ServiceSelection = () => {
 
   const generateTicket = async () => {
     if (selectedService) {
-      const queueNumber = `${selectedService.id}-${Math.floor(1000 + Math.random() * 9000)}`;
+      const queueNumber = `A${Math.floor(1 + Math.random() * 99)}`; // Format nomor antrian
+      const queueId = `Q${Math.floor(10000 + Math.random() * 90000)}`; // ID antrian unik
+      const customerId = `C${Math.floor(100 + Math.random() * 900)}`; // ID customer unik
+  
       const newTicket = {
-        number: queueNumber,
-        serviceId: selectedService.id,
-        service: selectedService.name,
-        name: enableForm ? name : "-",
-        phone: enableForm ? phone : "-",
+        queue_id: queueId,
+        customer: {
+          id: customerId,
+          name: enableForm ? name : "Guest",
+          phone: enableForm ? phone : "-",
+          queue_number: queueNumber,
+        },
+        service: {
+          id: selectedService.id,
+          name: selectedService.name,
+        },
+        status: "Waiting",
+        created_at: new Date().toISOString(),
+        time_start: null,
+        time_end: null,
       };
-
+  
+      console.log("Data yang dikirim ke API:", newTicket);
+  
       try {
         const response = await createTicket(newTicket);
-        setTicket(response.data);
+        console.log("Response dari API:", response);
+        if (response) {
+          setTicket(response);
+          setSelectedService(null); // Reset setelah berhasil
+        } else {
+          throw new Error("Response dari API kosong atau tidak valid");
+        }
       } catch (error) {
-        console.error(error);
+        console.error("Error saat membuat tiket:", error);
+        setErrorMessage(error.message || "Terjadi kesalahan saat membuat tiket.");
+        setShowErrorModal(true);
+        setTimeout(() => setShowErrorModal(false), 3000);
       }
     }
   };
+  
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -71,10 +99,8 @@ const ServiceSelection = () => {
                   >
                     <Card.Body className="d-flex flex-column justify-content-center align-items-center text-primary">
                       {service.icon}
-                      <Card.Text>
-                        <h5 className="text-center mt-4 text-dark fw-bold">
+                      <Card.Text className="h5 text-dark my-4">
                           {service.name}
-                        </h5>
                       </Card.Text>
                     </Card.Body>
                   </Card>
@@ -129,7 +155,7 @@ const ServiceSelection = () => {
               <Carousel>
                 {["c1.png", "c2.jpg", "c3.jpg"].map((image, index) => (
                   <Carousel.Item key={index} interval={3000} className='rounded'>
-                    <img className="img-fluid rounded" src={`/public/${image}`} alt={`Slide ${index + 1}`}/>
+                    <img className="img-fluid rounded" src={`/${image}`} alt={`Slide ${index + 1}`}/>
                   </Carousel.Item>
                 ))}
               </Carousel>
@@ -151,6 +177,16 @@ const ServiceSelection = () => {
           </Card>
         </Container>
       )}
+          {/* Modal untuk menampilkan error */}
+    <Modal show={showErrorModal} onHide={() => setShowErrorModal(false)} centered>
+      <Modal.Header closeButton>
+        <Modal.Title>Gagal Membuat Tiket</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>{errorMessage}</Modal.Body>
+      <Modal.Footer>
+        <Button variant="secondary" onClick={() => setShowErrorModal(false)}>Tutup</Button>
+      </Modal.Footer>
+    </Modal>
     </Container>
   );
 };

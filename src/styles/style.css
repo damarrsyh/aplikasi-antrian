@@ -1,23 +1,59 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
+
 :root {
+  --primary-color: #252525;
+  --primary-hover: #727272;
+  --text-light: white;
+  --text-dark: black;
+}
+
+:root, [data-bs-theme="light"], [data-bs-theme="dark"] {
   --bs-body-font-family: 'Poppins', sans-serif;
 }
 
+body {
+  font-family: var(--bs-body-font-family) !important;
+  font-size: var(--bs-body-font-size);
+}
+
+body {
+  font-family: var(--bs-body-font-family);
+  font-size: var(--bs-body-font-size);
+  --primary-color: #000000;
+  --primary-hover: #333333;
+  --text-light: white;
+  --text-dark: #f8f9fa;
+}
+
+[data-bs-theme="dark"] {
+  --primary-color: #ffffff;
+  --primary-hover: #dadada;
+  --text-light: black;
+  --text-dark: #f8f9fa;
+}
+
+.collapsed {
+  width: 60px !important;
+}
+
+.transition-all {
+  transition: all 0.3s ease-in-out;
+}
+
 .custom-pagination .page-item .page-link {
-  color: #007bff;
-  border: 1px solid #007bff;
+  color: var(--primary-color);
+  border: 1px solid var(--primary-color);
   transition: all 0.3s ease;
   padding: 3px 10px;
 }
 
 .custom-pagination .page-item.active .page-link {
-  background-color: #007bff;
-  color: white;
+  background-color: var(--primary-color);
+  color: var(--text-light);
   font-weight: bold;
 }
 
 .custom-pagination .page-item .page-link:hover {
-  background-color: #0056b3;
-  color: white;
+  background-color: var(--primary-hover);
+  color: var(--text-light);
 }
-
-

@@ -4,7 +4,6 @@
       "id": "O001",
       "name": "Rina Wijaya",
       "email": "rina@example.com",
-      "counters": "loket 1",
       "queues": [
         {
           "queue_id": "Q12345",
@@ -91,13 +90,15 @@
           "time_start": null,
           "time_end": null
         }
-      ]
+      ],
+      "jumlah_spk": 5,
+      "jumlah_complaint": 0,
+      "total_pendapatan": 1200000
     },
     {
       "id": "O002",
       "name": "Doni Saputra",
       "email": "doni@example.com",
-      "counters": "loket 2",
       "queues": [
         {
           "queue_id": "Q12347",
@@ -167,13 +168,15 @@
           "time_start": null,
           "time_end": null
         }
-      ]
+      ],
+      "jumlah_spk": 4,
+      "jumlah_complaint": 1,
+      "total_pendapatan": 2500000
     },
     {
       "id": "O003",
-      "name": "Sari Dewi",
-      "email": "sari@example.com",
-      "counters": "loket 3",
+      "name": "Dewi",
+      "email": "dewi@example.com",
       "queues": [
         {
           "queue_id": "Q12349",
@@ -260,13 +263,15 @@
           "time_start": null,
           "time_end": null
         }
-      ]
+      ],
+      "jumlah_spk": 5,
+      "jumlah_complaint": 0,
+      "total_pendapatan": 1800000
     },
     {
       "id": "O004",
-      "name": "Rina Wijaya",
-      "email": "rina@example.com",
-      "counters": "loket 4",
+      "name": "Wijaya",
+      "email": "wijaya@example.com",
       "queues": [
         {
           "queue_id": "Q12359",
@@ -353,13 +358,15 @@
           "time_start": null,
           "time_end": null
         }
-      ]
+      ],
+      "jumlah_spk": 5,
+      "jumlah_complaint": 0,
+      "total_pendapatan": 2200000
     },
     {
       "id": "O005",
-      "name": "Doni Saputra",
-      "email": "doni@example.com",
-      "counters": "loket 5",
+      "name": "Saputra",
+      "email": "saputra@example.com",
       "queues": [
         {
           "queue_id": "Q12364",
@@ -446,13 +453,15 @@
           "time_start": null,
           "time_end": null
         }
-      ]
+      ],
+      "jumlah_spk": 5,
+      "jumlah_complaint": 1,
+      "total_pendapatan": 2800000
     },
     {
       "id": "O006",
       "name": "Sari Dewi",
       "email": "sari@example.com",
-      "counters": "loket 6",
       "queues": [
         {
           "queue_id": "Q12369",
@@ -471,7 +480,10 @@
           "time_start": null,
           "time_end": null
         }
-      ]
+      ],
+      "jumlah_spk": 1,
+      "jumlah_complaint": 0,
+      "total_pendapatan": 800000
     }
   ]
 }
