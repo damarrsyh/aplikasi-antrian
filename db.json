@@ -1,489 +1,68 @@
 {
+  "queues": [
+    {
+      "id": "1837",
+      "queue_id": "6ccbad8f-587b-46c5-9d60-f68b2c30ee73",
+      "customer": {
+        "id": "7a256413-016d-4612-88fa-fc3c5bd0a976",
+        "name": "FotoCopy",
+        "phone": "-",
+        "queue_number": "A34"
+      },
+      "service": {
+        "id": "j0003",
+        "name": "FotoCopy"
+      },
+      "status": "Waiting",
+      "created_at": "2025-03-05T08:10:13.276Z",
+      "time_start": null,
+      "time_end": null
+    },
+    {
+      "id": "c50b",
+      "queue_id": "e7f240c2-4ab7-425d-b0a0-c7c8d9df4849",
+      "customer": {
+        "id": "949f8975-103b-4cd5-9bc7-76d56defd74a",
+        "name": "Customer - Retur Penjualan",
+        "phone": "-",
+        "queue_number": "A67"
+      },
+      "service": {
+        "id": "j0004",
+        "name": "Retur Penjualan"
+      },
+      "status": "Waiting",
+      "created_at": "2025-03-05T08:11:18.230Z",
+      "time_start": null,
+      "time_end": null
+    },
+    {
+      "id": "69fd",
+      "queue_id": "a0b9b389-0190-4b0f-b5b3-984565c7202a",
+      "customer": {
+        "id": "f2473b30-9197-4f02-b6ba-2a64e6453da7",
+        "name": "Customer/j0003",
+        "phone": "-",
+        "queue_number": "A41"
+      },
+      "service": {
+        "id": "j0003",
+        "name": "FotoCopy"
+      },
+      "status": "Waiting",
+      "created_at": "2025-03-05T08:12:40.101Z",
+      "time_start": null,
+      "time_end": null
+    }
+  ],
   "operators": [
     {
       "id": "O001",
       "name": "Rina Wijaya",
       "email": "rina@example.com",
-      "queues": [
-        {
-          "queue_id": "Q12345",
-          "customer": {
-            "id": "C001",
-            "name": "Budi Santoso",
-            "phone": "+628123456789",
-            "email": "budi@example.com"
-          },
-          "service": {
-            "id": "J0001",
-            "name": "Print"
-          },
-          "status": "In Progress",
-          "created_at": "2025-02-27T08:30:00Z",
-          "time_start": "2025-02-27T08:45:00Z",
-          "time_end": null
-        },
-        {
-          "queue_id": "Q12346",
-          "customer": {
-            "id": "C002",
-            "name": "Siti Aminah",
-            "phone": "+628987654321",
-            "email": "siti@example.com"
-          },
-          "service": {
-            "id": "J0001",
-            "name": "Print"
-          },
-          "status": "Waiting",
-          "created_at": "2025-02-27T09:00:00Z",
-          "time_start": null,
-          "time_end": null
-        },
-        {
-          "queue_id": "Q12351",
-          "customer": {
-            "id": "C007",
-            "name": "Eka Prasetyo",
-            "phone": "+6285544332211",
-            "email": "eka@example.com"
-          },
-          "service": {
-            "id": "J0003",
-            "name": "Fotocopy"
-          },
-          "status": "Waiting",
-          "created_at": "2025-02-27T09:30:00Z",
-          "time_start": null,
-          "time_end": null
-        },
-        {
-          "queue_id": "Q12352",
-          "customer": {
-            "id": "C008",
-            "name": "Rahmat Hidayat",
-            "phone": "+6287766554433",
-            "email": "rahmat@example.com"
-          },
-          "service": {
-            "id": "J0002",
-            "name": "Design"
-          },
-          "status": "Waiting",
-          "created_at": "2025-02-27T10:00:00Z",
-          "time_start": null,
-          "time_end": null
-        },
-        {
-          "queue_id": "Q12353",
-          "customer": {
-            "id": "C009",
-            "name": "Lestari Wijaya",
-            "phone": "+6289988776655",
-            "email": "lestari@example.com"
-          },
-          "service": {
-            "id": "J0001",
-            "name": "Print"
-          },
-          "status": "Waiting",
-          "created_at": "2025-02-27T10:30:00Z",
-          "time_start": null,
-          "time_end": null
-        }
-      ],
       "jumlah_spk": 5,
       "jumlah_complaint": 0,
       "total_pendapatan": 1200000
-    },
-    {
-      "id": "O002",
-      "name": "Doni Saputra",
-      "email": "doni@example.com",
-      "queues": [
-        {
-          "queue_id": "Q12347",
-          "customer": {
-            "id": "C003",
-            "name": "Ahmad Fauzi",
-            "phone": "+6285566778899",
-            "email": "ahmad@example.com"
-          },
-          "service": {
-            "id": "J0002",
-            "name": "Design"
-          },
-          "status": "Completed",
-          "created_at": "2025-02-27T09:30:00Z",
-          "time_start": "2025-02-27T09:45:00Z",
-          "time_end": "2025-02-27T10:15:00Z"
-        },
-        {
-          "queue_id": "Q12348",
-          "customer": {
-            "id": "C004",
-            "name": "Lina Kusuma",
-            "phone": "+6289988776655",
-            "email": "lina@example.com"
-          },
-          "service": {
-            "id": "J0003",
-            "name": "Fotocopy"
-          },
-          "status": "In Progress",
-          "created_at": "2025-02-27T10:00:00Z",
-          "time_start": "2025-02-27T10:20:00Z",
-          "time_end": null
-        },
-        {
-          "queue_id": "Q12354",
-          "customer": {
-            "id": "C010",
-            "name": "Rina Astuti",
-            "phone": "+6286677889900",
-            "email": "rina.astuti@example.com"
-          },
-          "service": {
-            "id": "J0002",
-            "name": "Design"
-          },
-          "status": "Waiting",
-          "created_at": "2025-02-27T11:00:00Z",
-          "time_start": null,
-          "time_end": null
-        },
-        {
-          "queue_id": "Q12355",
-          "customer": {
-            "id": "C011",
-            "name": "Indra Wijaya",
-            "phone": "+6287766554433",
-            "email": "indra@example.com"
-          },
-          "service": {
-            "id": "J0001",
-            "name": "Print"
-          },
-          "status": "Waiting",
-          "created_at": "2025-02-27T11:30:00Z",
-          "time_start": null,
-          "time_end": null
-        }
-      ],
-      "jumlah_spk": 4,
-      "jumlah_complaint": 1,
-      "total_pendapatan": 2500000
-    },
-    {
-      "id": "O003",
-      "name": "Dewi",
-      "email": "dewi@example.com",
-      "queues": [
-        {
-          "queue_id": "Q12349",
-          "customer": {
-            "id": "C005",
-            "name": "Indra Wijaya",
-            "phone": "+6286677889900",
-            "email": "indra@example.com"
-          },
-          "service": {
-            "id": "J0001",
-            "name": "Print"
-          },
-          "status": "Waiting",
-          "created_at": "2025-02-27T10:30:00Z",
-          "time_start": null,
-          "time_end": null
-        },
-        {
-          "queue_id": "Q12350",
-          "customer": {
-            "id": "C006",
-            "name": "Rina Astuti",
-            "phone": "+6287766554433",
-            "email": "rina.astuti@example.com"
-          },
-          "service": {
-            "id": "J0002",
-            "name": "Design"
-          },
-          "status": "Waiting",
-          "created_at": "2025-02-27T11:00:00Z",
-          "time_start": null,
-          "time_end": null
-        },
-        {
-          "queue_id": "Q12356",
-          "customer": {
-            "id": "C012",
-            "name": "Eka Prasetyo",
-            "phone": "+6285544332211",
-            "email": "eka@example.com"
-          },
-          "service": {
-            "id": "J0003",
-            "name": "Fotocopy"
-          },
-          "status": "Waiting",
-          "created_at": "2025-02-27T11:30:00Z",
-          "time_start": null,
-          "time_end": null
-        },
-        {
-          "queue_id": "Q12357",
-          "customer": {
-            "id": "C013",
-            "name": "Rahmat Hidayat",
-            "phone": "+6287766554433",
-            "email": "rahmat@example.com"
-          },
-          "service": {
-            "id": "J0002",
-            "name": "Design"
-          },
-          "status": "Waiting",
-          "created_at": "2025-02-27T12:00:00Z",
-          "time_start": null,
-          "time_end": null
-        },
-        {
-          "queue_id": "Q12358",
-          "customer": {
-            "id": "C014",
-            "name": "Lestari Wijaya",
-            "phone": "+6289988776655",
-            "email": "lestari@example.com"
-          },
-          "service": {
-            "id": "J0001",
-            "name": "Print"
-          },
-          "status": "Waiting",
-          "created_at": "2025-02-27T12:30:00Z",
-          "time_start": null,
-          "time_end": null
-        }
-      ],
-      "jumlah_spk": 5,
-      "jumlah_complaint": 0,
-      "total_pendapatan": 1800000
-    },
-    {
-      "id": "O004",
-      "name": "Wijaya",
-      "email": "wijaya@example.com",
-      "queues": [
-        {
-          "queue_id": "Q12359",
-          "customer": {
-            "id": "C015",
-            "name": "Budi Santoso",
-            "phone": "+628123456789",
-            "email": "budi@example.com"
-          },
-          "service": {
-            "id": "J0001",
-            "name": "Print"
-          },
-          "status": "Waiting",
-          "created_at": "2025-02-27T13:00:00Z",
-          "time_start": null,
-          "time_end": null
-        },
-        {
-          "queue_id": "Q12360",
-          "customer": {
-            "id": "C016",
-            "name": "Siti Aminah",
-            "phone": "+628987654321",
-            "email": "siti@example.com"
-          },
-          "service": {
-            "id": "J0001",
-            "name": "Print"
-          },
-          "status": "Waiting",
-          "created_at": "2025-02-27T13:30:00Z",
-          "time_start": null,
-          "time_end": null
-        },
-        {
-          "queue_id": "Q12361",
-          "customer": {
-            "id": "C017",
-            "name": "Eka Prasetyo",
-            "phone": "+6285544332211",
-            "email": "eka@example.com"
-          },
-          "service": {
-            "id": "J0003",
-            "name": "Fotocopy"
-          },
-          "status": "Waiting",
-          "created_at": "2025-02-27T14:00:00Z",
-          "time_start": null,
-          "time_end": null
-        },
-        {
-          "queue_id": "Q12362",
-          "customer": {
-            "id": "C018",
-            "name": "Rahmat Hidayat",
-            "phone": "+6287766554433",
-            "email": "rahmat@example.com"
-          },
-          "service": {
-            "id": "J0002",
-            "name": "Design"
-          },
-          "status": "Waiting",
-          "created_at": "2025-02-27T14:30:00Z",
-          "time_start": null,
-          "time_end": null
-        },
-        {
-          "queue_id": "Q12363",
-          "customer": {
-            "id": "C019",
-            "name": "Lestari Wijaya",
-            "phone": "+6289988776655",
-            "email": "lestari@example.com"
-          },
-          "service": {
-            "id": "J0001",
-            "name": "Print"
-          },
-          "status": "Waiting",
-          "created_at": "2025-02-27T15:00:00Z",
-          "time_start": null,
-          "time_end": null
-        }
-      ],
-      "jumlah_spk": 5,
-      "jumlah_complaint": 0,
-      "total_pendapatan": 2200000
-    },
-    {
-      "id": "O005",
-      "name": "Saputra",
-      "email": "saputra@example.com",
-      "queues": [
-        {
-          "queue_id": "Q12364",
-          "customer": {
-            "id": "C020",
-            "name": "Ahmad Fauzi",
-            "phone": "+6285566778899",
-            "email": "ahmad@example.com"
-          },
-          "service": {
-            "id": "J0002",
-            "name": "Design"
-          },
-          "status": "Waiting",
-          "created_at": "2025-02-27T15:30:00Z",
-          "time_start": null,
-          "time_end": null
-        },
-        {
-          "queue_id": "Q12365",
-          "customer": {
-            "id": "C021",
-            "name": "Lina Kusuma",
-            "phone": "+6289988776655",
-            "email": "lina@example.com"
-          },
-          "service": {
-            "id": "J0003",
-            "name": "Fotocopy"
-          },
-          "status": "Waiting",
-          "created_at": "2025-02-27T16:00:00Z",
-          "time_start": null,
-          "time_end": null
-        },
-        {
-          "queue_id": "Q12366",
-          "customer": {
-            "id": "C022",
-            "name": "Rina Astuti",
-            "phone": "+6286677889900",
-            "email": "rina.astuti@example.com"
-          },
-          "service": {
-            "id": "J0002",
-            "name": "Design"
-          },
-          "status": "Waiting",
-          "created_at": "2025-02-27T16:30:00Z",
-          "time_start": null,
-          "time_end": null
-        },
-        {
-          "queue_id": "Q12367",
-          "customer": {
-            "id": "C023",
-            "name": "Indra Wijaya",
-            "phone": "+6287766554433",
-            "email": "indra@example.com"
-          },
-          "service": {
-            "id": "J0001",
-            "name": "Print"
-          },
-          "status": "Waiting",
-          "created_at": "2025-02-27T17:00:00Z",
-          "time_start": null,
-          "time_end": null
-        },
-        {
-          "queue_id": "Q12368",
-          "customer": {
-            "id": "C024",
-            "name": "Eka Prasetyo",
-            "phone": "+6285544332211",
-            "email": "eka@example.com"
-          },
-          "service": {
-            "id": "J0003",
-            "name": "Fotocopy"
-          },
-          "status": "Waiting",
-          "created_at": "2025-02-27T17:30:00Z",
-          "time_start": null,
-          "time_end": null
-        }
-      ],
-      "jumlah_spk": 5,
-      "jumlah_complaint": 1,
-      "total_pendapatan": 2800000
-    },
-    {
-      "id": "O006",
-      "name": "Sari Dewi",
-      "email": "sari@example.com",
-      "queues": [
-        {
-          "queue_id": "Q12369",
-          "customer": {
-            "id": "C025",
-            "name": "Rahmat Hidayat",
-            "phone": "+6287766554433",
-            "email": "rahmat@example.com"
-          },
-          "service": {
-            "id": "J0002",
-            "name": "Design"
-          },
-          "status": "Waiting",
-          "created_at": "2025-02-27T18:00:00Z",
-          "time_start": null,
-          "time_end": null
-        }
-      ],
-      "jumlah_spk": 1,
-      "jumlah_complaint": 0,
-      "total_pendapatan": 800000
     }
   ]
 }

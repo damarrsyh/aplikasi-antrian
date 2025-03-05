@@ -15,7 +15,7 @@ const AdminSidebar = ({ isCollapsed }) => {
   return (
     <div
       className={`d-flex flex-column p-2 transition-all ${isCollapsed ? "collapsed" : ""}`}
-      style={{ width: isCollapsed ? "90px" : "250px", overflow: "hidden", transition: "width 0.3s ease-in-out"}}
+      style={{ width: isCollapsed ? "90px" : "250px", overflow: "hidden", transition: "width 0.3s ease-in-out", borderRight: "1px solid"}}
     >
       <div className="m-2">
         {!isCollapsed && (

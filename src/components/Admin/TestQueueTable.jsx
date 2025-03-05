@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchQueueList, updateQueueStatus } from "../../redux/queueSlice";
+import { fetchQueueList, updateQueueStatusThunk } from "../../redux/queueSlice";
 import { Card, Table, Container, Button, Pagination } from "react-bootstrap";
 
 const TestQueueTable = () => {
   const dispatch = useDispatch();
   const { queueList, status } = useSelector((state) => state.queue);
+  console.log("Queue List:", queueList);
   const [calledQueues, setCalledQueues] = useState(new Set());
 
   // Pagination states
@@ -14,12 +15,13 @@ const TestQueueTable = () => {
 
   useEffect(() => {
     if (status === "idle") {
-      dispatch(fetchQueueList()); // Ambil daftar antrian dari mockDatabase
+      dispatch(fetchQueueList());
+      // Ambil daftar antrian dari mockDatabase
     }
   }, [status, dispatch]);
 
   const handleCallQueue = (queue) => {
-    dispatch(updateQueueStatus({ queueId: queue.id, newStatus: "In Progress" }))
+    dispatch(updateQueueStatusThunk({ queueId: queue.id, newStatus: "In Progress" }))
       .then(() => dispatch(fetchQueueList())); // Ambil ulang daftar setelah update
 
     setCalledQueues((prev) => new Set(prev).add(queue.id));
@@ -66,11 +68,12 @@ const TestQueueTable = () => {
             <tbody>
               {currentQueues.length > 0 ? (
                 currentQueues.map((queue) => (
-                  <tr key={queue.id}>
-                    <td>{queue.customerName}</td>
-                    <td>{queue.customerEmail}</td>
-                    <td>{queue.customerPhone}</td>
-                    <td>{queue.serviceName}</td>
+                  <tr key={queue.queue_id || queue.id}>
+                    <td>{queue?.id}</td>
+                    <td>{queue.customer?.name}</td>
+                    <td>{queue.customer?.email}</td>
+                    <td>{queue.customer?.phone}</td>
+                    <td>{queue.service?.name}</td>
                     <td>
                       <span className={`badge ${queue.status === "Completed" ? "bg-success" : queue.status === "In Progress" ? "bg-warning text-dark" : "bg-danger"}`}>
                         {queue.status}

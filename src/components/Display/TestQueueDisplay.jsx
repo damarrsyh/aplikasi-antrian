@@ -7,6 +7,8 @@ import ReactPlayer from "react-player";
 const TestQueueDisplay = () => {
   const dispatch = useDispatch();
   const { queueList } = useSelector((state) => state.queue);
+  console.log("data Display antrian", queueList);
+  
 
   const [currentTime, setCurrentTime] = useState(new Date());
   const [showVideo, setShowVideo] = useState(true);
@@ -17,13 +19,9 @@ const TestQueueDisplay = () => {
   };
 
   useEffect(() => {
-    dispatch(fetchQueueList()); // Ambil daftar antrian saat pertama kali render
-    const interval = setInterval(() => {
-      dispatch(fetchQueueList()); // 🔄 Auto-refresh daftar antrian setiap 2 detik
-    }, 2000);
-
-    return () => clearInterval(interval);
-  }, [dispatch]);
+    dispatch(fetchQueueList());
+  }, [queueList.length]); // Akan update jika ada perubahan jumlah data
+  
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -125,7 +123,7 @@ const TestQueueDisplay = () => {
                       .map((q, i) => (
                         <ListGroup.Item key={i} className="d-flex justify-content-between flex-column">
                           <div className="d-flex justify-content-between">
-                            <span className="fw-bold">{q.id}</span>
+                            <span className="fw-bold">{q.queue_id}</span>
                             <span className="text-muted">
                               {q.status} - {new Date(q.createdAt).toLocaleTimeString()}
                             </span>

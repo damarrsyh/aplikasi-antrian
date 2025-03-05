@@ -1,25 +1,42 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { getProcessedQueues, changeQueueStatus } from "../components/Admin/TestQueueActions"; 
+import { changeQueueStatus, createTicket } from "../components/Admin/TestQueueActions";
+import { fetchQueues } from "../api/queueApi";
 
 // Async Thunk untuk mengambil daftar antrian dari API
 export const fetchQueueList = createAsyncThunk("queue/fetchQueueList", async (_, { rejectWithValue }) => {
   try {
-    const data = await getProcessedQueues();
+    const data = await fetchQueues();
     return data;
   } catch (error) {
     return rejectWithValue(error.response?.data || "Terjadi kesalahan");
   }
 });
 
-// Async Thunk untuk memperbarui status antrian
-export const updateQueueStatus = createAsyncThunk(
+
+export const updateQueueStatusThunk = createAsyncThunk(
   "queue/updateQueueStatus",
   async ({ queueId, newStatus }, { rejectWithValue }) => {
     try {
       await changeQueueStatus(queueId, newStatus);
-      return { queueId, newStatus };
+      const updatedQueues = await fetchQueues(); // Ambil data lengkap lagi
+      const updatedQueue = updatedQueues.find((q) => q.queue_id === queueId);
+      return updatedQueue || { queueId, newStatus }; // Gunakan data lengkap jika ada
     } catch (error) {
       return rejectWithValue(error.response?.data || "Gagal memperbarui status");
+    }
+  }
+);
+
+
+// Async Thunk untuk membuat tiket baru
+export const createQueueTicket = createAsyncThunk(
+  "queue/createQueueTicket",
+  async (ticketData, { rejectWithValue }) => {
+    try {
+      const response = await createTicket(ticketData);
+      return response;
+    } catch (error) {
+      return rejectWithValue(error.response?.data || "Gagal membuat tiket");
     }
   }
 );
@@ -52,15 +69,13 @@ const queueSlice = createSlice({
         state.status = "failed";
         state.error = action.payload;
       })
-      .addCase(updateQueueStatus.fulfilled, (state, action) => {
-        state.queueList = state.queueList.map((operator) => ({
-          ...operator,
-          queues: operator.queues.map((queue) =>
-            queue.id === action.payload.queueId
-              ? { ...queue, status: action.payload.newStatus }
-              : queue
-          ),
-        }));
+      .addCase(updateQueueStatusThunk.fulfilled, (state, action) => {
+        state.queueList = state.queueList.map((queue) =>
+          queue.id === action.payload.id ? { ...queue, ...action.payload } : queue
+        );
+      })
+      .addCase(createQueueTicket.fulfilled, (state, action) => {
+        state.queueList.push(action.payload);
       });
   },
 });

@@ -5,20 +5,18 @@ import TestQueueTable from "../../components/Admin/TestQueueTable";
 
 const QueueListPage = () => {
   const dispatch = useDispatch();
-  const { queueList, status, error } = useSelector((state) => state.queue);
+  const { status, error } = useSelector((state) => state.queue);
 
   useEffect(() => {
-    if (status === "idle") {
-      dispatch(fetchQueueList());
-    }
-  }, [status, dispatch]);
+    dispatch(fetchQueueList()); // Panggil langsung saat komponen dimuat
+  }, [dispatch]);
 
   return (
     <div className="container mt-4">
       <h2>Daftar Antrian</h2>
       {status === "loading" && <p>Memuat data...</p>}
       {status === "failed" && <p className="text-danger">Error: {error}</p>}
-      {status === "succeeded" && <TestQueueTable queueList={queueList} />}
+      <TestQueueTable />
     </div>
   );
 };

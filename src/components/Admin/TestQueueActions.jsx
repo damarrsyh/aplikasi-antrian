@@ -4,22 +4,16 @@ import { fetchQueues, updateQueueStatus, createTicketApi } from "../../api/queue
 
 export const getProcessedQueues = async () => {
   const data = await fetchQueues();
-
-  // Ubah struktur data jika diperlukan
-  const processedData = data.flatMap((operator) =>
-    operator.queues.map((queue) => ({
-      id: queue.queue_id,
-      customerName: queue.customer.name,
-      customerEmail: queue.customer.email,
-      customerPhone: queue.customer.phone,
-      serviceId: queue.service.id,
-      serviceName: queue.service.name,
-      status: queue.status,
-      createdAt: queue.created_at,
-    }))
-  );
-
-  return processedData;
+  return data.map((queue) => ({
+    id: queue.queue_id,
+    customerName: queue.customer?.name || "Unknown", // Cegah error jika customer undefined
+    customerEmail: queue.customer?.email || "N/A",
+    customerPhone: queue.customer?.phone || "N/A",
+    serviceId: queue.service?.id || "Unknown",
+    serviceName: queue.service?.name?.toString() || "Unknown Service", // Pastikan string
+    status: queue.status || "Unknown",
+    createdAt: queue.created_at || new Date().toISOString(),
+  }));
 };
 
 export const changeQueueStatus = async (queueId, newStatus) => {

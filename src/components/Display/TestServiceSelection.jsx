@@ -2,14 +2,15 @@ import { useEffect, useState } from "react";
 import { getProcessedQueues, createTicket } from "../Admin/TestQueueActions";
 import { Container, Card, Row, Col, Form, Button, Carousel, Modal } from "react-bootstrap";
 import { FaPrint, FaPalette, FaFileAlt, FaUndo, FaTruck, FaUser } from 'react-icons/fa';
+import { v4 as uuidv4 } from "uuid";
 
 const services = [
-  { id: "j0001", name: "Siap Print", icon: <FaPrint size={50} /> },
-  { id: "j0002", name: "Design", icon: <FaPalette size={50} /> },
-  { id: "j0003", name: "FotoCopy", icon: <FaFileAlt size={50} /> },
-  { id: "j0004", name: "Retur Penjualan", icon: <FaUndo size={50} /> },
-  { id: "j0005", name: "Online Pickup", icon: <FaTruck size={50} /> },
-  { id: "j0006", name: "Tamu", icon: <FaUser size={50} /> }
+  { id: "J0001", name: "Siap Print", icon: <FaPrint size={50} /> },
+  { id: "J0002", name: "Design", icon: <FaPalette size={50} /> },
+  { id: "J0003", name: "FotoCopy", icon: <FaFileAlt size={50} /> },
+  { id: "J0004", name: "Retur Penjualan", icon: <FaUndo size={50} /> },
+  { id: "J0005", name: "Online Pickup", icon: <FaTruck size={50} /> },
+  { id: "J0006", name: "Tamu", icon: <FaUser size={50} /> }
 ];
 
 const ServiceSelection = () => {
@@ -38,14 +39,14 @@ const ServiceSelection = () => {
   const generateTicket = async () => {
     if (selectedService) {
       const queueNumber = `A${Math.floor(1 + Math.random() * 99)}`; // Format nomor antrian
-      const queueId = `Q${Math.floor(10000 + Math.random() * 90000)}`; // ID antrian unik
-      const customerId = `C${Math.floor(100 + Math.random() * 900)}`; // ID customer unik
+      const queueId = uuidv4(); // ID antrian unik
+      const customerId = uuidv4(); // ID customer unik
   
       const newTicket = {
         queue_id: queueId,
         customer: {
           id: customerId,
-          name: enableForm ? name : "Guest",
+          name: enableForm ? name : `Customer/${selectedService.id}`,
           phone: enableForm ? phone : "-",
           queue_number: queueNumber,
         },
@@ -168,25 +169,25 @@ const ServiceSelection = () => {
             <Card.Body>
               <Card.Title className="fw-bold fs-3 text-uppercase">Tiket Antrian</Card.Title>
               <hr />
-              <Card.Text className="fw-bold text-uppercase fs-2 bg-light p-3 rounded">{ticket.number}</Card.Text>
-              <Card.Text><strong>Layanan :</strong> {ticket.service}</Card.Text>
-              <Card.Text><strong>Nama :</strong> {ticket.name}</Card.Text>
-              <Card.Text><strong>No Telepon :</strong> {ticket.phone}</Card.Text>
+              <Card.Text className="fw-bold text-uppercase fs-2 bg-light p-3 rounded">{ticket.customer?.queue_number}</Card.Text>
+              <Card.Text><strong>Layanan :</strong> {ticket.service?.name}</Card.Text>
+              <Card.Text><strong>Nama :</strong> {ticket.customer?.name}</Card.Text>
+              <Card.Text><strong>No Telepon :</strong> {ticket.customer?.phone}</Card.Text>
               <Button variant="success" onClick={() => window.print()}>Cetak Tiket</Button>
             </Card.Body>
           </Card>
         </Container>
       )}
-          {/* Modal untuk menampilkan error */}
-    <Modal show={showErrorModal} onHide={() => setShowErrorModal(false)} centered>
-      <Modal.Header closeButton>
-        <Modal.Title>Gagal Membuat Tiket</Modal.Title>
-      </Modal.Header>
-      <Modal.Body>{errorMessage}</Modal.Body>
-      <Modal.Footer>
-        <Button variant="secondary" onClick={() => setShowErrorModal(false)}>Tutup</Button>
-      </Modal.Footer>
-    </Modal>
+      {/* Modal untuk menampilkan error */}
+      <Modal show={showErrorModal} onHide={() => setShowErrorModal(false)} centered>
+        <Modal.Header closeButton>
+          <Modal.Title>Gagal Membuat Tiket</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>{errorMessage}</Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShowErrorModal(false)}>Tutup</Button>
+        </Modal.Footer>
+      </Modal>
     </Container>
   );
 };
