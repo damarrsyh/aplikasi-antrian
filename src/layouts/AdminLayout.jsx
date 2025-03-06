@@ -12,9 +12,11 @@ const AdminLayout = () => {
   };
 
   return (
-    <div className="d-flex flex-column vh-100">
+    <div className="d-flex flex-column vh-100 position-relative">
       {/* Navbar dengan tombol toggle sidebar */}
-      <AdminNavbar toggleSidebar={toggleSidebar} />
+      <div className="position-sticky top-0 w-100" style={{zIndex: 1050 }}>
+        <AdminNavbar toggleSidebar={toggleSidebar} />
+      </div>
 
       <div className="d-flex flex-grow-1">
         {/* Sidebar */}
@@ -22,17 +24,19 @@ const AdminLayout = () => {
 
         {/* Main Content */}
         <div
-          className="flex-grow-1 p-4 transition-all"
+          className="flex-grow-1 p-3 transition-all"
           style={{
-            transition: "margin-left 0.3s ease-in-out",
+            transition: "margin-left 0.3s ease-in-out, background-color 0.3s ease-in-out",
           }}
         >
-          <Outlet />
+          <Outlet/>
         </div>
       </div>
 
       {/* Footer */}
-      <AdminFooter />
+      <div className="position-sticky bottom-0 w-100" style={{ zIndex: 1050 }}>
+        <AdminFooter/>
+      </div>
     </div>
   );
 };

@@ -18,7 +18,7 @@ const AdminNavbar = ({ toggleSidebar }) => {
             <FaUsers className="me-2" />
             <span className="fw-bold me-5">Antrian</span>
           </Navbar.Brand>
-          <Button variant={darkMode ? "text-light" : "text-dark"}className="me-2" onClick={toggleSidebar}>
+          <Button variant={darkMode ? "text-light" : "text-dark"} className="me-2" onClick={toggleSidebar}>
             <FaBars />
           </Button>
         </div>

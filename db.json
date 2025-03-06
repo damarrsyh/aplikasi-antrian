@@ -1,56 +1,147 @@
 {
   "queues": [
     {
-      "id": "1837",
-      "queue_id": "6ccbad8f-587b-46c5-9d60-f68b2c30ee73",
+      "status": "In Progress",
+      "queue_number": "A54",
+      "id": "0be0"
+    },
+    {
+      "status": "In Progress",
+      "queue_number": "A87",
+      "id": "4d6d"
+    },
+    {
+      "status": "In Progress",
+      "queue_number": "A92",
+      "id": "4893"
+    },
+    {
+      "status": "In Progress",
+      "id": "2e03"
+    },
+    {
+      "id": "ee74",
+      "queue_id": "5adf7892-53f5-4b39-a43d-02aa059dded4",
       "customer": {
-        "id": "7a256413-016d-4612-88fa-fc3c5bd0a976",
-        "name": "FotoCopy",
+        "id": "cada23e9-d64a-45d6-962f-22f2e81edd9d",
+        "name": "Customer/J0001",
         "phone": "-",
-        "queue_number": "A34"
+        "queue_number": "A75"
       },
       "service": {
-        "id": "j0003",
-        "name": "FotoCopy"
+        "id": "J0001",
+        "name": "Siap Print"
       },
       "status": "Waiting",
-      "created_at": "2025-03-05T08:10:13.276Z",
+      "created_at": "2025-03-06T08:26:52.995Z",
       "time_start": null,
       "time_end": null
     },
     {
-      "id": "c50b",
-      "queue_id": "e7f240c2-4ab7-425d-b0a0-c7c8d9df4849",
+      "id": "2525",
+      "queue_id": "5c0fc27c-6df4-4e9e-abad-359a428f5a33",
       "customer": {
-        "id": "949f8975-103b-4cd5-9bc7-76d56defd74a",
-        "name": "Customer - Retur Penjualan",
+        "id": "41bfb858-99d1-408f-a147-fdf1dd6a436e",
+        "name": "Customer/J0005",
         "phone": "-",
-        "queue_number": "A67"
+        "queue_number": "A22"
       },
       "service": {
-        "id": "j0004",
+        "id": "J0005",
+        "name": "Online Pickup"
+      },
+      "status": "Waiting",
+      "created_at": "2025-03-06T08:26:55.903Z",
+      "time_start": null,
+      "time_end": null
+    },
+    {
+      "id": "2f89",
+      "queue_id": "42cd267b-8a21-4308-9ff8-5b7990dd1530",
+      "customer": {
+        "id": "9a3a7a40-2b8a-401a-a88d-ce5fad3fa376",
+        "name": "Customer/J0004",
+        "phone": "-",
+        "queue_number": "A58"
+      },
+      "service": {
+        "id": "J0004",
         "name": "Retur Penjualan"
       },
       "status": "Waiting",
-      "created_at": "2025-03-05T08:11:18.230Z",
+      "created_at": "2025-03-06T08:26:59.253Z",
       "time_start": null,
       "time_end": null
     },
     {
-      "id": "69fd",
-      "queue_id": "a0b9b389-0190-4b0f-b5b3-984565c7202a",
+      "id": "3763",
+      "queue_id": "712823c0-a7d1-4d32-a168-014c5df25ef0",
       "customer": {
-        "id": "f2473b30-9197-4f02-b6ba-2a64e6453da7",
-        "name": "Customer/j0003",
+        "id": "f1b8075b-5ebf-475a-aa52-de53a1e1de66",
+        "name": "Customer/J0002",
         "phone": "-",
-        "queue_number": "A41"
+        "queue_number": "A30"
       },
       "service": {
-        "id": "j0003",
-        "name": "FotoCopy"
+        "id": "J0002",
+        "name": "Design"
       },
       "status": "Waiting",
-      "created_at": "2025-03-05T08:12:40.101Z",
+      "created_at": "2025-03-06T08:27:04.160Z",
+      "time_start": null,
+      "time_end": null
+    },
+    {
+      "id": "bb24",
+      "queue_id": "470e121a-5245-4284-a38f-c8e7fc3d0148",
+      "customer": {
+        "id": "04e686f0-56af-4d11-ae34-c3b4cd5afec8",
+        "name": "Customer/J0006",
+        "phone": "-",
+        "queue_number": "A98"
+      },
+      "service": {
+        "id": "J0006",
+        "name": "Tamu"
+      },
+      "status": "Waiting",
+      "created_at": "2025-03-06T08:27:08.192Z",
+      "time_start": null,
+      "time_end": null
+    },
+    {
+      "id": "a360",
+      "queue_id": "092c3f24-3a7d-4774-a373-1e8933e866d6",
+      "customer": {
+        "id": "42bf7610-3645-42ec-a028-1aaba552f35c",
+        "name": "Customer/J0002",
+        "phone": "-",
+        "queue_number": "A24"
+      },
+      "service": {
+        "id": "J0002",
+        "name": "Design"
+      },
+      "status": "Waiting",
+      "created_at": "2025-03-06T08:28:07.142Z",
+      "time_start": null,
+      "time_end": null
+    },
+    {
+      "id": "75b8",
+      "queue_id": "a96d013f-9998-4a8d-8825-57e3485d49c3",
+      "customer": {
+        "id": "417c9d39-660c-4beb-9b83-8e7758be38c7",
+        "name": "Customer/J0002",
+        "phone": "-",
+        "queue_number": "A103"
+      },
+      "service": {
+        "id": "J0002",
+        "name": "Design"
+      },
+      "status": "Waiting",
+      "created_at": "2025-03-06T08:29:09.476Z",
       "time_start": null,
       "time_end": null
     }

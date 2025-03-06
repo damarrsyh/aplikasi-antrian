@@ -15,17 +15,20 @@ export const fetchQueueList = createAsyncThunk("queue/fetchQueueList", async (_,
 
 export const updateQueueStatusThunk = createAsyncThunk(
   "queue/updateQueueStatus",
-  async ({ queueId, newStatus }, { rejectWithValue }) => {
+  async ({ queueId, newStatus, queueNumber }, { rejectWithValue }) => {
     try {
-      await changeQueueStatus(queueId, newStatus);
+      await changeQueueStatus(queueId, newStatus, queueNumber);
+      
       const updatedQueues = await fetchQueues(); // Ambil data lengkap lagi
       const updatedQueue = updatedQueues.find((q) => q.queue_id === queueId);
-      return updatedQueue || { queueId, newStatus }; // Gunakan data lengkap jika ada
+      
+      return updatedQueue || { queueId, newStatus, queueNumber };
     } catch (error) {
       return rejectWithValue(error.response?.data || "Gagal memperbarui status");
     }
   }
 );
+
 
 
 // Async Thunk untuk membuat tiket baru

@@ -1,12 +1,10 @@
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
 import { FaList, FaTv, FaChevronDown, FaChevronRight, FaTrophy } from "react-icons/fa";
-import useTheme from "../Shared/useTheme";
 
 // eslint-disable-next-line react/prop-types
 const AdminSidebar = ({ isCollapsed }) => {
   const [openMenu, setOpenMenu] = useState(null);
-  const {darkMode} = useTheme();
 
   const toggleMenu = (menu) => {
     setOpenMenu(openMenu === menu ? null : menu);
@@ -15,7 +13,7 @@ const AdminSidebar = ({ isCollapsed }) => {
   return (
     <div
       className={`d-flex flex-column p-2 transition-all ${isCollapsed ? "collapsed" : ""}`}
-      style={{ width: isCollapsed ? "90px" : "250px", overflow: "hidden", transition: "width 0.3s ease-in-out", borderRight: "1px solid"}}
+      style={{ width: isCollapsed ? "90px" : "250px", overflow: "hidden", transition: "width 0.3s ease-in-out"}}
     >
       <div className="m-2">
         {!isCollapsed && (
@@ -28,7 +26,7 @@ const AdminSidebar = ({ isCollapsed }) => {
       </div>
 
       {/* Antrian Menu */}
-      <div className={darkMode ? "light" : "dark"}>
+      <div>
         <button
           onClick={() => toggleMenu("antrian")}
           className="btn shadow-sm w-100 text-start mb-2 me-2 d-flex align-items-center justify-content-between"
@@ -39,7 +37,7 @@ const AdminSidebar = ({ isCollapsed }) => {
           </span>
           {!isCollapsed && (openMenu === "antrian" ? <FaChevronDown /> : <FaChevronRight />)}
         </button>
-        {!isCollapsed && openMenu === "antrian" && (
+        <div className={`sidebar-menu ${!isCollapsed && openMenu === "antrian" ? "show" : ""}`}>
           <div className="ms-3 my-2 d-grid gap-2">
             <NavLink to="/admin/queue-list" className="btn shadow-sm d-flex align-items-center">
               <FaList className="me-2" /> Daftar Antrian
@@ -48,7 +46,7 @@ const AdminSidebar = ({ isCollapsed }) => {
               <FaTrophy className="me-2" /> Leaderboard
             </button>
           </div>
-        )}
+        </div>
       </div>
 
       {/* Monitor Menu */}
@@ -63,7 +61,7 @@ const AdminSidebar = ({ isCollapsed }) => {
           </span>
           {!isCollapsed && (openMenu === "monitor" ? <FaChevronDown /> : <FaChevronRight />)}
         </button>
-        {!isCollapsed && openMenu === "monitor" && (
+        <div className={`sidebar-menu ${!isCollapsed && openMenu === "monitor" ? "show" : ""}`}>
           <div className="ms-3 my-2 d-grid gap-2">
             <button onClick={() => window.open("/queue-display", "_blank")} className="btn shadow-sm d-flex align-items-center">
               <FaTv className="me-2" /> Tampilan Antrian
@@ -72,7 +70,7 @@ const AdminSidebar = ({ isCollapsed }) => {
               <FaTv className="me-2" /> Menu Antrian
             </button>
           </div>
-        )}
+        </div>
       </div>
     </div>
   );

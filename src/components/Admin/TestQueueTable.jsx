@@ -1,13 +1,14 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchQueueList, updateQueueStatusThunk } from "../../redux/queueSlice";
-import { Card, Table, Container, Button, Pagination } from "react-bootstrap";
+import { Card, Table, Container, Button, Pagination, Modal } from "react-bootstrap";
 
 const TestQueueTable = () => {
   const dispatch = useDispatch();
   const { queueList, status } = useSelector((state) => state.queue);
-  console.log("Queue List:", queueList);
   const [calledQueues, setCalledQueues] = useState(new Set());
+  const [showModal, setShowModal] = useState(false);
+  const [selectedQueue, setSelectedQueue] = useState(null);
 
   // Pagination states
   const [currentPage, setCurrentPage] = useState(1);
@@ -18,24 +19,51 @@ const TestQueueTable = () => {
       dispatch(fetchQueueList());
       // Ambil daftar antrian dari mockDatabase
     }
-  }, [status, dispatch]);
+  }, [status, dispatch]); 
 
   const handleCallQueue = (queue) => {
-    dispatch(updateQueueStatusThunk({ queueId: queue.id, newStatus: "In Progress" }))
-      .then(() => dispatch(fetchQueueList())); // Ambil ulang daftar setelah update
-
+    setSelectedQueue(queue);
+    setShowModal(true); // Tampilkan modal
+    dispatch(updateQueueStatusThunk({ 
+      queueId: queue.id, 
+      newStatus: "In Progress",
+      queueNumber: queue.customer.queue_number // Pastikan queue_number ikut dikirim
+    })).then(() => {
+      dispatch(fetchQueueList()); // Refresh daftar antrian
+    });
+  
     setCalledQueues((prev) => new Set(prev).add(queue.id));
+  
+    // Timer 1 menit untuk memindahkan ke "Missed" jika customer tidak datang
+    setTimeout(() => {
+      const updatedQueue = queueList.find((q) => q.id === queue.id); // Cek status terbaru
+      if (updatedQueue && updatedQueue.status === "In Progress") {
+        dispatch(updateQueueStatusThunk({ 
+          queueId: queue.id, 
+          newStatus: "Missed",
+          queueNumber: queue.queue_number 
+        })).then(() => dispatch(fetchQueueList()));
+      }
+    }, 60000); // 1 menit
   };
-
+    
+  
   const sortedQueues = queueList
-    .filter((queue) => queue.status === "Waiting") // Hanya antrian "Waiting"
-    .sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+  .filter((queue) => queue.status === "Waiting") // Hanya antrian "Waiting"
+  .sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+  
+  const totalPages = Math.ceil(sortedQueues.length / itemsPerPage);
 
+  useEffect(() => {
+    if (currentPage > totalPages) {
+      setCurrentPage(totalPages > 0 ? totalPages : 1);
+    }
+  }, [sortedQueues, totalPages, currentPage]); 
+  
   // Pagination Logic
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentQueues = sortedQueues.slice(indexOfFirstItem, indexOfLastItem);
-  const totalPages = Math.ceil(queueList.length / itemsPerPage);
 
   return (
     <Container>
@@ -57,11 +85,8 @@ const TestQueueTable = () => {
             <thead>
               <tr>
                 <th>Customer</th>
-                <th>Email</th>
-                <th>Phone</th>
                 <th>Service</th>
                 <th>Status</th>
-                <th>Created At</th>
                 <th>Action</th>
               </tr>
             </thead>
@@ -69,20 +94,20 @@ const TestQueueTable = () => {
               {currentQueues.length > 0 ? (
                 currentQueues.map((queue) => (
                   <tr key={queue.queue_id || queue.id}>
-                    <td>{queue?.id}</td>
                     <td>{queue.customer?.name}</td>
-                    <td>{queue.customer?.email}</td>
-                    <td>{queue.customer?.phone}</td>
                     <td>{queue.service?.name}</td>
                     <td>
                       <span className={`badge ${queue.status === "Completed" ? "bg-success" : queue.status === "In Progress" ? "bg-warning text-dark" : "bg-danger"}`}>
                         {queue.status}
                       </span>
                     </td>
-                    <td>{queue.createdAt ? new Date(queue.createdAt).toLocaleString() : "-"}</td>
                     <td className="text-center">
                       {queue.status === "Waiting" && (
-                        <Button variant={calledQueues.has(queue.id) ? "warning" : "info text-white"} size="sm" onClick={() => handleCallQueue(queue)}>
+                        <Button 
+                          variant={calledQueues.has(queue.id) ? "warning" : "info text-white"} 
+                          size="sm" 
+                          onClick={() => handleCallQueue(queue)}
+                        >
                           {calledQueues.has(queue.id) ? "Panggil Ulang" : "Panggil"}
                         </Button>
                       )}
@@ -98,6 +123,34 @@ const TestQueueTable = () => {
           </Table>
         </Card.Body>
       </Card>
+      <Modal show={showModal} onHide={() => setShowModal(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>Panggil Ulang Antrian</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <p>Nomor Antrian: <strong>{selectedQueue?.queue_number}</strong></p>
+          <p>Nama Customer: {selectedQueue?.customer?.name}</p>
+          <p>Apakah Anda ingin memanggil customer ini?</p>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShowModal(false)}>Batal</Button>
+          <Button
+            variant="primary"
+            onClick={() => {
+              dispatch(updateQueueStatusThunk({ 
+                queueId: selectedQueue.id, 
+                newStatus: "In Progress",
+                queueNumber: selectedQueue.queue_number
+              })).then(() => {
+                dispatch(fetchQueueList());
+                setShowModal(false);
+              });
+            }}
+          >
+            Panggil Sekarang
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </Container>
   );
 };

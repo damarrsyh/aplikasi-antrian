@@ -12,8 +12,8 @@ const QueueListPage = () => {
   }, [dispatch]);
 
   return (
-    <div className="container mt-4">
-      <h2>Daftar Antrian</h2>
+    <div className="container mt-2">
+      <h2 className="ms-3">Daftar Antrian</h2>
       {status === "loading" && <p>Memuat data...</p>}
       {status === "failed" && <p className="text-danger">Error: {error}</p>}
       <TestQueueTable />

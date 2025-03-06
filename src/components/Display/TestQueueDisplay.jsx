@@ -8,8 +8,6 @@ const TestQueueDisplay = () => {
   const dispatch = useDispatch();
   const { queueList } = useSelector((state) => state.queue);
   console.log("data Display antrian", queueList);
-  
-
   const [currentTime, setCurrentTime] = useState(new Date());
   const [showVideo, setShowVideo] = useState(true);
   const colors = ["primary", "secondary", "success", "danger", "warning", "info", "dark"];
@@ -20,7 +18,8 @@ const TestQueueDisplay = () => {
 
   useEffect(() => {
     dispatch(fetchQueueList());
-  }, [queueList.length]); // Akan update jika ada perubahan jumlah data
+  }, [queueList.length]);
+   // Akan update jika ada perubahan jumlah data
   
 
   useEffect(() => {
@@ -62,7 +61,7 @@ const TestQueueDisplay = () => {
                 <h3 className="fw-bold">NOMOR ANTRIAN</h3>
               </Card.Header>
               <Card.Body>
-                <h1 className="display-3 fw-bold p-3">{activeQueues[0].id}</h1>
+                <h1 className="display-3 fw-bold p-3">{activeQueues[0].queue_number}</h1>
               </Card.Body>
               <Card.Footer className="bg-info text-white">
                 <h5 className="fw-bold">
@@ -117,13 +116,13 @@ const TestQueueDisplay = () => {
                   </Card.Header>
                   <ListGroup variant="flush">
                     {queueList
-                      .filter((q) => q.status === "Waiting")
+                      .filter((q) => q.status === "Waiting" && q.serviceName === serviceName)
                       .sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt))
                       .slice(0, 7)
                       .map((q, i) => (
                         <ListGroup.Item key={i} className="d-flex justify-content-between flex-column">
                           <div className="d-flex justify-content-between">
-                            <span className="fw-bold">{q.queue_id}</span>
+                            <span className="fw-bold">{q.customer.queue_number}</span>
                             <span className="text-muted">
                               {q.status} - {new Date(q.createdAt).toLocaleTimeString()}
                             </span>

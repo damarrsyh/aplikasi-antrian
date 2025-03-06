@@ -5,6 +5,7 @@ const API_URL = import.meta.env.VITE_API_TEST_URL;
 export const fetchQueues = async () => {
   try {
     const response = await axios.get(`${API_URL}/queues`);
+    console.log("Data API yang ditarik", response.data)
     return response.data;
   } catch (error) {
     console.error("Error fetching queues:", error);
@@ -12,10 +13,12 @@ export const fetchQueues = async () => {
   }
 };
 
-export const updateQueueStatus = async (queueId, status) => {
+export const updateQueueStatus = async (queueId, status, queueNumber) => {
   try {
+    console.log(`Mengirim update ke server: ID=${queueId}, Status=${status}, Queue Number=${queueNumber}`); // Debugging
     const response = await axios.put(`${API_URL}/queues/${queueId}`, {
       status,
+      queue_number: queueNumber, // Tambahkan queue_number
     });
     return response.data;
   } catch (error) {
@@ -31,7 +34,6 @@ export const createTicketApi = async (customerData) => {
     return response.data;
   } catch (error) {
     console.error("Error creating queue:", error.response?.data || error.message);
-    console.log("Full error object:", error); // Tambahkan untuk debugging
     return null; 
   }
 };

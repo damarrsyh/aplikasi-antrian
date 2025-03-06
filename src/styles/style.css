@@ -32,6 +32,42 @@ body {
   --text-dark: #f8f9fa;
 }
 
+.sidebar-menu {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out;
+  opacity: 0;
+}
+
+.sidebar-menu.show {
+  max-height: 500px; /* Sesuaikan dengan kebutuhan */
+  opacity: 1;
+}
+
+.service-card {
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out, background-color 0.3s ease-in-out;
+  cursor: pointer;
+}
+
+.service-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
+
+.service-card:active {
+  transform: scale(0.95);
+  box-shadow: 0 0.3rem 0.8rem rgba(0, 0, 0, 0.2);
+}
+
+.service-card.selected {
+  background-color: #007bff !important;
+  color: white !important;
+}
+
+.service-card.selected .text-dark {
+  color: white !important;
+}
+
 .collapsed {
   width: 60px !important;
 }
