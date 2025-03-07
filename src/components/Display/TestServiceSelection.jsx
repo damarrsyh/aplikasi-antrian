@@ -47,13 +47,13 @@ const ServiceSelection = () => {
         queue_id: queueId,
         customer: {
           id: customerId,
-          name: enableForm ? name : `Customer/${selectedService.id}`,
+          customer_name: enableForm ? name : `Customer/${selectedService.id}`,
           phone: enableForm ? phone : "-",
           queue_number: queueNumber,
         },
         service: {
           id: selectedService.id,
-          name: selectedService.name,
+          service_name: selectedService.name,
         },
         status: "Waiting",
         created_at: new Date().toISOString(),

@@ -13,12 +13,14 @@ export const fetchQueues = async () => {
   }
 };
 
-export const updateQueueStatus = async (queueId, status, queueNumber) => {
+export const updateQueueStatus = async (queueId, status, queueNumber, customerName, serviceName) => {
   try {
-    console.log(`Mengirim update ke server: ID=${queueId}, Status=${status}, Queue Number=${queueNumber}`); // Debugging
+    console.log(`Mengirim update ke server: ID=${queueId}, Customer Name=${customerName}, Service=${serviceName} Status=${status}, Queue Number=${queueNumber}`); // Debugging
     const response = await axios.put(`${API_URL}/queues/${queueId}`, {
       status,
-      queue_number: queueNumber, // Tambahkan queue_number
+      queue_number: queueNumber,
+      customer_name: customerName,
+      service_name: serviceName,
     });
     return response.data;
   } catch (error) {

@@ -6,61 +6,80 @@ import { Card, Table, Container, Button, Pagination, Modal } from "react-bootstr
 const TestQueueTable = () => {
   const dispatch = useDispatch();
   const { queueList, status } = useSelector((state) => state.queue);
-  const [calledQueues, setCalledQueues] = useState(new Set());
   const [showModal, setShowModal] = useState(false);
   const [selectedQueue, setSelectedQueue] = useState(null);
-
-  // Pagination states
+  const [currentServingQueue, setCurrentServingQueue] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
 
   useEffect(() => {
     if (status === "idle") {
       dispatch(fetchQueueList());
-      // Ambil daftar antrian dari mockDatabase
     }
-  }, [status, dispatch]); 
+  }, [status, dispatch]);
 
   const handleCallQueue = (queue) => {
+    if (currentServingQueue) return; // Cegah pemanggilan baru jika masih ada yang dilayani
+    
     setSelectedQueue(queue);
-    setShowModal(true); // Tampilkan modal
+    setShowModal(true);
+    setCurrentServingQueue(queue.id);
+  
     dispatch(updateQueueStatusThunk({ 
       queueId: queue.id, 
       newStatus: "In Progress",
-      queueNumber: queue.customer.queue_number // Pastikan queue_number ikut dikirim
-    })).then(() => {
-      dispatch(fetchQueueList()); // Refresh daftar antrian
-    });
+      queueNumber: queue.customer.queue_number,
+      customerName: queue.customer.customer_name,
+      serviceName: queue.service.service_name
+    })).then(() => dispatch(fetchQueueList()));
   
-    setCalledQueues((prev) => new Set(prev).add(queue.id));
-  
-    // Timer 1 menit untuk memindahkan ke "Missed" jika customer tidak datang
+    // Tutup modal otomatis setelah 1 menit jika customer tidak datang
     setTimeout(() => {
-      const updatedQueue = queueList.find((q) => q.id === queue.id); // Cek status terbaru
-      if (updatedQueue && updatedQueue.status === "In Progress") {
+      if (currentServingQueue === queue.id) {
+        setShowModal(false);
         dispatch(updateQueueStatusThunk({ 
           queueId: queue.id, 
           newStatus: "Missed",
-          queueNumber: queue.queue_number 
+          queueNumber: queue.customer.queue_number,
+          customerName: queue.customer.customer_name,
+          serviceName: queue.service.service_name
         })).then(() => dispatch(fetchQueueList()));
+        setCurrentServingQueue(null);
       }
     }, 60000); // 1 menit
   };
-    
-  
-  const sortedQueues = queueList
-  .filter((queue) => queue.status === "Waiting") // Hanya antrian "Waiting"
-  .sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
-  
-  const totalPages = Math.ceil(sortedQueues.length / itemsPerPage);
 
-  useEffect(() => {
-    if (currentPage > totalPages) {
-      setCurrentPage(totalPages > 0 ? totalPages : 1);
-    }
-  }, [sortedQueues, totalPages, currentPage]); 
-  
-  // Pagination Logic
+  const handleConfirmCall = () => {
+    dispatch(updateQueueStatusThunk({ 
+      queueId: selectedQueue.id, 
+      newStatus: "In Progress", 
+      queueNumber: selectedQueue.queue_number,
+      customerName: selectedQueue.customer_name,
+      serviceName: selectedQueue.service_name }))
+      .then(() => {
+        dispatch(fetchQueueList());
+        setShowModal(false);
+      });
+  };
+
+  const handleCompleteQueue = (queue) => {
+    console.log("Queue data on complete:", queue);
+    dispatch(updateQueueStatusThunk({ 
+      queueId: queue.id, 
+      newStatus: "Completed",
+      queueNumber: queue?.queue_number,
+      customerName: queue?.customer_name,
+      serviceName: queue?.service_name
+    })).then(() => {
+      dispatch(fetchQueueList());
+      setCurrentServingQueue(null);
+    });
+  };
+
+  const sortedQueues = [...queueList]
+  .filter(q => q.status === "Waiting" || q.status === "In Progress") // ✅ Tetap tampilkan "In Progress"
+  .sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+  const totalPages = Math.ceil(sortedQueues.length / itemsPerPage);
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentQueues = sortedQueues.slice(indexOfFirstItem, indexOfLastItem);
@@ -70,10 +89,10 @@ const TestQueueTable = () => {
       <Card className="shadow">
         <Card.Header className="d-flex justify-content-between align-items-center">
           <h5 className="mb-0">List Antrian</h5>
-          <Pagination className="custom-pagination justify-content-center mb-0">
+          <Pagination>
             <Pagination.Prev onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))} disabled={currentPage === 1} />
-            {Array.from({ length: totalPages }, (_, index) => (
-              <Pagination.Item key={`page-${index + 1}`} active={index + 1 === currentPage} onClick={() => setCurrentPage(index + 1)}>
+            {[...Array(totalPages)].map((_, index) => (
+              <Pagination.Item key={index} active={index + 1 === currentPage} onClick={() => setCurrentPage(index + 1)}>
                 {index + 1}
               </Pagination.Item>
             ))}
@@ -81,10 +100,11 @@ const TestQueueTable = () => {
           </Pagination>
         </Card.Header>
         <Card.Body>
-          <Table striped bordered hover size="sm" responsive>
+          <Table striped bordered hover responsive>
             <thead>
               <tr>
                 <th>Customer</th>
+                <th>No Antrian</th>
                 <th>Service</th>
                 <th>Status</th>
                 <th>Action</th>
@@ -93,22 +113,28 @@ const TestQueueTable = () => {
             <tbody>
               {currentQueues.length > 0 ? (
                 currentQueues.map((queue) => (
-                  <tr key={queue.queue_id || queue.id}>
-                    <td>{queue.customer?.name}</td>
-                    <td>{queue.service?.name}</td>
-                    <td>
-                      <span className={`badge ${queue.status === "Completed" ? "bg-success" : queue.status === "In Progress" ? "bg-warning text-dark" : "bg-danger"}`}>
+                  <tr key={queue.id}>
+                    <td>{queue.customer?.customer_name || queue.customer_name}</td>
+                    <td>{queue.customer?.queue_number || queue.queue_number}</td>
+                    <td>{queue.service?.service_name || queue.service_name}</td>
+                    <td className="text-center">  
+                      <span className={`px-2 py-1 text-white text-center fw-bold rounded d-inline-block ${
+                        queue.status === "Waiting" ? "bg-warning" :
+                        queue.status === "In Progress" ? "bg-primary" :
+                        queue.status === "Completed" ? "bg-success" : "bg-secondary"
+                      }`}>
                         {queue.status}
                       </span>
                     </td>
-                    <td className="text-center">
+                    <td>
                       {queue.status === "Waiting" && (
-                        <Button 
-                          variant={calledQueues.has(queue.id) ? "warning" : "info text-white"} 
-                          size="sm" 
-                          onClick={() => handleCallQueue(queue)}
-                        >
-                          {calledQueues.has(queue.id) ? "Panggil Ulang" : "Panggil"}
+                        <Button variant="info" size="sm" onClick={() => handleCallQueue(queue)} disabled={!!currentServingQueue}>
+                          Panggil
+                        </Button>
+                      )}
+                      {queue.status === "In Progress" && (
+                        <Button variant="success" size="sm" onClick={() => handleCompleteQueue(queue)}>
+                          Selesai
                         </Button>
                       )}
                     </td>
@@ -116,39 +142,27 @@ const TestQueueTable = () => {
                 ))
               ) : (
                 <tr>
-                  <td className="text-center text-muted" colSpan="7">Tidak ada antrian tersedia</td>
+                  <td colSpan="5" className="text-center text-muted">Tidak ada antrian</td>
                 </tr>
               )}
             </tbody>
           </Table>
         </Card.Body>
       </Card>
+      
       <Modal show={showModal} onHide={() => setShowModal(false)}>
         <Modal.Header closeButton>
-          <Modal.Title>Panggil Ulang Antrian</Modal.Title>
+          <Modal.Title>Panggil Antrian</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <p>Nomor Antrian: <strong>{selectedQueue?.queue_number}</strong></p>
+          <p>Nomor Antrian: <strong>{selectedQueue?.customer?.queue_number}</strong></p>
           <p>Nama Customer: {selectedQueue?.customer?.name}</p>
-          <p>Apakah Anda ingin memanggil customer ini?</p>
+          <p>Silakan panggil ulang jika customer belum datang dalam 1 menit.</p>
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={() => setShowModal(false)}>Batal</Button>
-          <Button
-            variant="primary"
-            onClick={() => {
-              dispatch(updateQueueStatusThunk({ 
-                queueId: selectedQueue.id, 
-                newStatus: "In Progress",
-                queueNumber: selectedQueue.queue_number
-              })).then(() => {
-                dispatch(fetchQueueList());
-                setShowModal(false);
-              });
-            }}
-          >
-            Panggil Sekarang
-          </Button>
+          <Button variant="warning" onClick={() => handleCallQueue(selectedQueue)}>Panggil Ulang</Button>
+          <Button variant="primary" onClick={handleConfirmCall}>Terpanggil</Button>
         </Modal.Footer>
       </Modal>
     </Container>

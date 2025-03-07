@@ -6,7 +6,7 @@ import ReactPlayer from "react-player";
 
 const TestQueueDisplay = () => {
   const dispatch = useDispatch();
-  const { queueList } = useSelector((state) => state.queue);
+  const queueList = useSelector(state => state.queue.queueList) || [];
   console.log("data Display antrian", queueList);
   const [currentTime, setCurrentTime] = useState(new Date());
   const [showVideo, setShowVideo] = useState(true);
@@ -16,28 +16,28 @@ const TestQueueDisplay = () => {
     return colors[index % colors.length];
   };
 
-  useEffect(() => {
-    dispatch(fetchQueueList());
-  }, [queueList.length]);
+useEffect(() => {
+  dispatch(fetchQueueList());
+}, []);
+
+  console.log("Queue List", queueList)
    // Akan update jika ada perubahan jumlah data
   
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentTime(new Date());
-    }, 1000);
+    const interval = setInterval(() => setCurrentTime(new Date()), 1000);
     return () => clearInterval(interval);
   }, []);
-
+  
   useEffect(() => {
-    const interval = setInterval(() => {
-      setShowVideo((prev) => !prev);
-    }, 180000);
+    const interval = setInterval(() => setShowVideo((prev) => !prev), 2000);
     return () => clearInterval(interval);
   }, []);
 
   // 🔹 Ambil antrian yang sedang "In Progress"
-  const activeQueues = queueList.filter((queue) => queue.status === "In Progress");
+  const currentQueue = queueList.find(q => q.status === "In Progress") || null;
+  
+  console.log("Nomor Antrian Ditampilkan:", queueList.length > 0 ? queueList[0].queue_number : "Tidak Ada Data");
 
   return (
     <Container fluid className="p-3" style={{ overflowX: "hidden", maxHeight: "100vh", overflow: "hidden" }}>
@@ -55,17 +55,17 @@ const TestQueueDisplay = () => {
               <h4 className="mb-0">{currentTime.toLocaleTimeString()}</h4>
             </div>
           </div>
-          {activeQueues.length > 0 ? (
+          {queueList.length > 0 ? (
             <Card className="shadow flex-grow-1 text-center" style={{ borderRadius: "10px", width: "100%", minHeight: "250px" }}>
               <Card.Header className="bg-info text-white">
                 <h3 className="fw-bold">NOMOR ANTRIAN</h3>
               </Card.Header>
               <Card.Body>
-                <h1 className="display-3 fw-bold p-3">{activeQueues[0].queue_number}</h1>
+                <h1 className="display-3 fw-bold p-3">{currentQueue ? currentQueue.queue_number : "-"}</h1>
               </Card.Body>
               <Card.Footer className="bg-info text-white">
                 <h5 className="fw-bold">
-                  {activeQueues[0].operatorCounter ? `${activeQueues[0].operatorCounter}` : "Loket Tidak Diketahui"}
+                  Loket: {currentQueue ? currentQueue.counter || "Tidak Diketahui" : "Tidak Ada Data"}
                 </h5>
               </Card.Footer>
             </Card>
@@ -74,36 +74,34 @@ const TestQueueDisplay = () => {
           )}
         </Col>
         <Col md={8} className="ps-3 d-flex align-items-stretch">
-          {showVideo ? (
-            <div className="w-100 d-flex transition" style={{ borderRadius: "10px", overflow: "hidden", flexGrow: 1 }}>
-              <ReactPlayer url="https://www.youtube.com/watch?v=FaU8BkqmXzo" controls width="100%" height="100%" className="react-player" />
-            </div>
+  {showVideo ? (
+    <div className="w-100 d-flex transition" style={{ borderRadius: "10px", overflow: "hidden", flexGrow: 1 }}>
+      <ReactPlayer url="https://www.youtube.com/watch?v=FaU8BkqmXzo" controls width="100%" height="100%" className="react-player" />
+    </div>
+  ) : (
+    <Card className="shadow flex-grow-1 transition" style={{ borderRadius: "10px", width: "100%", minHeight: "250px" }}>
+      <Card.Header className="bg-warning text-white">
+        <h3 className="fw-bold">CUSTOMER YANG TERLEWAT</h3>
+      </Card.Header>
+      <Card.Body>
+        <ListGroup variant="flush">
+          {currentQueue ? (
+            <ListGroup.Item className="d-flex justify-content-between flex-column">
+              <div className="d-flex justify-content-between">
+                <span className="fw-bold">{currentQueue.queue_number || "Tidak Ada Data"}</span>
+                <span className="text-muted">
+                  {currentQueue.status || "Status Tidak Diketahui"} - {currentQueue.createdAt ? new Date(currentQueue.createdAt).toLocaleTimeString() : "Waktu Tidak Diketahui"}
+                </span>
+              </div>
+            </ListGroup.Item>
           ) : (
-            <Card className="shadow flex-grow-1 transition" style={{ borderRadius: "10px", width: "100%", minHeight: "250px" }}>
-              <Card.Header className="bg-warning text-white">
-                <h3 className="fw-bold">CUSTOMER YANG TERLEWAT</h3>
-              </Card.Header>
-              <Card.Body>
-                <ListGroup variant="flush">
-                  {queueList
-                    .filter((q) => q.status === "Waiting" && new Date(q.createdAt) < new Date(currentTime.getTime() - 30 * 60 * 1000))
-                    .sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt))
-                    .slice(0, 7)
-                    .map((q, i) => (
-                      <ListGroup.Item key={i} className="d-flex justify-content-between flex-column">
-                        <div className="d-flex justify-content-between">
-                          <span className="fw-bold">{q.id}</span>
-                          <span className="text-muted">
-                            {q.status} - {new Date(q.createdAt).toLocaleTimeString()}
-                          </span>
-                        </div>
-                      </ListGroup.Item>
-                    ))}
-                </ListGroup>
-              </Card.Body>
-            </Card>
+            <p className="text-muted">Tidak ada customer yang terlewat.</p>
           )}
-        </Col>
+        </ListGroup>
+      </Card.Body>
+    </Card>
+  )}
+</Col>
       </Row>
       <Row className="g-0">
         <Col className="d-flex justify-content-center">
