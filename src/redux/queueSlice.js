@@ -1,6 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { changeQueueStatus, createTicket } from "../components/Admin/TestQueueActions";
-import { fetchQueues } from "../api/queueApi";
+import { createTicketApi, updateQueueStatus, fetchQueues } from "../api/queueApi";
 
 // Async Thunk untuk mengambil daftar antrian dari API
 export const fetchQueueList = createAsyncThunk("queue/fetchQueueList", async (_, { rejectWithValue }) => {
@@ -12,17 +11,23 @@ export const fetchQueueList = createAsyncThunk("queue/fetchQueueList", async (_,
   }
 });
 
+
+// Async Thunk untuk mengupdate daftar antrian dari API
 export const updateQueueStatusThunk = createAsyncThunk(
   "queue/updateQueueStatus",
-  async ({ queueId, newStatus, queueNumber, customerName, serviceName }, { rejectWithValue }) => {
+  async (updatedQueue, { rejectWithValue }) => {
+    console.log("📌 Data yang dikirim ke updateQueueStatus:", updatedQueue); // DEBUGGING
+    if (!updatedQueue || !updatedQueue.id) {
+      console.error("❌ updateQueueStatusThunk gagal: id tidak ditemukan");
+      return rejectWithValue("id tidak ditemukan");
+    }
+
     try {
-      await changeQueueStatus(queueId, newStatus, queueNumber, customerName, serviceName);
-      
-      const updatedQueues = await fetchQueues(); // Ambil data lengkap lagi
-      const updatedQueue = updatedQueues.find((q) => q.queue_id === queueId);
-      
-      return updatedQueue || { queueId, newStatus, queueNumber, customerName, serviceName };
+      const response = await updateQueueStatus(updatedQueue.id, updatedQueue);
+      console.log("✅ Update sukses:", response);
+      return response;
     } catch (error) {
+      console.error("❌ Gagal memperbarui status:", error);
       return rejectWithValue(error.response?.data || "Gagal memperbarui status");
     }
   }
@@ -31,9 +36,9 @@ export const updateQueueStatusThunk = createAsyncThunk(
 // Async Thunk untuk membuat tiket baru
 export const createQueueTicket = createAsyncThunk(
   "queue/createQueueTicket",
-  async (ticketData, { rejectWithValue }) => {
+  async (customerData, { rejectWithValue }) => {
     try {
-      const response = await createTicket(ticketData);
+      const response = await createTicketApi(customerData);
       return response;
     } catch (error) {
       return rejectWithValue(error.response?.data || "Gagal membuat tiket");
@@ -58,46 +63,51 @@ const queueSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(fetchQueueList.pending, (state) => {
-        state.status = "loading";
-      })
-      .addCase(fetchQueueList.fulfilled, (state, action) => {
-        state.status = "succeeded";
-        state.queueList = action.payload.map(queue => ({
-          ...queue,
-          queue_number: queue.queue_number || queue.customer?.queue_number || "N/A",
-          customer_name: queue.customer_name || queue.customer?.customer_name || "N/A",
-          service_name: queue.service_name || queue.service?.service_name || "N/A"
-        }));
-      })
-      .addCase(fetchQueueList.rejected, (state, action) => {
-        state.status = "failed";
-        state.error = action.payload;
-      })
-      .addCase(updateQueueStatusThunk.pending, (state) => {
-        state.status = "loading";
-      })
-      .addCase(updateQueueStatusThunk.fulfilled, (state, action) => {
-        const index = state.queueList.findIndex(queue => queue.queue_id === action.payload.queue_id);
-        if (index !== -1) {
-          state.queueList[index] = { ...state.queueList[index], ...action.payload };
-        }
-      })
-      .addCase(updateQueueStatusThunk.rejected, (state, action) => {
-        state.status = "failed";
-        state.error = action.payload;
-      })
-      .addCase(createQueueTicket.pending, (state) => {
-        state.status = "loading";
-      })
-      .addCase(createQueueTicket.fulfilled, (state, action) => {
-        state.status = "successed";
-        state.queueList.push(action.payload);
-      })
-      .addCase(createQueueTicket.rejected, (state, action) => {
-        state.status = "failed";
-        state.error = action.payload;
-      });
+    .addCase(fetchQueueList.pending, (state) => {
+      state.status = "loading";
+    })
+    .addCase(fetchQueueList.fulfilled, (state, action) => {
+      state.status = "succeeded";
+      state.queueList = action.payload.map(queue => ({
+        ...queue,
+      }));
+    })
+    .addCase(fetchQueueList.rejected, (state, action) => {
+      state.status = "failed";
+      state.error = action.payload;
+    })
+    .addCase(updateQueueStatusThunk.pending, (state) => {
+      state.status = "loading";
+    })
+    .addCase(updateQueueStatusThunk.fulfilled, (state, action) => {
+      if (!action.payload || !action.payload.queue_id) {
+        return;
+      }
+      const queueList = state.queueList || [];
+      const queueToUpdate = queueList.find(queue => queue.queue_id === action.payload.queue_id);
+      if (!queueToUpdate) {
+        return;
+      }
+      const index = queueList.findIndex(queue => queue.queue_id === action.payload.queue_id);
+      if (index !== -1) {
+        state.queueList[index] = { ...state.queueList[index], ...action.payload };
+      }
+    })
+    .addCase(updateQueueStatusThunk.rejected, (state, action) => {
+      state.status = "failed";
+      state.error = action.payload;
+    })
+    .addCase(createQueueTicket.pending, (state) => {
+      state.status = "loading";
+    })
+    .addCase(createQueueTicket.fulfilled, (state, action) => {
+      state.status = "successed";
+      state.queueList.push(action.payload);
+    })
+    .addCase(createQueueTicket.rejected, (state, action) => {
+      state.status = "failed";
+      state.error = action.payload;
+    });
   },
 });
 

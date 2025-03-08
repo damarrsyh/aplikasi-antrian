@@ -1,49 +1,147 @@
 {
   "queues": [
     {
-      "status": "Completed",
-      "queue_number": "A48",
-      "name": "N/A",
-      "service": "N/A",
-      "id": "063f"
-    },
-    {
-      "status": "Completed",
-      "queue_number": "A108",
-      "customer_name": "Customer/J0003",
-      "service_name": "FotoCopy",
-      "id": "3f56"
-    },
-    {
-      "status": "Completed",
-      "queue_number": "A19",
-      "customer_name": "Customer/J0001",
-      "service_name": "Siap Print",
-      "id": "533f"
-    },
-    {
-      "status": "Completed",
-      "queue_number": "A86",
-      "customer_name": "Customer/J0004",
-      "service_name": "Retur Penjualan",
-      "id": "4673"
-    },
-    {
-      "id": "6edc",
-      "queue_id": "6bde4419-cff3-4290-9fa5-907b77f539b2",
+      "id": "b3d9",
+      "queue_id": "6aa73195-6a00-40cb-86be-3eb7d813317d",
       "customer": {
-        "id": "5960114b-232d-47b9-8c49-b0f8dd9636fb",
-        "customer_name": "Customer/J0004",
-        "phone": "-",
-        "queue_number": "A45"
+        "id": "ed89456d-9084-4d69-9577-2179cf6d9de5",
+        "customer_name": "Damar",
+        "phone": "08654654756",
+        "queue_number": "D37"
       },
       "service": {
-        "id": "J0004",
-        "service_name": "Retur Penjualan"
+        "id": "J0002",
+        "service_name": "Design"
+      },
+      "status": "Complete",
+      "created_at": "2025-03-08T07:47:16.818Z",
+      "time_start": "2025-03-08T08:00:21.430Z",
+      "time_end": null
+    },
+    {
+      "id": "1e4d",
+      "queue_id": "1e882f83-4b8f-4910-9e00-8e2123b3bbf5",
+      "customer": {
+        "id": "7ade93a0-3aff-41b6-95a1-5870e0c84c49",
+        "customer_name": "Customer/J0003",
+        "phone": "-",
+        "queue_number": "F92"
+      },
+      "service": {
+        "id": "J0003",
+        "service_name": "FotoCopy"
+      },
+      "status": "Complete",
+      "created_at": "2025-03-08T08:00:34.431Z",
+      "time_start": "2025-03-08T08:01:17.511Z",
+      "time_end": null
+    },
+    {
+      "id": "7b4f",
+      "queue_id": "472378f3-af0d-4f38-b600-2ef88ac63b30",
+      "customer": {
+        "id": "6ec53ca4-5dbf-4139-a872-9ce7770ee237",
+        "customer_name": "Customer/J0002",
+        "phone": "-",
+        "queue_number": "D73"
+      },
+      "service": {
+        "id": "J0002",
+        "service_name": "Design"
+      },
+      "status": "Complete",
+      "created_at": "2025-03-08T08:03:23.394Z",
+      "time_start": "2025-03-08T08:06:21.703Z",
+      "time_end": null
+    },
+    {
+      "id": "1291",
+      "queue_id": "51992820-3480-47f8-bc71-76466d324ef6",
+      "customer": {
+        "id": "21d60ab6-8821-460f-a2bd-287dc638c75d",
+        "customer_name": "Customer/J0003",
+        "phone": "-",
+        "queue_number": "F43"
+      },
+      "service": {
+        "id": "J0003",
+        "service_name": "FotoCopy"
+      },
+      "status": "Complete",
+      "created_at": "2025-03-08T08:03:27.487Z",
+      "time_start": "2025-03-08T08:03:50.872Z",
+      "time_end": null
+    },
+    {
+      "id": "fe83",
+      "queue_id": "efee4c4a-987f-4090-a93b-b8a8790e4f59",
+      "customer": {
+        "id": "881301c2-42a4-4605-9303-f5a7231c2533",
+        "customer_name": "Customer/J0001",
+        "phone": "-",
+        "queue_number": "P14"
+      },
+      "service": {
+        "id": "J0001",
+        "service_name": "Siap Print"
+      },
+      "status": "Complete",
+      "created_at": "2025-03-08T08:03:30.948Z",
+      "time_start": "2025-03-08T08:20:29.614Z",
+      "time_end": null
+    },
+    {
+      "id": "4bbd",
+      "queue_id": "382a2fd5-262c-42c1-9617-94d9f2832e77",
+      "customer": {
+        "id": "372346a3-1cd3-4195-8cf2-acabbac89350",
+        "customer_name": "Customer/J0005",
+        "phone": "-",
+        "queue_number": "O72"
+      },
+      "service": {
+        "id": "J0005",
+        "service_name": "Online Pickup"
+      },
+      "status": "Complete",
+      "created_at": "2025-03-08T08:03:35.656Z",
+      "time_start": "2025-03-08T08:06:10.918Z",
+      "time_end": null
+    },
+    {
+      "id": "a265",
+      "queue_id": "83fe63e1-cf40-47b9-b165-4c5bb6dc0ce3",
+      "customer": {
+        "id": "5b9598ca-ecd9-4841-b75d-bfda7626a544",
+        "customer_name": "Customer/J0006",
+        "phone": "-",
+        "queue_number": "T39"
+      },
+      "service": {
+        "id": "J0006",
+        "service_name": "Tamu"
+      },
+      "status": "Complete",
+      "created_at": "2025-03-08T08:03:39.966Z",
+      "time_start": "2025-03-08T08:20:35.646Z",
+      "time_end": null
+    },
+    {
+      "id": "0932",
+      "queue_id": "57e2e3c4-1d05-4459-880e-54bc2e2e79ab",
+      "customer": {
+        "id": "fe390b47-e212-4afc-85bc-2a46c2840a2d",
+        "customer_name": "Customer/J0001",
+        "phone": "-",
+        "queue_number": "P41"
+      },
+      "service": {
+        "id": "J0001",
+        "service_name": "Siap Print"
       },
       "status": "Waiting",
-      "created_at": "2025-03-07T09:00:20.595Z",
-      "time_start": null,
+      "created_at": "2025-03-08T08:20:12.656Z",
+      "time_start": "2025-03-08T08:20:44.095Z",
       "time_end": null
     }
   ],

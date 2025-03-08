@@ -1,10 +1,12 @@
-import QueueTable from "../../components/Admin/QueueTable"
+// HALAMAN BELUM DIGUNAKAN KARENA BELUM SELESAI
+
+import TestQueueTable from "../../components/Admin/TestQueueTable"
 
 const QueueSettingsDisplayPage = () => {
   return (
     <div>
       <h2>Setting Display Antrian Page</h2>
-      <QueueTable displayView={true}/>
+      <TestQueueTable/>
     </div>
   )
 }

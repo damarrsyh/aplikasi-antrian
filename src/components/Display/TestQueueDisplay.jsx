@@ -7,7 +7,6 @@ import ReactPlayer from "react-player";
 const TestQueueDisplay = () => {
   const dispatch = useDispatch();
   const queueList = useSelector(state => state.queue.queueList) || [];
-  console.log("data Display antrian", queueList);
   const [currentTime, setCurrentTime] = useState(new Date());
   const [showVideo, setShowVideo] = useState(true);
   const colors = ["primary", "secondary", "success", "danger", "warning", "info", "dark"];
@@ -19,8 +18,6 @@ const TestQueueDisplay = () => {
 useEffect(() => {
   dispatch(fetchQueueList());
 }, []);
-
-  console.log("Queue List", queueList)
    // Akan update jika ada perubahan jumlah data
   
 
@@ -36,8 +33,7 @@ useEffect(() => {
 
   // 🔹 Ambil antrian yang sedang "In Progress"
   const currentQueue = queueList.find(q => q.status === "In Progress") || null;
-  
-  console.log("Nomor Antrian Ditampilkan:", queueList.length > 0 ? queueList[0].queue_number : "Tidak Ada Data");
+  const missedCustomers = queueList.filter(q => q.status === "Missed");
 
   return (
     <Container fluid className="p-3" style={{ overflowX: "hidden", maxHeight: "100vh", overflow: "hidden" }}>
@@ -61,7 +57,7 @@ useEffect(() => {
                 <h3 className="fw-bold">NOMOR ANTRIAN</h3>
               </Card.Header>
               <Card.Body>
-                <h1 className="display-3 fw-bold p-3">{currentQueue ? currentQueue.queue_number : "-"}</h1>
+                <h1 className="display-3 fw-bold p-3">{currentQueue ? currentQueue.customer.queue_number : "-"}</h1>
               </Card.Body>
               <Card.Footer className="bg-info text-white">
                 <h5 className="fw-bold">
@@ -74,35 +70,35 @@ useEffect(() => {
           )}
         </Col>
         <Col md={8} className="ps-3 d-flex align-items-stretch">
-  {showVideo ? (
-    <div className="w-100 d-flex transition" style={{ borderRadius: "10px", overflow: "hidden", flexGrow: 1 }}>
-      <ReactPlayer url="https://www.youtube.com/watch?v=FaU8BkqmXzo" controls width="100%" height="100%" className="react-player" />
-    </div>
-  ) : (
-    <Card className="shadow flex-grow-1 transition" style={{ borderRadius: "10px", width: "100%", minHeight: "250px" }}>
-      <Card.Header className="bg-warning text-white">
-        <h3 className="fw-bold">CUSTOMER YANG TERLEWAT</h3>
-      </Card.Header>
-      <Card.Body>
-        <ListGroup variant="flush">
-          {currentQueue ? (
-            <ListGroup.Item className="d-flex justify-content-between flex-column">
-              <div className="d-flex justify-content-between">
-                <span className="fw-bold">{currentQueue.queue_number || "Tidak Ada Data"}</span>
-                <span className="text-muted">
-                  {currentQueue.status || "Status Tidak Diketahui"} - {currentQueue.createdAt ? new Date(currentQueue.createdAt).toLocaleTimeString() : "Waktu Tidak Diketahui"}
-                </span>
-              </div>
-            </ListGroup.Item>
-          ) : (
-            <p className="text-muted">Tidak ada customer yang terlewat.</p>
-          )}
-        </ListGroup>
-      </Card.Body>
-    </Card>
-  )}
-</Col>
-      </Row>
+        {showVideo ? (
+          <div className="w-100 d-flex transition" style={{ borderRadius: "10px", overflow: "hidden", flexGrow: 1 }}>
+            <ReactPlayer url="https://www.youtube.com/watch?v=FaU8BkqmXzo" controls width="100%" height="100%" className="react-player" />
+          </div>
+        ) : (
+          <Card className="shadow flex-grow-1 transition" style={{ borderRadius: "10px", width: "100%", minHeight: "250px" }}>
+            <Card.Header className="bg-warning text-white">
+              <h3 className="fw-bold">CUSTOMER YANG TERLEWAT</h3>
+            </Card.Header>
+            <Card.Body>
+              <ListGroup variant="flush">
+                {missedCustomers.length > 0 ? (
+                  <ListGroup.Item className="d-flex justify-content-between flex-column">
+                    <div className="d-flex justify-content-between">
+                      <span className="fw-bold">{missedCustomers.queue_number || "Tidak Ada Data"}</span>
+                      <span className="text-muted">
+                        {missedCustomers.status || "Status Tidak Diketahui"} - {missedCustomers.createdAt ? new Date(missedCustomers.createdAt).toLocaleTimeString() : "Waktu Tidak Diketahui"}
+                      </span>
+                    </div>
+                  </ListGroup.Item>
+                ) : (
+                  <p className="text-muted">Tidak ada customer yang terlewat.</p>
+                )}
+              </ListGroup>
+            </Card.Body>
+          </Card>
+        )}
+      </Col>
+    </Row>
       <Row className="g-0">
         <Col className="d-flex justify-content-center">
           <Row className="flex-grow-1" style={{ width: "100%" }}>
@@ -122,7 +118,7 @@ useEffect(() => {
                           <div className="d-flex justify-content-between">
                             <span className="fw-bold">{q.customer.queue_number}</span>
                             <span className="text-muted">
-                              {q.status} - {new Date(q.createdAt).toLocaleTimeString()}
+                              {q.status}
                             </span>
                           </div>
                         </ListGroup.Item>

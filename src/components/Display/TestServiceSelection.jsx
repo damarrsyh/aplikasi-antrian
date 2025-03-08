@@ -1,5 +1,6 @@
 import { useEffect, useState, useRef } from "react";
-import { getProcessedQueues, createTicket } from "../Admin/TestQueueActions";
+import { createQueueTicket, fetchQueueList } from "../../redux/queueSlice";
+import { useDispatch, useSelector } from "react-redux";
 import { Container, Card, Row, Col, Form, Button, Carousel, Modal } from "react-bootstrap";
 import { FaPrint, FaPalette, FaFileAlt, FaUndo, FaTruck, FaUser } from 'react-icons/fa';
 import { v4 as uuidv4 } from "uuid";
@@ -14,32 +15,42 @@ const services = [
 ];
 
 const ServiceSelection = () => {
+  const dispatch = useDispatch();
+  // eslint-disable-next-line no-unused-vars
+  const {qeueuList} = useSelector((state) => state.queue);
   const [selectedService, setSelectedService] = useState(null);
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [ticket, setTicket] = useState(null);
   const [enableForm, setEnableForm] = useState(false);
-  // eslint-disable-next-line no-unused-vars
-  const [queues, setQueues] = useState([]);
   const [showErrorModal, setShowErrorModal] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [showTicketModal, setShowTicketModal] = useState(false);
   const ticketRef = useRef(null);
 
   useEffect(() => {
-    if (selectedService && !enableForm) {
-      generateTicket();
-    }
-    getProcessedQueues().then(setQueues);
-  }, [selectedService]);
+    dispatch(fetchQueueList());
+  }, [dispatch]) ;
 
-  const handleServiceSelect = (serviceId) => {
-    setSelectedService(services.find(service => service.id === serviceId));
+  const handleServiceSelect = async (serviceId) => {
+    const service = services.find(s => s.id === serviceId);
+    setSelectedService(service);
+    if(!enableForm)
+      await generateTicket(service);
   };
 
-  const generateTicket = async () => {
-    if (selectedService) {
-      const queueNumber = `A${Math.floor(10 + Math.random() * 99)}`;
+  const generateTicket = async (service) => {
+    if (service) {
+      const serviceCodeMap = {
+        "J0001": "P", // Print
+        "J0002": "D", // Design
+        "J0003": "F", // Fotocopy
+        "J0004": "R", // Retur Penjualan
+        "J0005": "O", // Online Pickup
+        "J0006": "T", // Tamu
+      };
+      const queuePrefix = serviceCodeMap[service.id];
+      const queueNumber = `${queuePrefix}${Math.floor(10 + Math.random() * 99)}`;
       const queueId = uuidv4();
       const customerId = uuidv4();
 
@@ -47,13 +58,13 @@ const ServiceSelection = () => {
         queue_id: queueId,
         customer: {
           id: customerId,
-          customer_name: enableForm ? name : `Customer/${selectedService.id}`,
+          customer_name: enableForm ? name : `Customer/${service.id}`,
           phone: enableForm ? phone : "-",
           queue_number: queueNumber,
         },
         service: {
-          id: selectedService.id,
-          service_name: selectedService.name,
+          id: service.id,
+          service_name: service.name,
         },
         status: "Waiting",
         created_at: new Date().toISOString(),
@@ -62,15 +73,11 @@ const ServiceSelection = () => {
       };
 
       try {
-        const response = await createTicket(newTicket);
-        if (response) {
-          setTicket(response);
-          setShowTicketModal(true); // Tampilkan modal tiket setelah tiket dibuat
-        } else {
-          throw new Error("Response dari API kosong atau tidak valid");
-        }
+        await dispatch(createQueueTicket(newTicket)).unwrap();
+        setTicket(newTicket);
+        setShowTicketModal(true);
       } catch (error) {
-        setErrorMessage(error.message || "Terjadi kesalahan saat membuat tiket.");
+        setErrorMessage(error || "Terjadi kesalahan saat membuat tiket");
         setShowErrorModal(true);
         setTimeout(() => setShowErrorModal(false), 3000);
       }
@@ -79,7 +86,7 @@ const ServiceSelection = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    generateTicket();
+    generateTicket(selectedService);
   };
 
   const handlePrint = () => {
@@ -97,27 +104,27 @@ const ServiceSelection = () => {
     <Container fluid>
         <Row className="vh-100">
           <Col md={6} className="d-flex flex-column">
-            <Row className="flex-grow-1">
-              {services.map(service => (
-                <Col key={service.id} md={6} className="my-2">
-                  <Card
-                    className={`h-100 shadow-sm rounded-3 service-card border border-primary text-primary ${
-                      selectedService === service.id ? "selected" : "bg-light"
-                    }`}
-                    onClick={() => handleServiceSelect(service.id)}
-                  >
-                    <Card.Body className="d-flex flex-column justify-content-center align-items-center text-primary">
-                      <div className="bg-primary-subtle p-4 rounded border border-primary text-primary">
-                        {service.icon}
-                      </div>
-                      <Card.Text className="bg-info-subtle py-1 px-4 fw-semibold my-2 rounded-4 text-primary border border-info">
-                        {service.name}
-                      </Card.Text>
-                    </Card.Body>
-                  </Card>
-                </Col>
-              ))}
-            </Row>
+          <Row className="flex-grow-1">
+            {services.map(service => (
+              <Col key={service.id} md={6} className="my-2">
+                <Card
+                  className={`h-100 shadow-sm rounded-3 service-card border ${
+                    selectedService?.id === service.id ? "border-primary text-primary bg-primary-subtle" : "border-secondary bg-light text-dark"
+                  }`}
+                  onClick={() => handleServiceSelect(service.id)}
+                >
+                  <Card.Body className="d-flex flex-column justify-content-center align-items-center">
+                    <div className={`p-4 rounded border ${selectedService?.id === service.id ? "border-primary text-primary bg-light" : "border-secondary text-dark"}`}>
+                      {service.icon}
+                    </div>
+                    <Card.Text className={`py-1 px-4 fw-semibold my-2 rounded-4 ${selectedService?.id === service.id ? "bg-info text-dark border border-primary" : "bg-light text-dark border border-secondary"}`}>
+                      {service.name}
+                    </Card.Text>
+                  </Card.Body>
+                </Card>
+              </Col>
+            ))}
+          </Row>
           </Col>
           <Col md={6} className="d-flex flex-column mt-2">
           <Card className={`flex-grow-1 shadow-sm rounded ${enableForm ? "border-primary" : "bg-transparent border"}`}>
@@ -171,25 +178,48 @@ const ServiceSelection = () => {
         </Row>
         {/* Modal Tiket Antrian */}
         <Modal show={showTicketModal} onHide={() => setShowTicketModal(false)} centered>
-        <Modal.Header closeButton>
-          <Modal.Title>Tiket Antrian</Modal.Title>
-        </Modal.Header>
-        <Modal.Body ref={ticketRef} className="d-flex align-items-center justify-content-center">
-          <Card className="p-4 text-center rounded" style={{ maxWidth: "400px", width: "100%" }}>
-            <Card.Body>
-              <Card.Title className="fw-bold fs-3 text-uppercase">Tiket Antrian</Card.Title>
-              <hr />
-              <Card.Text className="fw-bold text-uppercase fs-2 bg-light p-3 rounded">{ticket?.customer?.queue_number}</Card.Text>
-              <Card.Text><strong>Layanan :</strong> {ticket?.service?.name}</Card.Text>
-              <Card.Text><strong>Nama :</strong> {ticket?.customer?.name}</Card.Text>
-              <Card.Text><strong>No Telepon :</strong> {ticket?.customer?.phone}</Card.Text>
-            </Card.Body>
-          </Card>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="primary" onClick={handlePrint}>Cetak Tiket</Button>
-        </Modal.Footer>
-      </Modal>
+          <Modal.Body ref={ticketRef} className="d-flex align-items-center justify-content-center">
+            <Card className="p-4 text-center rounded border border-dark shadow" style={{ maxWidth: "400px", width: "100%" }}>
+              <Card.Body>
+                {/* Header Lokasi */}
+                <Card.Title className="fw-bold text-uppercase fs-5">
+                  Pandawa24Jam <br />
+                  Margonda, Depok
+                </Card.Title>
+                <hr />
+
+                {/* Tanggal dan Waktu */}
+                <div className="d-flex justify-content-between">
+                  <span>{new Date().toLocaleDateString()}</span>
+                  <span>{new Date().toLocaleTimeString()}</span>
+                </div>
+
+                {/* Nomor Antrian Besar */}
+                <Card.Text className="fw-bold text-uppercase fs-1 bg-light p-3 rounded border border-dark">
+                  {ticket?.customer?.queue_number}
+                </Card.Text>
+
+                {/* Loket atau Jenis Layanan */}
+                <Card.Text className="fw-bold fs-5">
+                  ANTRIAN {ticket?.service?.service_name?.toUpperCase()}
+                </Card.Text>
+
+                <hr />
+
+                {/* Informasi Tambahan */}
+                <Card.Text className="text-muted">
+                </Card.Text>
+                <Card.Text className="text-muted">
+                  Cs: +62 899 414 9569
+                </Card.Text>
+              </Card.Body>
+            </Card>
+          </Modal.Body>
+          
+          <Modal.Footer>
+            <Button variant="primary" onClick={handlePrint}>Cetak Tiket</Button>
+          </Modal.Footer>
+        </Modal>
       {/* Modal untuk menampilkan error */}
       <Modal show={showErrorModal} onHide={() => setShowErrorModal(false)} centered>
         <Modal.Header closeButton>

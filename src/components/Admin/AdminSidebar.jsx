@@ -42,9 +42,6 @@ const AdminSidebar = ({ isCollapsed }) => {
             <NavLink to="/admin/queue-list" className="btn shadow-sm d-flex align-items-center">
               <FaList className="me-2" /> Daftar Antrian
             </NavLink>
-            <button onClick={() => window.open("/leaderboard", "_blank")} className="btn shadow-sm d-flex align-items-center">
-              <FaTrophy className="me-2" /> Leaderboard
-            </button>
           </div>
         </div>
       </div>
@@ -63,6 +60,9 @@ const AdminSidebar = ({ isCollapsed }) => {
         </button>
         <div className={`sidebar-menu ${!isCollapsed && openMenu === "monitor" ? "show" : ""}`}>
           <div className="ms-3 my-2 d-grid gap-2">
+            <button onClick={() => window.open("/leaderboard", "_blank")} className="btn shadow-sm d-flex align-items-center">
+              <FaTrophy className="me-2" /> Leaderboard
+            </button>
             <button onClick={() => window.open("/queue-display", "_blank")} className="btn shadow-sm d-flex align-items-center">
               <FaTv className="me-2" /> Tampilan Antrian
             </button>

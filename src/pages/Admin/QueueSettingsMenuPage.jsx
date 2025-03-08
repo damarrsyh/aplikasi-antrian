@@ -1,10 +1,12 @@
-import QueueTable from "../../components/Admin/QueueTable"
+// HALAMAN BELUM DIGUNAKAN KARENA BELUM SELESAI
+
+import TestQueueTable from "../../components/Admin/TestQueueTable"
 
 const QueueSettingsMenuPage = () => {
   return (
     <div>
       <h2>Settings Menu Layanan Page</h2>
-      <QueueTable settingsView={true}/>
+      <TestQueueTable/>
     </div>
   )
 }

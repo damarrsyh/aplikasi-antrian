@@ -1,3 +1,5 @@
+/* START GENERAL DARK/LIGHT THEME & FONT */
+
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
 
 :root {
@@ -32,6 +34,10 @@ body {
   --text-dark: #f8f9fa;
 }
 
+/* END UMUM DARK/LIGHT THEME & FONT */
+
+/* START SIDEBAR COMPONENT STYLING TRANSITION */
+
 .sidebar-menu {
   max-height: 0;
   overflow: hidden;
@@ -40,9 +46,21 @@ body {
 }
 
 .sidebar-menu.show {
-  max-height: 500px; /* Sesuaikan dengan kebutuhan */
+  max-height: 500px;
   opacity: 1;
 }
+
+.collapsed {
+  width: 60px !important;
+}
+
+.transition-all {
+  transition: all 0.3s ease-in-out;
+}
+
+/* END SIDEBAR COMPONENT STYLING TRANSITION */
+
+/* START CARD SERVICE LAYANAN STYLING */
 
 .service-card {
   transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out, background-color 0.3s ease-in-out;
@@ -68,13 +86,9 @@ body {
   color: white !important;
 }
 
-.collapsed {
-  width: 60px !important;
-}
+/* START CARD SERVICE LAYANAN STYLING */
 
-.transition-all {
-  transition: all 0.3s ease-in-out;
-}
+/* START STYLING THEME PAGINATION */
 
 .custom-pagination .page-item .page-link {
   color: var(--primary-color);
@@ -93,3 +107,5 @@ body {
   background-color: var(--primary-hover);
   color: var(--text-light);
 }
+
+/* END STYLING THEME PAGINATION */
