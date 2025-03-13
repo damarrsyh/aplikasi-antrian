@@ -1,27 +1,18 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { toggleTheme } from "../../redux/Slice/themeSlice";
 
 const useTheme = () => {
-  const getInitialTheme = () => {
-    const storedTheme = localStorage.getItem("theme");
-    if (storedTheme) return storedTheme === "dark";
-    return window.matchMedia("(prefers-color-scheme: dark)").matches;
-  };
-
-  const [darkMode, setDarkMode] = useState(getInitialTheme);
+  const dispatch = useDispatch();
+  const darkMode = useSelector((state) => state.theme.darkMode);
 
   useEffect(() => {
-    localStorage.setItem("theme", darkMode ? "dark" : "light");
-    
     document.body.classList.toggle("dark-mode", darkMode);
     document.body.setAttribute("data-bs-theme", darkMode ? "dark" : "light");
-
-    // Efek transisi yang lebih rapi
     document.body.style.transition = "background-color 0.3s ease, color 0.3s ease";
   }, [darkMode]);
 
-  const toggleTheme = () => setDarkMode((prev) => !prev);
-
-  return { darkMode, toggleTheme };
+  return { darkMode, toggleTheme: () => dispatch(toggleTheme()) };
 };
 
 export default useTheme;

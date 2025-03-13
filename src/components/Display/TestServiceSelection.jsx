@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from "react";
-import { createQueueTicket, fetchQueueList } from "../../redux/queueSlice";
+import { createQueueTicket, fetchQueueList } from "../../redux/Slice/queueSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { Container, Card, Row, Col, Form, Button, Carousel, Modal } from "react-bootstrap";
 import { FaPrint, FaPalette, FaFileAlt, FaUndo, FaTruck, FaUser } from 'react-icons/fa';
@@ -16,6 +16,7 @@ const services = [
 
 const ServiceSelection = () => {
   const dispatch = useDispatch();
+  const status = useSelector((state) => state.queue.status);
   // eslint-disable-next-line no-unused-vars
   const {qeueuList} = useSelector((state) => state.queue);
   const [selectedService, setSelectedService] = useState(null);
@@ -28,9 +29,11 @@ const ServiceSelection = () => {
   const [showTicketModal, setShowTicketModal] = useState(false);
   const ticketRef = useRef(null);
 
-  useEffect(() => {
+ useEffect(() => {
+  if (status === "idle") {
     dispatch(fetchQueueList());
-  }, [dispatch]) ;
+  }
+ }, [status, dispatch]);
 
   const handleServiceSelect = async (serviceId) => {
     const service = services.find(s => s.id === serviceId);
@@ -55,7 +58,7 @@ const ServiceSelection = () => {
       const customerId = uuidv4();
 
       const newTicket = {
-        queue_id: queueId,
+        id: queueId,
         customer: {
           id: customerId,
           customer_name: enableForm ? name : `Customer/${service.id}`,
@@ -73,13 +76,15 @@ const ServiceSelection = () => {
       };
 
       try {
-        await dispatch(createQueueTicket(newTicket)).unwrap();
-        setTicket(newTicket);
-        setShowTicketModal(true);
+        const result = await dispatch(createQueueTicket(newTicket)).unwrap();
+        if (result) {
+          setTicket(result); // Gunakan data yang dikembalikan dari Redux
+          setShowTicketModal(true);
+        }
       } catch (error) {
+        console.error("Error saat membuat tiket:", error);
         setErrorMessage(error || "Terjadi kesalahan saat membuat tiket");
         setShowErrorModal(true);
-        setTimeout(() => setShowErrorModal(false), 3000);
       }
     }
   };
@@ -104,78 +109,79 @@ const ServiceSelection = () => {
     <Container fluid>
         <Row className="vh-100">
           <Col md={6} className="d-flex flex-column">
-          <Row className="flex-grow-1">
-            {services.map(service => (
-              <Col key={service.id} md={6} className="my-2">
-                <Card
-                  className={`h-100 shadow-sm rounded-3 service-card border ${
-                    selectedService?.id === service.id ? "border-primary text-primary bg-primary-subtle" : "border-secondary bg-light text-dark"
-                  }`}
-                  onClick={() => handleServiceSelect(service.id)}
-                >
-                  <Card.Body className="d-flex flex-column justify-content-center align-items-center">
-                    <div className={`p-4 rounded border ${selectedService?.id === service.id ? "border-primary text-primary bg-light" : "border-secondary text-dark"}`}>
-                      {service.icon}
-                    </div>
-                    <Card.Text className={`py-1 px-4 fw-semibold my-2 rounded-4 ${selectedService?.id === service.id ? "bg-info text-dark border border-primary" : "bg-light text-dark border border-secondary"}`}>
-                      {service.name}
-                    </Card.Text>
-                  </Card.Body>
-                </Card>
-              </Col>
-            ))}
-          </Row>
+            <Row className="flex-grow-1">
+              {services.map(service => (
+                <Col key={service.id} md={6} className="my-2">
+                  <Card
+                    className={`h-100 shadow-sm rounded-3 service-card border ${
+                      selectedService?.id === service.id ? "border-primary text-primary bg-primary-subtle" : "border-secondary bg-light text-dark"
+                    }`}
+                    onClick={() => handleServiceSelect(service.id)}
+                  >
+                    <Card.Body className="d-flex flex-column justify-content-center align-items-center">
+                      <div className={`p-4 rounded border ${selectedService?.id === service.id ? "border-primary text-primary bg-light" : "border-secondary text-dark"}`}>
+                        {service.icon}
+                      </div>
+                      <Card.Text className={`py-1 px-4 fw-semibold my-2 rounded-4 ${selectedService?.id === service.id ? "bg-info text-dark border border-primary" : "bg-light text-dark border border-secondary"}`}>
+                        {service.name}
+                      </Card.Text>
+                    </Card.Body>
+                  </Card>
+                </Col>
+              ))}
+            </Row>
           </Col>
           <Col md={6} className="d-flex flex-column mt-2">
-          <Card className={`flex-grow-1 shadow-sm rounded ${enableForm ? "border-primary" : "bg-transparent border"}`}>
-            <Card.Body className="d-flex flex-column">
-              <div className="d-flex align-items-center ">
-                <Form.Check
-                  type="checkbox"
-                  onChange={() => setEnableForm(!enableForm)}
-                  style={{ transform: "scale(2)" }}
-                  className="mx-2 me-3"
-                />
-                <h4 className={`mb-0 ${enableForm ? "text-dark" : "text-muted"}`}>Option</h4>
-              </div>
-              <Form onSubmit={handleSubmit} className="flex-grow-1">
-                <Form.Group className="mb-3 mt-3" controlId="formName">
-                  <Form.Label className={enableForm ? "text-dark" : "text-muted"}>Nama</Form.Label>
-                  <Form.Control
-                    type="text"
-                    placeholder={enableForm ? "@example: pandawa" : ""}
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    disabled={!enableForm}
-                    className={enableForm ? "text-dark" : "text-muted"}
+            <Card className={`flex-grow-1 shadow-sm rounded ${enableForm ? "border-primary" : "border-secondary border"}`}>
+              <Card.Header className={`d-flex align-items-center ${enableForm ? "bg-primary" : ""}`}>
+                  <Form.Check
+                    type="checkbox"
+                    onChange={() => setEnableForm(!enableForm)}
+                    style={{ transform: "scale(2)" }}
+                    className="mx-2 me-3"
                   />
-                </Form.Group>
-                <Form.Group className="mb-3" controlId="formPhone">
-                  <Form.Label className={enableForm ? "text-dark" : "text-muted"}>No Telepon</Form.Label>
-                  <Form.Control
-                    type="text"
-                    placeholder={enableForm ? "@example: 08xxxxxxxxxxx" : ""}
-                    value={phone}
-                    onChange={(e) => setPhone(e.target.value)}
-                    disabled={!enableForm}
-                    className={enableForm ? "text-dark" : "text-muted"}
-                  />
-                </Form.Group>
-                <Button variant={enableForm ? "primary" : "outline-primary"} type="submit" disabled={!enableForm}>
-                  Submit
-                </Button>
-              </Form>
-            </Card.Body>
-          </Card>
-          <Carousel className="d-flex my-2 align-items-center justify-content-centers">
-            {["c1.png", "c2.jpg", "c3.jpg"].map((image, index) => (
-              <Carousel.Item key={index} interval={3000} className='rounded border-success'>
-                <img className="img-fluid rounded" src={`/${image}`} alt={`Slide ${index + 1}`}/>
-              </Carousel.Item>
-            ))}
-          </Carousel>
+                  <h4 className={`mb-0 ${enableForm ? "text-white" : "text-muted"}`}>Option</h4>
+              </Card.Header>
+              <Card.Body className="d-flex flex-column">
+                <Form onSubmit={handleSubmit} className="flex-grow-1">
+                  <Form.Group className="mb-3 mt-3" controlId="formName">
+                    <Form.Label className={enableForm ? "text-dark" : "text-muted"}>Nama</Form.Label>
+                    <Form.Control
+                      type="text"
+                      placeholder={enableForm ? "Enter your name" : ""}
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                      disabled={!enableForm}
+                      className={enableForm ? "text-dark" : "text-muted"}
+                    />
+                  </Form.Group>
+                  <Form.Group className="mb-3" controlId="formPhone">
+                    <Form.Label className={enableForm ? "text-dark" : "text-muted"}>No Telepon</Form.Label>
+                    <Form.Control
+                      type="text"
+                      placeholder={enableForm ? "Enter your phone number" : ""}
+                      value={phone}
+                      onChange={(e) => setPhone(e.target.value)}
+                      disabled={!enableForm}
+                      className={enableForm ? "text-dark" : "text-muted"}
+                    />
+                  </Form.Group>
+                  <Button variant={enableForm ? "primary" : "outline-muted"} type="submit" disabled={!enableForm}>
+                    Submit
+                  </Button>
+                </Form>
+              </Card.Body>
+            </Card>
+            <Carousel className="d-flex my-2 align-items-center justify-content-centers">
+              {["c1.png", "c2.jpg", "c3.jpg"].map((image, index) => (
+                <Carousel.Item key={index} interval={3000} className='rounded border-success'>
+                  <img className="img-fluid rounded" src={`/${image}`} alt={`Slide ${index + 1}`}/>
+                </Carousel.Item>
+              ))}
+            </Carousel>
           </Col>
         </Row>
+
         {/* Modal Tiket Antrian */}
         <Modal show={showTicketModal} onHide={() => setShowTicketModal(false)} centered>
           <Modal.Body ref={ticketRef} className="d-flex align-items-center justify-content-center">
@@ -220,7 +226,9 @@ const ServiceSelection = () => {
             <Button variant="primary" onClick={handlePrint}>Cetak Tiket</Button>
           </Modal.Footer>
         </Modal>
-      {/* Modal untuk menampilkan error */}
+        {/* End Modal Tiket Antrian */}
+
+      {/* Modal Error */}
       <Modal show={showErrorModal} onHide={() => setShowErrorModal(false)} centered>
         <Modal.Header closeButton>
           <Modal.Title>Gagal Membuat Tiket</Modal.Title>
@@ -230,6 +238,7 @@ const ServiceSelection = () => {
           <Button variant="secondary" onClick={() => setShowErrorModal(false)}>Tutup</Button>
         </Modal.Footer>
       </Modal>
+      {/* ENd Modal Error */}
     </Container>
   );
 };

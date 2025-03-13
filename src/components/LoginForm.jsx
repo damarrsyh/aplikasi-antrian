@@ -1,0 +1,123 @@
+import { useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { Form, Button, Alert, Container, Card, Spinner } from "react-bootstrap";
+import { login } from "../api/queueApi";
+import { loginSuccess } from "../redux/Slice/authSlice";
+
+const LoginForm = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [loket, setLoket] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [loketList, setLoketList] = useState([]);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    setLoketList(["Loket 1", "Loket 2", "Loket 3"]);
+  }, []);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError("");
+    setLoading(true);
+
+    if (!email || !password || !loket) {
+      setError("Semua field harus diisi!");
+      setLoading(false);
+      return;
+    }
+
+    try {
+      const user = await login(email, password, loket);
+      dispatch(loginSuccess({ user, token: "dummy-token" })); // Simpan di Redux
+      navigate("/dashboard/queue-list");
+    } catch (err) {
+      setError(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <Container fluid
+      className="d-flex justify-content-center align-items-center vh-100 animated-bg"
+      style={{
+        background: "linear-gradient(135deg,rgb(102, 122, 234),rgb(186, 167, 255))",
+      }}
+    >
+      <Card
+        style={{
+          width: "350px",
+          padding: "1.5rem",
+          boxShadow: "0 4px 10px rgba(0, 0, 0, 0.2)",
+          backgroundColor: "rgba(255, 255, 255, 0.2)",
+          backdropFilter: "blur(10px)",
+          borderRadius: "12px",
+          border: "1px solid rgba(255, 255, 255, 0.3)",
+        }}
+      >
+        <Card.Title className="text-center mb-3 text-white">Sign In</Card.Title>
+        {error && <Alert variant="danger">{error}</Alert>}
+
+        <Form onSubmit={handleSubmit}>
+          <Form.Group className="mb-3">
+            <Form.Label className="text-white">Email</Form.Label>
+            <Form.Control
+              type="email"
+              placeholder="Masukkan email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              style={{ backgroundColor: "rgba(255, 255, 255, 0.3)", color: "#fff", border: "none" }}
+            />
+          </Form.Group>
+
+          <Form.Group className="mb-3">
+            <Form.Label className="text-white">Password</Form.Label>
+            <Form.Control
+              type="password"
+              placeholder="Masukkan password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              style={{ backgroundColor: "rgba(255, 255, 255, 0.3)", color: "#fff", border: "none" }}
+            />
+          </Form.Group>
+
+          <Form.Group className="mb-3">
+            <Form.Label className="text-white">Pilih Loket</Form.Label>
+            <Form.Select
+              value={loket}
+              onChange={(e) => setLoket(e.target.value)}
+              style={{
+                backgroundColor: "rgba(255, 255, 255, 0.3)",
+                color: "#fff",
+                border: "none",
+                appearance: "none",
+                padding: "10px",
+                cursor: "pointer",
+              }}
+              className="custom-select"
+            >
+              <option value="" style={{ backgroundColor: "#667eea", color: "#fff" }}>
+                -- Pilih Loket --
+              </option>
+              {loketList.map((loket, index) => (
+                <option key={index} value={loket} style={{ backgroundColor: "#667eea", color: "#fff" }}>
+                  {loket}
+                </option>
+              ))}
+            </Form.Select>
+          </Form.Group>
+
+          <Button variant="light" type="submit" className="w-100" disabled={loading}>
+            {loading ? <Spinner animation="border" size="sm" /> : "Login"}
+          </Button>
+        </Form>
+      </Card>
+    </Container>
+  );
+};
+
+export default LoginForm;

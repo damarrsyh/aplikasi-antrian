@@ -1,12 +1,7 @@
-// HALAMAN BELUM DIGUNAKAN KARENA BELUM SELESAI
-
-import TestQueueTable from "../../components/Admin/TestQueueTable"
-
 const QueueSettingsDisplayPage = () => {
   return (
-    <div>
-      <h2>Setting Display Antrian Page</h2>
-      <TestQueueTable/>
+    <div className="container mt-2">
+      <h2 className="ms-3">Setting Display Antrian Page</h2>
     </div>
   )
 }
