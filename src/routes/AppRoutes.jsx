@@ -3,7 +3,7 @@ import AdminLayout from "../layouts/AdminLayout";
 import QueueListPage from "../pages/admin/QueueListPage";
 import QueueReportPage from "../pages/admin/QueueReportPage";
 import QueueSettingsDisplayPage from "../pages/admin/QueueSettingsDisplayPage";
-import QueueSettingsMenuPage from "../pages/admin/QueueSettingsMenuPage";
+import QueueSettingsMenuPage from "../pages/Admin/QueueSettingsMenuPage";
 import LeaderboardPage from "../pages/admin/LeaderboardPage";
 import QueueDisplayPage from "../pages/display/QueueDisplayPage";
 import QueueMenuPage from "../pages/display/QueueMenuPage";
@@ -37,7 +37,7 @@ const AppRoutes = () => {
       </Route>
 
       {/* Redirect Default */}
-      <Route path="/" element={isAuthenticated ? <Navigate to="/admin/queue-list" replace /> : <Navigate to="/login" replace />} />
+      <Route path="/" element={isAuthenticated ? <Navigate to="/dashboard/queue-list" replace /> : <Navigate to="/login" replace />} />
 
       {/* Halaman Unauthorized */}
       <Route path="/unauthorized" element={<UnauthorizedPage />} />

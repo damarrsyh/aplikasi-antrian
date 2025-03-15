@@ -10,6 +10,7 @@ const api = axios.create({
 });
 
 // 🔹 Fungsi Login → Cari user berdasarkan email & password
+
 // eslint-disable-next-line no-unused-vars
 export const login = async (email, password, loket) => {
   try {
@@ -67,6 +68,36 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
+// GET DATA LAYANAN
+export const fetchServices = async () => {
+  try {
+    const response = await api.get("/services");
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching services:", error);
+    return [];
+  }
+};
+
+// GET DATA USERS
+export const fetchUsers = async () => {
+  try {
+    const response = await api.get("/users");
+    
+    // console.log("Full API Response:", response.data); // Debug: Tampilkan seluruh respons API
+    
+    const operators = response.data.filter(user => user.role === "operator");
+    
+    // console.log("Filtered Operators:", operators); // Debug: Pastikan hanya operator yang diambil
+    
+    return operators;
+  } catch (error) {
+    console.error("Error fetching users:", error);
+    return [];
+  }
+};
+
+
 // 🔹 GET DATA ANTRIAN
 export const fetchQueues = async () => {
   try {
@@ -76,6 +107,17 @@ export const fetchQueues = async () => {
   } catch (error) {
     console.error("Error fetching queues:", error);
     return [];
+  }
+};
+
+// UPDATE STATUS LAYANAN
+export const updateServiceStatus = async (serviceId, newStatus) => {
+  try {
+    const response = await api.patch(`/services/${serviceId}`, { status: newStatus });
+    return response.data;
+  } catch (error) {
+    console.error("Error updating service status:", error);
+    return null;
   }
 };
 

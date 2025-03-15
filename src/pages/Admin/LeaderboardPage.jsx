@@ -1,10 +1,11 @@
+import { Container } from "react-bootstrap"
 import Leaderboard from "../../components/Admin/Leaderboard"
 
 const LeaderboardPage = () => {
   return (
-    <div>
+    <Container fluid className="p-0">
       <Leaderboard/>
-    </div>
+    </Container>
   )
 }
 

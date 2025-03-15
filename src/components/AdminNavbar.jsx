@@ -11,10 +11,12 @@ const AdminNavbar = ({ toggleSidebar }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { user } = useSelector((state) => state.auth); // Ambil user dari Redux
+  console.log("Data user dari Redux:", user);
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    await logout();
     dispatch(logout());
-    navigate("/login"); // Gunakan React Router agar lebih optimal
+    navigate("/login"); 
   };
 
   return (

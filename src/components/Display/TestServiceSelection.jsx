@@ -1,24 +1,26 @@
 import { useEffect, useState, useRef } from "react";
-import { createQueueTicket, fetchQueueList } from "../../redux/Slice/queueSlice";
+import { createQueueTicket, fetchQueueList, fetchServicesThunk } from "../../redux/Slice/queueSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { Container, Card, Row, Col, Form, Button, Carousel, Modal } from "react-bootstrap";
 import { FaPrint, FaPalette, FaFileAlt, FaUndo, FaTruck, FaUser } from 'react-icons/fa';
 import { v4 as uuidv4 } from "uuid";
 
-const services = [
-  { id: "J0001", name: "Siap Print", icon: <FaPrint size={30} /> },
-  { id: "J0002", name: "Design", icon: <FaPalette size={30} /> },
-  { id: "J0003", name: "FotoCopy", icon: <FaFileAlt size={30} /> },
-  { id: "J0004", name: "Retur Penjualan", icon: <FaUndo size={30} /> },
-  { id: "J0005", name: "Online Pickup", icon: <FaTruck size={30} /> },
-  { id: "J0006", name: "Tamu", icon: <FaUser size={30} /> }
-];
+const iconMap = {
+  P: <FaPrint size={30} />,
+  D: <FaPalette size={30} />,
+  F: <FaFileAlt size={30} />,
+  R: <FaUndo size={30} />,
+  O: <FaTruck size={30} />,
+  T: <FaUser size={30} />,
+};
 
 const ServiceSelection = () => {
   const dispatch = useDispatch();
   const status = useSelector((state) => state.queue.status);
   // eslint-disable-next-line no-unused-vars
   const {qeueuList} = useSelector((state) => state.queue);
+  const services = useSelector((state) => state.queue.services);
+  const servicesStatus = useSelector((state) => state.queue.servicesStatus);
   const [selectedService, setSelectedService] = useState(null);
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
@@ -29,30 +31,23 @@ const ServiceSelection = () => {
   const [showTicketModal, setShowTicketModal] = useState(false);
   const ticketRef = useRef(null);
 
- useEffect(() => {
+useEffect(() => {
   if (status === "idle") {
     dispatch(fetchQueueList());
+    dispatch(fetchServicesThunk());
   }
- }, [status, dispatch]);
+}, [status, dispatch]);
 
   const handleServiceSelect = async (serviceId) => {
     const service = services.find(s => s.id === serviceId);
-    setSelectedService(service);
-    if(!enableForm)
-      await generateTicket(service);
+    if (servicesStatus[serviceId]) {
+      setSelectedService(service);
+    }
   };
 
   const generateTicket = async (service) => {
     if (service) {
-      const serviceCodeMap = {
-        "J0001": "P", // Print
-        "J0002": "D", // Design
-        "J0003": "F", // Fotocopy
-        "J0004": "R", // Retur Penjualan
-        "J0005": "O", // Online Pickup
-        "J0006": "T", // Tamu
-      };
-      const queuePrefix = serviceCodeMap[service.id];
+      const queuePrefix = service.kode; // Gunakan kode dari API
       const queueNumber = `${queuePrefix}${Math.floor(10 + Math.random() * 99)}`;
       const queueId = uuidv4();
       const customerId = uuidv4();
@@ -67,7 +62,7 @@ const ServiceSelection = () => {
         },
         service: {
           id: service.id,
-          service_name: service.name,
+          service_name: service.nama, // Gunakan 'nama' dari API
         },
         status: "Waiting",
         created_at: new Date().toISOString(),
@@ -78,7 +73,7 @@ const ServiceSelection = () => {
       try {
         const result = await dispatch(createQueueTicket(newTicket)).unwrap();
         if (result) {
-          setTicket(result); // Gunakan data yang dikembalikan dari Redux
+          setTicket(result);
           setShowTicketModal(true);
         }
       } catch (error) {
@@ -110,25 +105,42 @@ const ServiceSelection = () => {
         <Row className="vh-100">
           <Col md={6} className="d-flex flex-column">
             <Row className="flex-grow-1">
-              {services.map(service => (
-                <Col key={service.id} md={6} className="my-2">
-                  <Card
-                    className={`h-100 shadow-sm rounded-3 service-card border ${
-                      selectedService?.id === service.id ? "border-primary text-primary bg-primary-subtle" : "border-secondary bg-light text-dark"
-                    }`}
-                    onClick={() => handleServiceSelect(service.id)}
-                  >
-                    <Card.Body className="d-flex flex-column justify-content-center align-items-center">
-                      <div className={`p-4 rounded border ${selectedService?.id === service.id ? "border-primary text-primary bg-light" : "border-secondary text-dark"}`}>
-                        {service.icon}
-                      </div>
-                      <Card.Text className={`py-1 px-4 fw-semibold my-2 rounded-4 ${selectedService?.id === service.id ? "bg-info text-dark border border-primary" : "bg-light text-dark border border-secondary"}`}>
-                        {service.name}
-                      </Card.Text>
-                    </Card.Body>
-                  </Card>
-                </Col>
-              ))}
+              {services.map(service => {
+                const isActive = servicesStatus[service.id] ?? true;
+                
+                return (
+                  <Col key={service.id} md={6} className="my-2">
+                    <Card
+                      className={`h-100 shadow-sm rounded-3 service-card border position-relative ${
+                        selectedService?.id === service.id ? "border-primary text-primary bg-primary-subtle" : "border-secondary bg-light text-dark"
+                      }`}
+                      onClick={() => handleServiceSelect(service.id)}
+                      style={{
+                        filter: isActive ? "none" : "blur(3px)", // Blur jika nonaktif
+                        pointerEvents: isActive ? "auto" : "none" // Disable klik jika nonaktif
+                      }}
+                    >
+                      <Card.Body className="d-flex flex-column justify-content-center align-items-center">
+                        <div className={`p-4 rounded border ${selectedService?.id === service.id ? "border-primary text-primary bg-light" : "border-secondary text-dark"}`}>
+                          {iconMap[service.kode] || <FaUser size={30} />}
+                        </div>
+                        <Card.Text className={`py-1 px-4 fw-semibold my-2 rounded-4 ${selectedService?.id === service.id ? "bg-info text-dark border border-primary" : "bg-light text-dark border border-secondary"}`}>
+                          {service.nama}
+                        </Card.Text>
+                      </Card.Body>
+                      
+                      {/* Overlay jika layanan nonaktif */}
+                      {!isActive && (
+                        <>
+                          <div className="position-absolute top-50 start-50 translate-middle w-100 h-100 d-flex align-items-center justify-content-center text-center bg-dark bg-opacity-50 rounded-3">
+                            <span className="text-white fw-bold">Layanan Sedang Off</span>
+                          </div>
+                        </>
+                      )}
+                    </Card>
+                  </Col>
+                );
+              })}
             </Row>
           </Col>
           <Col md={6} className="d-flex flex-column mt-2">

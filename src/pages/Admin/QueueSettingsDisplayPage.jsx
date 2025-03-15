@@ -1,8 +1,15 @@
+import { Col, Container, Row } from "react-bootstrap"
+
 const QueueSettingsDisplayPage = () => {
   return (
-    <div className="container mt-2">
-      <h2 className="ms-3">Setting Display Antrian Page</h2>
-    </div>
+    <Container fluid className="p-4">
+      <h3>Setting Display Antrian Page</h3>
+      <Row>
+        <Col>
+          <p>Isi Setting Display Antrian Page</p>
+        </Col>
+      </Row>
+    </Container>
   )
 }
 

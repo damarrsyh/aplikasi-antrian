@@ -11,7 +11,6 @@ const TestQueueDisplay = () => {
   const [currentTime, setCurrentTime] = useState(new Date());
   const [showVideo, setShowVideo] = useState(true);
   const colors = ["primary", "secondary", "success", "danger", "warning", "info", "dark"];
-
   const getRandomColor = (index) => colors[index % colors.length];
 
   useEffect(() => {
@@ -81,10 +80,10 @@ const TestQueueDisplay = () => {
                     missedCustomers.map((customer, index) => (
                       <ListGroup.Item key={index} className="d-flex justify-content-between flex-column">
                         <div className="d-flex justify-content-between">
-                          <span className="fw-bold">{customer.customer.queue_number}</span>
-                          <span className="text-muted fw-bold">
+                          <h5 className="fw-bold">{customer.customer.queue_number}</h5>
+                          <h5 className="text-muted fw-bold">
                             {customer.status} - {customer.created_at ? new Date(customer.created_at).toLocaleTimeString() : "Waktu Tidak Diketahui"}
-                          </span>
+                          </h5>
                         </div>
                       </ListGroup.Item>
                     ))

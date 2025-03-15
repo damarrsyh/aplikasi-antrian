@@ -44,9 +44,6 @@ const LoginForm = () => {
   return (
     <Container fluid
       className="d-flex justify-content-center align-items-center vh-100 animated-bg"
-      style={{
-        background: "linear-gradient(135deg,rgb(102, 122, 234),rgb(186, 167, 255))",
-      }}
     >
       <Card
         style={{
@@ -90,21 +87,13 @@ const LoginForm = () => {
             <Form.Select
               value={loket}
               onChange={(e) => setLoket(e.target.value)}
-              style={{
-                backgroundColor: "rgba(255, 255, 255, 0.3)",
-                color: "#fff",
-                border: "none",
-                appearance: "none",
-                padding: "10px",
-                cursor: "pointer",
-              }}
               className="custom-select"
             >
-              <option value="" style={{ backgroundColor: "#667eea", color: "#fff" }}>
+              <option value="">
                 -- Pilih Loket --
               </option>
               {loketList.map((loket, index) => (
-                <option key={index} value={loket} style={{ backgroundColor: "#667eea", color: "#fff" }}>
+                <option key={index} value={loket}>
                   {loket}
                 </option>
               ))}
@@ -112,7 +101,7 @@ const LoginForm = () => {
           </Form.Group>
 
           <Button variant="light" type="submit" className="w-100" disabled={loading}>
-            {loading ? <Spinner animation="border" size="sm" /> : "Login"}
+            {loading ? <Spinner animation="border" size="sm" /> : "Sign In"}
           </Button>
         </Form>
       </Card>

@@ -5,8 +5,8 @@ import ReportChart from "../../components/Report/ReportCharts";
 
 const QueueReportPage = () => {
   return (
-<Container fluid className="p-4">
-      <h3 className="mb-4">Laporan Antrian</h3>
+    <Container fluid className="p-4">
+      <h3>Laporan Antrian</h3>
       <Row>
         <Col md={6}>
           <ReportStats />

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchQueueList, updateQueueStatusThunk, selectAllQueues } from "../../redux/Slice/queueSlice";
-import { Card, Table, Container, Button, Pagination } from "react-bootstrap";
+import { Card, Table, Button, Pagination } from "react-bootstrap";
 
 const TestQueueTable = () => {
   const dispatch = useDispatch();
@@ -25,7 +25,6 @@ const TestQueueTable = () => {
       alert("Loket tidak ditemukan! Pastikan Login dengan benar.");
       return;
     }
-
 
     setCurrentServingQueue(queue.id);
     dispatch(updateQueueStatusThunk({
@@ -65,90 +64,119 @@ const TestQueueTable = () => {
     .filter(q => ["Waiting", "In Progress", "Missed"].includes(q.status))
     .sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
   
-  const totalPages = Math.ceil(sortedQueues.length / itemsPerPage);
-  const indexOfLastItem = currentPage * itemsPerPage;
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentQueues = sortedQueues.slice(indexOfFirstItem, indexOfLastItem);
+    const totalPages = Math.ceil(sortedQueues.length / itemsPerPage);
+    const indexOfLastItem = currentPage * itemsPerPage;
+    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+    const currentQueues = sortedQueues.slice(indexOfFirstItem, indexOfLastItem);
+
+  const getPageNumbers = () => {
+    if (totalPages <= 3) {
+      return [...Array(totalPages)].map((_, i) => i + 1);
+    }
+  
+    if (currentPage <= 2) {
+      return [1, 2, 3, 4, '...'];
+    }
+  
+    if (currentPage >= totalPages - 1) {
+      return ['...',totalPages -3, totalPages - 2, totalPages - 1, totalPages];
+    }
+  
+    return ['...', currentPage -1 , currentPage , currentPage +1 , '...'];
+  };
+  
+  const pageNumbers = getPageNumbers();
 
   return (
-    <Container>
-      <Card className="shadow-sm">
-        <Card.Header className="d-flex justify-content-between align-items-center">
-          <span className="mb-0">List Data Antrian Customer</span>
-          <Pagination className="custom-pagination">
-            <Pagination.Prev onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))} disabled={currentPage === 1} />
-            {[...Array(totalPages)].map((_, index) => (
-              <Pagination.Item key={index} active={index + 1 === currentPage} onClick={() => setCurrentPage(index + 1)}>
-                {index + 1}
-              </Pagination.Item>
-            ))}
-            <Pagination.Next onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))} disabled={currentPage === totalPages} />
-          </Pagination>
-        </Card.Header>
-        <Card.Body>
-          <Table striped bordered hover responsive>
-            <thead>
-              <tr className="text-center">
-                <th>Customer</th>
-                <th>No Antrian</th>
-                <th>Service</th>
-                <th>Status</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {currentQueues.length > 0 ? (
-                currentQueues.map((queue) => (
-                  <tr key={queue.id}>
-                    <td>{queue.customer?.customer_name}</td>
-                    <td className="text-center fw-bold">{queue.customer?.queue_number}</td>
-                    <td>{queue.service?.service_name}</td>
-                    <td className="text-center">  
-                    <span className={`status-badge ${
-                        queue.status === "Waiting" ? "status-waiting" :
-                        queue.status === "In Progress" ? "status-in-progress" :
-                        queue.status === "Complete" ? "status-complete" :
-                        queue.status === "Missed" ? "status-missed" : "bg-secondary"
-                      }`}>
-                        {queue.status}
-                      </span>
-                    </td>
-                    <td>
-                      <span className="d-flex justify-content-center gap-2">
-                        {queue.status === "Waiting" && (
-                          <Button className="btn-action btn-call" size="sm" onClick={() => handleCallQueue(queue)}>
-                            Panggil
-                          </Button>
-                        )}
-                        {queue.status === "In Progress" && (
-                          <Button className="btn-action btn-skip" size="sm" onClick={() => handleSkipQueue(queue)}>
-                            Lewati
-                          </Button>
-                        )}
-                        {queue.status === "Missed" && (
-                          <Button className="btn-action btn-recall" size="sm" onClick={() => handleRecallQueue(queue)}>
-                            Panggil Ulang
-                          </Button>
-                        )}
-                        {queue.status === "In Progress" && (
-                          <Button className="btn-action btn-complete" size="sm" onClick={() => handleCompleteQueue(queue)}>
-                            Selesai
-                          </Button>
-                        )}
-                      </span>
-                    </td>
-                  </tr>
-                ))
-              ) : (
-                <tr>
-                  <td colSpan="5" className="text-center text-muted">Tidak ada antrian</td>
+    <Card className="shadow-sm">
+      <Card.Header className="d-flex justify-content-between align-items-center">
+        <span className="mb-0">List Data Antrian Customer</span>
+        <Pagination className="custom-pagination">
+          <Pagination.Prev 
+            onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))} 
+            disabled={currentPage === 1} 
+          />
+          
+          {pageNumbers.map((page, index) => (
+            <Pagination.Item 
+              key={index} 
+              active={page === currentPage} 
+              onClick={() => typeof page === 'number' && setCurrentPage(page)}
+              disabled={page === '...'}
+            >
+              {page}
+            </Pagination.Item>
+          ))}
+
+          <Pagination.Next 
+            onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))} 
+            disabled={currentPage === totalPages} 
+          />
+        </Pagination>
+      </Card.Header>
+      <Card.Body>
+        <Table striped bordered hover responsive>
+          <thead>
+            <tr className="text-center">
+              <th>Customer</th>
+              <th>No Antrian</th>
+              <th>Service</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {currentQueues.length > 0 ? (
+              currentQueues.map((queue) => (
+                <tr key={queue.id}>
+                  <td>{queue.customer?.customer_name}</td>
+                  <td className="text-center fw-bold">{queue.customer?.queue_number}</td>
+                  <td>{queue.service?.service_name}</td>
+                  <td className="text-center">  
+                  <span className={`status-badge ${
+                      queue.status === "Waiting" ? "status-waiting" :
+                      queue.status === "In Progress" ? "status-in-progress" :
+                      queue.status === "Complete" ? "status-complete" :
+                      queue.status === "Missed" ? "status-missed" : "bg-secondary"
+                    }`}>
+                      {queue.status}
+                    </span>
+                  </td>
+                  <td>
+                    <span className="d-flex justify-content-center gap-2">
+                      {queue.status === "Waiting" && (
+                        <Button className="btn-action btn-call" size="sm" onClick={() => handleCallQueue(queue)}>
+                          Panggil
+                        </Button>
+                      )}
+                      {queue.status === "In Progress" && (
+                        <Button className="btn-action btn-skip" size="sm" onClick={() => handleSkipQueue(queue)}>
+                          Lewati
+                        </Button>
+                      )}
+                      {queue.status === "Missed" && (
+                        <Button className="btn-action btn-recall" size="sm" onClick={() => handleRecallQueue(queue)}>
+                          Panggil Ulang
+                        </Button>
+                      )}
+                      {queue.status === "In Progress" && (
+                        <Button className="btn-action btn-complete" size="sm" onClick={() => handleCompleteQueue(queue)}>
+                          Selesai
+                        </Button>
+                      )}
+                    </span>
+                  </td>
                 </tr>
-              )}
-            </tbody>
-          </Table>
-        </Card.Body>
-      </Card>
-    </Container>
+              ))
+            ) : (
+              <tr>
+                <td colSpan="5" className="text-center text-muted">Tidak ada antrian</td>
+              </tr>
+            )}
+          </tbody>
+        </Table>
+      </Card.Body>
+    </Card>
   );
 };
 

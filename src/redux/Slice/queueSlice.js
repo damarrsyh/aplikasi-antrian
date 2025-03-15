@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk, createEntityAdapter } from "@reduxjs/toolkit";
-import { createTicketApi, updateQueueStatus, fetchQueues } from "../../api/queueApi";
+import { createTicketApi, updateQueueStatus, updateServiceStatus, fetchQueues, fetchServices } from "../../api/queueApi";
 
 // Async Thunk untuk mengambil daftar antrian dari API
 export const fetchQueueList = createAsyncThunk("queue/fetchQueueList", async (_, { rejectWithValue }) => {
@@ -11,12 +11,35 @@ export const fetchQueueList = createAsyncThunk("queue/fetchQueueList", async (_,
   }
 });
 
+// Async Thunk untuk mengambil daftar layanan dari API
+export const fetchServicesThunk = createAsyncThunk(
+  "queue/fetchServices",
+  async (_, { rejectWithValue }) => {
+    try {
+      const data = await fetchServices();
+      return data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data || "Gagal mengambil layanan");
+    }
+  }
+);
+
+export const updateServiceStatusThunk = createAsyncThunk(
+  "queue/updateServiceStatus",
+  async ({ serviceId, newStatus }, { rejectWithValue }) => {
+    try {
+      const updatedService = await updateServiceStatus(serviceId, newStatus);
+      return updatedService;
+    } catch (error) {
+      return rejectWithValue(error.response?.data || "Gagal memperbarui status layanan");
+    }
+  }
+);
 
 // Async Thunk untuk mengupdate daftar antrian dari API
 export const updateQueueStatusThunk = createAsyncThunk(
   "queue/updateQueueStatus",
   async (updatedQueue, { rejectWithValue }) => {
-    // console.log("📌 Data yang dikirim ke updateQueueStatus:", updatedQueue); // DEBUGGING
     if (!updatedQueue || !updatedQueue.id) {
       console.error("❌ updateQueueStatusThunk gagal: id tidak ditemukan");
       return rejectWithValue("id tidak ditemukan");
@@ -24,7 +47,6 @@ export const updateQueueStatusThunk = createAsyncThunk(
 
     try {
       const response = await updateQueueStatus(updatedQueue.id, updatedQueue);
-      // console.log("✅ Update sukses:", response); // DEBUGGING
       return response;
     } catch (error) {
       console.error("❌ Gagal memperbarui status:", error);
@@ -32,7 +54,6 @@ export const updateQueueStatusThunk = createAsyncThunk(
     }
   }
 );
-
 
 // Async Thunk untuk membuat tiket baru
 export const createQueueTicket = createAsyncThunk(
@@ -51,10 +72,13 @@ const queueAdapter = createEntityAdapter({
   selectId: (queue) => queue.id,
 });
 
-const initialState = queueAdapter.getInitialState({
+const initialState = {
+  ...queueAdapter.getInitialState(),
+  services: [],
+  servicesStatus: {},
   status: "idle",
   error: null,
-});
+};
 
 export const { selectAll: selectAllQueues, selectById: selectQueueById } = queueAdapter.getSelectors(
   (state) => state.queue
@@ -74,6 +98,22 @@ const queueSlice = createSlice({
       .addCase(fetchQueueList.fulfilled, (state, action) => {
         state.status = "succeeded";
         queueAdapter.setAll(state, action.payload);
+      })
+      .addCase(fetchServicesThunk.fulfilled, (state, action) => {
+        state.services = action.payload;
+        state.servicesStatus = action.payload.reduce((acc, service) => {
+          acc[service.id] = service.status;
+          return acc;
+        }, {});
+      })
+      .addCase(updateServiceStatusThunk.fulfilled, (state, action) => {
+        const updatedService = action.payload;
+        if (updatedService) {
+          state.services = state.services.map((service) =>
+            service.id === updatedService.id ? updatedService : service
+          );
+          state.servicesStatus[updatedService.id] = updatedService.status;
+        }
       })
       .addCase(updateQueueStatusThunk.fulfilled, (state, action) => {
         queueAdapter.updateOne(state, {
