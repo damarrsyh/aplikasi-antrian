@@ -1,14 +1,14 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 import AdminLayout from "../layouts/AdminLayout";
-import QueueListPage from "../pages/admin/QueueListPage";
-import QueueReportPage from "../pages/admin/QueueReportPage";
-import QueueSettingsDisplayPage from "../pages/admin/QueueSettingsDisplayPage";
+import QueueListPage from "../pages/Admin/QueueListPage";
+import QueueReportPage from "../pages/Admin/QueueReportPage";
+import QueueSettingsDisplayPage from "../pages/Admin/QueueSettingsDisplayPage";
 import QueueSettingsMenuPage from "../pages/Admin/QueueSettingsMenuPage";
-import LeaderboardPage from "../pages/admin/LeaderboardPage";
-import QueueDisplayPage from "../pages/display/QueueDisplayPage";
-import QueueMenuPage from "../pages/display/QueueMenuPage";
+import LeaderboardPage from "../pages/LeaderboardPage";
+import QueueDisplayPage from "../pages/Display/QueueDisplayPage";
+import QueueMenuPage from "../pages/Service/QueueMenuPage";
 import LoginForm from "../components/LoginForm";
-import UnauthorizedPage from "../pages/Admin/UnauthorizedPage";
+import UnauthorizedPage from "../pages/UnauthorizedPage";
 import ProtectedRoute from "./ProtectedRoute";
 import { useSelector } from "react-redux";
 

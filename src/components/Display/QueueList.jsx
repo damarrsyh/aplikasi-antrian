@@ -1,0 +1,36 @@
+/* eslint-disable react/prop-types */
+import { Row, Col, Card, ListGroup } from "react-bootstrap"
+
+const QueueList = ({ queueList, getRandomColor }) => {
+  return (
+    <>
+    <Row className="flex-grow-1" style={{ width: "100%" }}>
+      {Array.from(new Set(queueList.map((queue) => queue.service.service_name))).map((serviceName, index) => (
+        <Col key={index} md={4} className="mb-3">
+          <Card className="shadow border-0">
+            <Card.Header className={`bg-${getRandomColor(index)} text-white text-capitalize`}>
+              <h5>List Antrian {serviceName}</h5>
+            </Card.Header>
+            <ListGroup variant="flush">
+              {queueList
+                .filter((q) => q.status === "Waiting" && q.service.service_name === serviceName)
+                .sort((a, b) => new Date(a.created_at) - new Date(b.created_at))
+                .slice(0, 3)
+                .map((q, i) => (
+                  <ListGroup.Item key={i} className="d-flex justify-content-between flex-column">
+                    <div className="d-flex justify-content-between">
+                      <span className="fw-bold">{q.customer.queue_number}</span>
+                      <span className="text-muted fw-bold">{q.status} - {q.created_at ? new Date(q.created_at).toLocaleTimeString() : "Waktu Tidak Diketahui"}</span>
+                    </div>
+                  </ListGroup.Item>
+                ))}
+            </ListGroup>
+          </Card>
+        </Col>
+      ))}
+    </Row>
+    </>
+  )
+}
+
+export default QueueList

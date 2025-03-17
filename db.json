@@ -271,11 +271,11 @@
         "id": "J0004",
         "service_name": "Retur Penjualan"
       },
-      "status": "Waiting",
+      "status": "Complete",
       "created_at": "2025-03-14T02:38:12.248Z",
-      "time_start": "2025-03-14T08:23:18.941Z",
-      "time_end": null,
-      "counter": "Loket 3"
+      "time_start": "2025-03-17T03:52:21.727Z",
+      "time_end": "2025-03-17T03:52:22.824Z",
+      "counter": "Loket 2"
     },
     {
       "id": "3082a756-c716-49ad-ac8f-e0e85776d811",
@@ -289,11 +289,11 @@
         "id": "J0003",
         "service_name": "FotoCopy"
       },
-      "status": "Waiting",
+      "status": "Complete",
       "created_at": "2025-03-14T02:39:37.936Z",
-      "time_start": "2025-03-14T08:23:19.909Z",
-      "time_end": null,
-      "counter": "Loket 3"
+      "time_start": "2025-03-17T03:52:23.567Z",
+      "time_end": "2025-03-17T03:52:23.903Z",
+      "counter": "Loket 2"
     },
     {
       "id": "8f30c109-4713-461d-8b70-5b8a968a1db5",
@@ -307,10 +307,11 @@
         "id": "J0001",
         "service_name": "Siap Print"
       },
-      "status": "Waiting",
+      "status": "Complete",
       "created_at": "2025-03-16T04:42:37.928Z",
-      "time_start": null,
-      "time_end": null
+      "time_start": "2025-03-17T03:52:38.409Z",
+      "time_end": "2025-03-17T03:52:38.750Z",
+      "counter": "Loket 2"
     },
     {
       "id": "e21bb845-d4a8-4f64-a786-6d23036d19a1",
@@ -324,10 +325,11 @@
         "id": "J0001",
         "service_name": "Siap Print"
       },
-      "status": "Waiting",
+      "status": "Complete",
       "created_at": "2025-03-16T06:26:13.983Z",
-      "time_start": null,
-      "time_end": null
+      "time_start": "2025-03-17T03:52:39.151Z",
+      "time_end": "2025-03-17T03:52:39.446Z",
+      "counter": "Loket 2"
     },
     {
       "id": "c9f0b146-a6cd-4f75-b084-24409a4b2e7a",
@@ -341,10 +343,11 @@
         "id": "J0002",
         "service_name": "Design"
       },
-      "status": "Waiting",
+      "status": "Complete",
       "created_at": "2025-03-16T03:52:05.434Z",
-      "time_start": null,
-      "time_end": null
+      "time_start": "2025-03-17T03:52:37.944Z",
+      "time_end": "2025-03-17T03:52:38.199Z",
+      "counter": "Loket 2"
     },
     {
       "id": "8838e05a-379b-42df-82f5-6b8658c3fa5b",
@@ -358,10 +361,11 @@
         "id": "J0001",
         "service_name": "Siap Print"
       },
-      "status": "Waiting",
+      "status": "Complete",
       "created_at": "2025-03-16T06:49:59.319Z",
-      "time_start": null,
-      "time_end": null
+      "time_start": "2025-03-17T03:52:39.855Z",
+      "time_end": "2025-03-17T03:52:40.120Z",
+      "counter": "Loket 2"
     },
     {
       "id": "bf0359cb-186a-4d78-8fbc-60b47ccd1de8",
@@ -375,10 +379,11 @@
         "id": "J0003",
         "service_name": "FotoCopy"
       },
-      "status": "Waiting",
+      "status": "Complete",
       "created_at": "2025-03-16T06:50:02.902Z",
-      "time_start": null,
-      "time_end": null
+      "time_start": "2025-03-17T03:53:31.559Z",
+      "time_end": "2025-03-17T07:14:34.615Z",
+      "counter": "Loket 2"
     },
     {
       "id": "00e2890a-18e3-4ce3-8a87-2ee2e2306222",
@@ -497,11 +502,11 @@
         "id": "J0001",
         "service_name": "Siap Print"
       },
-      "status": "Waiting",
+      "status": "Complete",
       "created_at": "2025-03-14T08:18:26.742Z",
-      "time_start": "2025-03-14T08:23:20.926Z",
-      "time_end": null,
-      "counter": "Loket 3"
+      "time_start": "2025-03-17T03:52:24.249Z",
+      "time_end": "2025-03-17T03:52:24.496Z",
+      "counter": "Loket 2"
     },
     {
       "id": "a2831fc1-5040-42f2-b42b-8844a0283710",
@@ -515,11 +520,11 @@
         "id": "J0004",
         "service_name": "Retur Penjualan"
       },
-      "status": "Waiting",
+      "status": "Complete",
       "created_at": "2025-03-14T08:18:32.454Z",
-      "time_start": "2025-03-14T08:23:22.045Z",
-      "time_end": null,
-      "counter": "Loket 3"
+      "time_start": "2025-03-17T03:52:24.783Z",
+      "time_end": "2025-03-17T03:52:25.071Z",
+      "counter": "Loket 2"
     },
     {
       "id": "6caee40d-af22-406f-9fd6-d67752416ea8",
@@ -533,10 +538,11 @@
         "id": "J0003",
         "service_name": "FotoCopy"
       },
-      "status": "Waiting",
+      "status": "Complete",
       "created_at": "2025-03-14T08:18:34.808Z",
-      "time_start": null,
-      "time_end": null
+      "time_start": "2025-03-17T03:52:25.319Z",
+      "time_end": "2025-03-17T03:52:25.647Z",
+      "counter": "Loket 2"
     },
     {
       "id": "e3c0f22e-5abd-42d1-93a5-0be69d3f3d97",
@@ -550,10 +556,11 @@
         "id": "J0005",
         "service_name": "Online Pickup"
       },
-      "status": "Waiting",
+      "status": "Complete",
       "created_at": "2025-03-14T08:19:01.183Z",
-      "time_start": null,
-      "time_end": null
+      "time_start": "2025-03-17T03:52:25.921Z",
+      "time_end": "2025-03-17T03:52:26.239Z",
+      "counter": "Loket 2"
     },
     {
       "id": "c7fa8efb-64be-46af-bc88-c05c70e6d416",
@@ -567,10 +574,11 @@
         "id": "J0003",
         "service_name": "FotoCopy"
       },
-      "status": "Waiting",
+      "status": "Complete",
       "created_at": "2025-03-15T02:04:15.043Z",
-      "time_start": null,
-      "time_end": null
+      "time_start": "2025-03-17T03:52:26.575Z",
+      "time_end": "2025-03-17T03:52:26.846Z",
+      "counter": "Loket 2"
     },
     {
       "id": "f34a196a-f749-41ba-adf4-a203adfacdbb",
@@ -584,10 +592,11 @@
         "id": "J0001",
         "service_name": "Siap Print"
       },
-      "status": "Waiting",
+      "status": "Complete",
       "created_at": "2025-03-15T02:04:19.770Z",
-      "time_start": null,
-      "time_end": null
+      "time_start": "2025-03-17T03:52:27.351Z",
+      "time_end": "2025-03-17T03:52:27.871Z",
+      "counter": "Loket 2"
     },
     {
       "id": "7691b6ac-ea1c-4618-b443-1c4280452b53",
@@ -601,10 +610,11 @@
         "id": "J0002",
         "service_name": "Design"
       },
-      "status": "Waiting",
+      "status": "Complete",
       "created_at": "2025-03-15T02:04:22.698Z",
-      "time_start": null,
-      "time_end": null
+      "time_start": "2025-03-17T03:52:28.207Z",
+      "time_end": "2025-03-17T03:52:28.455Z",
+      "counter": "Loket 2"
     },
     {
       "id": "ff33bbbe-e63f-4cdb-93a7-d306cba712fd",
@@ -618,10 +628,11 @@
         "id": "J0005",
         "service_name": "Online Pickup"
       },
-      "status": "Waiting",
+      "status": "Complete",
       "created_at": "2025-03-15T02:04:26.506Z",
-      "time_start": null,
-      "time_end": null
+      "time_start": "2025-03-17T03:52:28.735Z",
+      "time_end": "2025-03-17T03:52:29.080Z",
+      "counter": "Loket 2"
     },
     {
       "id": "7161c08c-d4e9-4780-9926-5ff26f1c5967",
@@ -635,10 +646,11 @@
         "id": "J0002",
         "service_name": "Design"
       },
-      "status": "Waiting",
+      "status": "Complete",
       "created_at": "2025-03-15T04:16:49.356Z",
-      "time_start": null,
-      "time_end": null
+      "time_start": "2025-03-17T03:52:29.383Z",
+      "time_end": "2025-03-17T03:52:29.735Z",
+      "counter": "Loket 2"
     },
     {
       "id": "f8611645-a12c-44f6-8b0e-4ef05f0567e0",
@@ -652,10 +664,11 @@
         "id": "J0003",
         "service_name": "FotoCopy"
       },
-      "status": "Waiting",
+      "status": "Complete",
       "created_at": "2025-03-15T04:16:53.506Z",
-      "time_start": null,
-      "time_end": null
+      "time_start": "2025-03-17T03:52:30.086Z",
+      "time_end": "2025-03-17T03:52:30.414Z",
+      "counter": "Loket 2"
     },
     {
       "id": "6e04c946-9aa2-4fe7-a996-954a3a7aff58",
@@ -669,10 +682,11 @@
         "id": "J0002",
         "service_name": "Design"
       },
-      "status": "Waiting",
+      "status": "Complete",
       "created_at": "2025-03-15T04:18:29.862Z",
-      "time_start": null,
-      "time_end": null
+      "time_start": "2025-03-17T03:52:30.694Z",
+      "time_end": "2025-03-17T03:52:31.030Z",
+      "counter": "Loket 2"
     },
     {
       "id": "53f05c3b-e478-4804-a710-85853ff3e4ce",
@@ -686,10 +700,11 @@
         "id": "J0004",
         "service_name": "Retur Penjualan"
       },
-      "status": "Waiting",
+      "status": "Complete",
       "created_at": "2025-03-15T04:19:24.823Z",
-      "time_start": null,
-      "time_end": null
+      "time_start": "2025-03-17T03:52:31.310Z",
+      "time_end": "2025-03-17T03:52:31.656Z",
+      "counter": "Loket 2"
     },
     {
       "id": "0d2e2f54-21c1-4fd2-a0fe-512a2684a7f5",
@@ -703,10 +718,11 @@
         "id": "J0003",
         "service_name": "FotoCopy"
       },
-      "status": "Waiting",
+      "status": "Complete",
       "created_at": "2025-03-15T04:19:55.954Z",
-      "time_start": null,
-      "time_end": null
+      "time_start": "2025-03-17T03:52:31.959Z",
+      "time_end": "2025-03-17T03:52:32.367Z",
+      "counter": "Loket 2"
     },
     {
       "id": "058a22f2-9aa9-4073-ba52-8709c0d2cb8d",
@@ -720,10 +736,11 @@
         "id": "J0006",
         "service_name": "Tamu"
       },
-      "status": "Waiting",
+      "status": "Complete",
       "created_at": "2025-03-15T04:20:56.250Z",
-      "time_start": null,
-      "time_end": null
+      "time_start": "2025-03-17T03:52:32.743Z",
+      "time_end": "2025-03-17T03:52:33.047Z",
+      "counter": "Loket 2"
     },
     {
       "id": "2022bb89-0b14-418c-8120-2b339c17fe2a",
@@ -737,10 +754,11 @@
         "id": "J0006",
         "service_name": "Tamu"
       },
-      "status": "Waiting",
+      "status": "Complete",
       "created_at": "2025-03-15T04:21:21.866Z",
-      "time_start": null,
-      "time_end": null
+      "time_start": "2025-03-17T03:52:33.423Z",
+      "time_end": "2025-03-17T03:52:33.743Z",
+      "counter": "Loket 2"
     },
     {
       "id": "966f5298-d5b9-40cb-8bd7-cb437e82abe4",
@@ -754,10 +772,11 @@
         "id": "J0001",
         "service_name": "Siap Print"
       },
-      "status": "Waiting",
+      "status": "Complete",
       "created_at": "2025-03-15T04:35:50.602Z",
-      "time_start": null,
-      "time_end": null
+      "time_start": "2025-03-17T03:52:33.974Z",
+      "time_end": "2025-03-17T03:52:34.287Z",
+      "counter": "Loket 2"
     },
     {
       "id": "26c8ff48-5601-44e7-b1b9-4464fd98f672",
@@ -771,10 +790,11 @@
         "id": "J0004",
         "service_name": "Retur Penjualan"
       },
-      "status": "Waiting",
+      "status": "Complete",
       "created_at": "2025-03-15T05:02:18.427Z",
-      "time_start": null,
-      "time_end": null
+      "time_start": "2025-03-17T03:52:34.575Z",
+      "time_end": "2025-03-17T03:52:34.992Z",
+      "counter": "Loket 2"
     },
     {
       "id": "f2dbe495-f57f-4610-966c-6915b104c614",
@@ -788,10 +808,11 @@
         "id": "J0005",
         "service_name": "Online Pickup"
       },
-      "status": "Waiting",
+      "status": "Complete",
       "created_at": "2025-03-15T05:02:20.976Z",
-      "time_start": null,
-      "time_end": null
+      "time_start": "2025-03-17T03:52:35.311Z",
+      "time_end": "2025-03-17T03:52:35.631Z",
+      "counter": "Loket 2"
     },
     {
       "id": "d99e3cf6-0e54-4fb5-bbd4-d4400297cf00",
@@ -805,10 +826,11 @@
         "id": "J0006",
         "service_name": "Tamu"
       },
-      "status": "Waiting",
+      "status": "Complete",
       "created_at": "2025-03-15T05:02:24.507Z",
-      "time_start": null,
-      "time_end": null
+      "time_start": "2025-03-17T03:52:36.135Z",
+      "time_end": "2025-03-17T03:52:36.399Z",
+      "counter": "Loket 2"
     },
     {
       "id": "347a7078-35a0-4db9-a008-28e131e00405",
@@ -822,10 +844,11 @@
         "id": "J0003",
         "service_name": "FotoCopy"
       },
-      "status": "Waiting",
+      "status": "Complete",
       "created_at": "2025-03-15T07:24:55.347Z",
-      "time_start": null,
-      "time_end": null
+      "time_start": "2025-03-17T03:52:36.719Z",
+      "time_end": "2025-03-17T03:52:37.039Z",
+      "counter": "Loket 2"
     },
     {
       "id": "d9932c29-74fe-4979-a621-c87c16aabd69",
@@ -839,8 +862,770 @@
         "id": "J0002",
         "service_name": "Design"
       },
-      "status": "Waiting",
+      "status": "Complete",
       "created_at": "2025-03-15T07:25:01.074Z",
+      "time_start": "2025-03-17T03:52:37.399Z",
+      "time_end": "2025-03-17T03:52:37.655Z",
+      "counter": "Loket 2"
+    },
+    {
+      "id": "897ba0e4-5543-4e5e-82a0-5576eddb62ad",
+      "customer": {
+        "id": "8d6bfee8-2a47-4d2a-b67c-4d4d07c24c4a",
+        "customer_name": "Damar",
+        "phone": "08231382178",
+        "queue_number": "F45"
+      },
+      "service": {
+        "id": "J0003",
+        "service_name": "FotoCopy"
+      },
+      "status": "Complete",
+      "created_at": "2025-03-17T02:21:08.952Z",
+      "time_start": "2025-03-17T07:56:53.120Z",
+      "time_end": "2025-03-17T08:57:33.231Z",
+      "counter": "Loket 2"
+    },
+    {
+      "id": "d9b98bf9-8da8-4a53-bbe0-e0752ca5f746",
+      "customer": {
+        "id": "50498a40-e85e-475e-88ad-5ff31d20b992",
+        "customer_name": "Damar",
+        "phone": "08231382178",
+        "queue_number": "R75"
+      },
+      "service": {
+        "id": "J0004",
+        "service_name": "Retur Penjualan"
+      },
+      "status": "Waiting",
+      "created_at": "2025-03-17T02:22:01.640Z",
+      "time_start": null,
+      "time_end": null
+    },
+    {
+      "id": "6179e81c-7bc6-4b25-bb5a-7f2d55a75ca7",
+      "customer": {
+        "id": "eab26816-7f79-4ac0-9e87-c1673f2eff1e",
+        "customer_name": "Customer/J0003",
+        "phone": "-",
+        "queue_number": "F24"
+      },
+      "service": {
+        "id": "J0003",
+        "service_name": "FotoCopy"
+      },
+      "status": "Waiting",
+      "created_at": "2025-03-17T02:28:39.919Z",
+      "time_start": null,
+      "time_end": null
+    },
+    {
+      "id": "d1d65b8f-8d4c-4ddc-a70a-c8fad03a8393",
+      "customer": {
+        "id": "78a8126d-8235-4ba5-b61c-dfef1d1a9dbb",
+        "customer_name": "Customer/J0003",
+        "phone": "-",
+        "queue_number": "F86"
+      },
+      "service": {
+        "id": "J0003",
+        "service_name": "FotoCopy"
+      },
+      "status": "Waiting",
+      "created_at": "2025-03-17T02:29:14.359Z",
+      "time_start": null,
+      "time_end": null
+    },
+    {
+      "id": "b7bc671a-9a92-4aeb-b628-e8e8a6cafd41",
+      "customer": {
+        "id": "50e0848a-833c-4b58-8ee3-410ad8958b68",
+        "customer_name": "Customer/J0003",
+        "phone": "-",
+        "queue_number": "F64"
+      },
+      "service": {
+        "id": "J0003",
+        "service_name": "FotoCopy"
+      },
+      "status": "Waiting",
+      "created_at": "2025-03-17T02:33:13.167Z",
+      "time_start": null,
+      "time_end": null
+    },
+    {
+      "id": "ca68f1e7-29e7-4477-b049-fbf89fa040fb",
+      "customer": {
+        "id": "9066c797-8396-46ef-ba0f-bfd1cee43e6c",
+        "customer_name": "Customer/J0002",
+        "phone": "-",
+        "queue_number": "D90"
+      },
+      "service": {
+        "id": "J0002",
+        "service_name": "Design"
+      },
+      "status": "Waiting",
+      "created_at": "2025-03-17T02:35:59.023Z",
+      "time_start": null,
+      "time_end": null
+    },
+    {
+      "id": "84c5373a-f9fe-4932-9742-3aca4d63c82f",
+      "customer": {
+        "id": "69f0f9e1-3c86-4b5c-8b23-9340187490aa",
+        "customer_name": "Customer/J0003",
+        "phone": "-",
+        "queue_number": "F71"
+      },
+      "service": {
+        "id": "J0003",
+        "service_name": "FotoCopy"
+      },
+      "status": "Waiting",
+      "created_at": "2025-03-17T02:36:21.647Z",
+      "time_start": null,
+      "time_end": null
+    },
+    {
+      "id": "bfe55338-a562-4508-b968-bc0cf8c946f6",
+      "customer": {
+        "id": "59c3f9ef-3953-474f-a77c-127b0b767435",
+        "customer_name": "Customer/J0004",
+        "phone": "-",
+        "queue_number": "R75"
+      },
+      "service": {
+        "id": "J0004",
+        "service_name": "Retur Penjualan"
+      },
+      "status": "Waiting",
+      "created_at": "2025-03-17T02:36:45.792Z",
+      "time_start": null,
+      "time_end": null
+    },
+    {
+      "id": "90b6593b-1d2a-40e1-af28-cb44bc2c171a",
+      "customer": {
+        "id": "c9d7e055-d628-412f-8805-01164c2f1ba9",
+        "customer_name": "Customer/J0002",
+        "phone": "-",
+        "queue_number": "D59"
+      },
+      "service": {
+        "id": "J0002",
+        "service_name": "Design"
+      },
+      "status": "Waiting",
+      "created_at": "2025-03-17T02:37:29.639Z",
+      "time_start": null,
+      "time_end": null
+    },
+    {
+      "id": "d78e21b7-59ae-4441-b013-c11da35eb4ca",
+      "customer": {
+        "id": "9becb1e4-b24c-4fd2-9feb-452230010620",
+        "customer_name": "Customer/J0002",
+        "phone": "-",
+        "queue_number": "D80"
+      },
+      "service": {
+        "id": "J0002",
+        "service_name": "Design"
+      },
+      "status": "Waiting",
+      "created_at": "2025-03-17T02:39:02.208Z",
+      "time_start": null,
+      "time_end": null
+    },
+    {
+      "id": "f1b418be-73e3-4b1b-9d02-6f39dad59ab0",
+      "customer": {
+        "id": "a2c2ef7b-95ff-4ec6-b177-6aba011b3960",
+        "customer_name": "Customer/J0003",
+        "phone": "-",
+        "queue_number": "F66"
+      },
+      "service": {
+        "id": "J0003",
+        "service_name": "FotoCopy"
+      },
+      "status": "Waiting",
+      "created_at": "2025-03-17T02:41:02.832Z",
+      "time_start": null,
+      "time_end": null
+    },
+    {
+      "id": "caf7c6de-fb83-492a-8c9a-30d292f018a4",
+      "customer": {
+        "id": "e9a320b7-2eef-422a-a178-edf7e1ce44da",
+        "customer_name": "Customer/J0002",
+        "phone": "-",
+        "queue_number": "D78"
+      },
+      "service": {
+        "id": "J0002",
+        "service_name": "Design"
+      },
+      "status": "Waiting",
+      "created_at": "2025-03-17T02:42:55.735Z",
+      "time_start": null,
+      "time_end": null
+    },
+    {
+      "id": "de656fcd-0641-4f4c-9222-fc3b9c988b5f",
+      "customer": {
+        "id": "55234d8f-8500-4600-b91c-ada1cf62c2d6",
+        "customer_name": "Customer/J0003",
+        "phone": "-",
+        "queue_number": "F52"
+      },
+      "service": {
+        "id": "J0003",
+        "service_name": "FotoCopy"
+      },
+      "status": "Waiting",
+      "created_at": "2025-03-17T02:45:50.263Z",
+      "time_start": null,
+      "time_end": null
+    },
+    {
+      "id": "12985714-8f91-4c44-a045-216952a8921b",
+      "customer": {
+        "id": "9fc62644-f8d5-4b4f-bddb-491cf659bc9a",
+        "customer_name": "Customer/J0003",
+        "phone": "-",
+        "queue_number": "F18"
+      },
+      "service": {
+        "id": "J0003",
+        "service_name": "FotoCopy"
+      },
+      "status": "Waiting",
+      "created_at": "2025-03-17T02:45:50.623Z",
+      "time_start": null,
+      "time_end": null
+    },
+    {
+      "id": "0b87fdc8-7836-4374-b313-8000f93c7fdd",
+      "customer": {
+        "id": "e1937bef-3bc7-4948-aebb-6bab9f0caf02",
+        "customer_name": "Customer/J0003",
+        "phone": "-",
+        "queue_number": "F37"
+      },
+      "service": {
+        "id": "J0003",
+        "service_name": "FotoCopy"
+      },
+      "status": "Waiting",
+      "created_at": "2025-03-17T02:45:54.063Z",
+      "time_start": null,
+      "time_end": null
+    },
+    {
+      "id": "c38e6f80-74c1-4743-ad50-b00823e90ace",
+      "customer": {
+        "id": "46159f65-c053-4412-ba4e-94c0ed27bdb0",
+        "customer_name": "Customer/J0003",
+        "phone": "-",
+        "queue_number": "F89"
+      },
+      "service": {
+        "id": "J0003",
+        "service_name": "FotoCopy"
+      },
+      "status": "Waiting",
+      "created_at": "2025-03-17T02:45:55.344Z",
+      "time_start": null,
+      "time_end": null
+    },
+    {
+      "id": "821f281e-6661-4144-bbcb-b6ee51938ebf",
+      "customer": {
+        "id": "a7850ebf-5d38-46e3-9291-f5d62e361b4c",
+        "customer_name": "Customer/J0003",
+        "phone": "-",
+        "queue_number": "F80"
+      },
+      "service": {
+        "id": "J0003",
+        "service_name": "FotoCopy"
+      },
+      "status": "Waiting",
+      "created_at": "2025-03-17T02:45:56.263Z",
+      "time_start": null,
+      "time_end": null
+    },
+    {
+      "id": "e20a7685-a42e-44a7-b8b6-7623574a86d0",
+      "customer": {
+        "id": "27a47d5b-d50b-4386-8786-5f46d62d82cc",
+        "customer_name": "Customer/J0003",
+        "phone": "-",
+        "queue_number": "F35"
+      },
+      "service": {
+        "id": "J0003",
+        "service_name": "FotoCopy"
+      },
+      "status": "Waiting",
+      "created_at": "2025-03-17T02:45:57.936Z",
+      "time_start": null,
+      "time_end": null
+    },
+    {
+      "id": "d840fb09-f22c-4481-81c3-b46496d8e2c6",
+      "customer": {
+        "id": "c58542f3-4299-48db-8405-4bccfa66ed36",
+        "customer_name": "Customer/J0002",
+        "phone": "-",
+        "queue_number": "D47"
+      },
+      "service": {
+        "id": "J0002",
+        "service_name": "Design"
+      },
+      "status": "Waiting",
+      "created_at": "2025-03-17T02:46:07.647Z",
+      "time_start": null,
+      "time_end": null
+    },
+    {
+      "id": "397ffd5e-46a7-4ed9-bd54-6ae6ee93b2a3",
+      "customer": {
+        "id": "fc5fb7b5-f6aa-44b2-9cb3-e0a0f37e5792",
+        "customer_name": "Customer/J0001",
+        "phone": "-",
+        "queue_number": "P40"
+      },
+      "service": {
+        "id": "J0001",
+        "service_name": "Siap Print"
+      },
+      "status": "Waiting",
+      "created_at": "2025-03-17T02:53:35.535Z",
+      "time_start": null,
+      "time_end": null
+    },
+    {
+      "id": "4eecf6f9-d6b8-40bb-9343-184ff7ee96b4",
+      "customer": {
+        "id": "b1e7a6ce-f484-47fa-b276-d8a01b53316e",
+        "customer_name": "Customer/J0003",
+        "phone": "-",
+        "queue_number": "F108"
+      },
+      "service": {
+        "id": "J0003",
+        "service_name": "FotoCopy"
+      },
+      "status": "Waiting",
+      "created_at": "2025-03-17T02:53:43.463Z",
+      "time_start": null,
+      "time_end": null
+    },
+    {
+      "id": "0fbef25e-1208-4914-8337-fc67c4aa333d",
+      "customer": {
+        "id": "9ccb3867-3268-42ab-8ab0-e0312cf98926",
+        "customer_name": "Customer/J0002",
+        "phone": "-",
+        "queue_number": "D21"
+      },
+      "service": {
+        "id": "J0002",
+        "service_name": "Design"
+      },
+      "status": "Waiting",
+      "created_at": "2025-03-17T02:54:06.889Z",
+      "time_start": null,
+      "time_end": null
+    },
+    {
+      "id": "17a9bee8-7d77-41a6-821c-ed726f64d37b",
+      "customer": {
+        "id": "70e5c7df-63ff-4fbd-8f1d-7ada233f3d39",
+        "customer_name": "Damar",
+        "phone": "08231382178",
+        "queue_number": "D44"
+      },
+      "service": {
+        "id": "J0002",
+        "service_name": "Design"
+      },
+      "status": "Waiting",
+      "created_at": "2025-03-17T02:55:07.919Z",
+      "time_start": null,
+      "time_end": null
+    },
+    {
+      "id": "a416ee10-091e-4100-9ad4-6b5d13f9a25b",
+      "customer": {
+        "id": "6d40cd5d-3ecd-4ab4-8986-d89ac0584452",
+        "customer_name": "Damar",
+        "phone": "08231382178",
+        "queue_number": "D40"
+      },
+      "service": {
+        "id": "J0002",
+        "service_name": "Design"
+      },
+      "status": "Waiting",
+      "created_at": "2025-03-17T02:56:06.176Z",
+      "time_start": null,
+      "time_end": null
+    },
+    {
+      "id": "bc329aad-1de1-4373-bfcb-2c3fa6bf6dfa",
+      "customer": {
+        "id": "7d19c60e-53ad-41a5-b03d-a3cb9afb6274",
+        "customer_name": "Damar",
+        "phone": "08231382178",
+        "queue_number": "D80"
+      },
+      "service": {
+        "id": "J0002",
+        "service_name": "Design"
+      },
+      "status": "Waiting",
+      "created_at": "2025-03-17T02:56:46.664Z",
+      "time_start": null,
+      "time_end": null
+    },
+    {
+      "id": "f1182309-fdcb-4a4c-9724-dc2f7e344377",
+      "customer": {
+        "id": "eba9a557-f1a5-4a58-b8f2-fa967334bec1",
+        "customer_name": "Dian",
+        "phone": "08654654756",
+        "queue_number": "D22"
+      },
+      "service": {
+        "id": "J0002",
+        "service_name": "Design"
+      },
+      "status": "Waiting",
+      "created_at": "2025-03-17T02:57:04.687Z",
+      "time_start": null,
+      "time_end": null
+    },
+    {
+      "id": "128a03a5-1abb-4c8b-af3a-7282242bd5b6",
+      "customer": {
+        "id": "f30835cd-ae9d-432f-bbf9-95711fcf7251",
+        "customer_name": "Damar",
+        "phone": "08312173184",
+        "queue_number": "D34"
+      },
+      "service": {
+        "id": "J0002",
+        "service_name": "Design"
+      },
+      "status": "Waiting",
+      "created_at": "2025-03-17T02:58:03.267Z",
+      "time_start": null,
+      "time_end": null
+    },
+    {
+      "id": "c7c793d5-4d3d-486d-98cb-ebd8e66d1505",
+      "customer": {
+        "id": "be6c6966-4c6a-4b02-bbef-c88e3826a69f",
+        "customer_name": "Damar",
+        "phone": "08231382178",
+        "queue_number": "D73"
+      },
+      "service": {
+        "id": "J0002",
+        "service_name": "Design"
+      },
+      "status": "Waiting",
+      "created_at": "2025-03-17T03:06:04.176Z",
+      "time_start": null,
+      "time_end": null
+    },
+    {
+      "id": "eca7eec6-1190-450a-848a-6084591be1cb",
+      "customer": {
+        "id": "911be0ba-5b84-4d79-893f-db04275ce0b3",
+        "customer_name": "Customer/J0002",
+        "phone": "-",
+        "queue_number": "D80"
+      },
+      "service": {
+        "id": "J0002",
+        "service_name": "Design"
+      },
+      "status": "Waiting",
+      "created_at": "2025-03-17T03:09:44.959Z",
+      "time_start": null,
+      "time_end": null
+    },
+    {
+      "id": "fde2f10a-5ca8-4532-ac8d-49327793e761",
+      "customer": {
+        "id": "a2fd067d-cc62-4792-8281-3cc69ac3a6bc",
+        "customer_name": "Damar",
+        "phone": "08231382178",
+        "queue_number": "D20"
+      },
+      "service": {
+        "id": "J0002",
+        "service_name": "Design"
+      },
+      "status": "Waiting",
+      "created_at": "2025-03-17T03:09:57.260Z",
+      "time_start": null,
+      "time_end": null
+    },
+    {
+      "id": "0ab4e966-894e-4ffe-bdb9-2585c91e0aa5",
+      "customer": {
+        "id": "4c605974-ab18-4dde-b271-0db927a1dcb7",
+        "customer_name": "Customer/J0002",
+        "phone": "-",
+        "queue_number": "D52"
+      },
+      "service": {
+        "id": "J0002",
+        "service_name": "Design"
+      },
+      "status": "Waiting",
+      "created_at": "2025-03-17T03:12:04.447Z",
+      "time_start": null,
+      "time_end": null
+    },
+    {
+      "id": "3ff8d63f-1b84-40a9-8546-8b0b4e109837",
+      "customer": {
+        "id": "61458b03-2c60-4beb-a3d0-ae8eaee45beb",
+        "customer_name": "Customer/J0001",
+        "phone": "-",
+        "queue_number": "P96"
+      },
+      "service": {
+        "id": "J0001",
+        "service_name": "Siap Print"
+      },
+      "status": "Waiting",
+      "created_at": "2025-03-17T03:13:16.079Z",
+      "time_start": null,
+      "time_end": null
+    },
+    {
+      "id": "4dd1e30e-7dac-47c1-a83a-68e71df0da6b",
+      "customer": {
+        "id": "b6620968-cb2d-4338-aa30-c2c7dc1c9336",
+        "customer_name": "Damar",
+        "phone": "45765765756756",
+        "queue_number": "D14"
+      },
+      "service": {
+        "id": "J0002",
+        "service_name": "Design"
+      },
+      "status": "Waiting",
+      "created_at": "2025-03-17T03:13:25.968Z",
+      "time_start": null,
+      "time_end": null
+    },
+    {
+      "id": "e8919082-1178-4390-9852-209bf37f4889",
+      "customer": {
+        "id": "f0600f65-8074-4edb-af44-eac75ebe5189",
+        "customer_name": "Customer/J0001",
+        "phone": "-",
+        "queue_number": "P67"
+      },
+      "service": {
+        "id": "J0001",
+        "service_name": "Siap Print"
+      },
+      "status": "Waiting",
+      "created_at": "2025-03-17T03:15:20.431Z",
+      "time_start": null,
+      "time_end": null
+    },
+    {
+      "id": "e69ccdf0-0e64-4e73-b9e1-699ca482209d",
+      "customer": {
+        "id": "ea366bd2-37c7-4c8e-b28f-c99d410460b5",
+        "customer_name": "Customer/J0002",
+        "phone": "-",
+        "queue_number": "D69"
+      },
+      "service": {
+        "id": "J0002",
+        "service_name": "Design"
+      },
+      "status": "Waiting",
+      "created_at": "2025-03-17T03:35:49.136Z",
+      "time_start": null,
+      "time_end": null
+    },
+    {
+      "id": "54da4ea0-c48f-4ddd-8fd1-061192373853",
+      "customer": {
+        "id": "7e5b933c-838e-48ce-a5d0-270e77af55b8",
+        "customer_name": "Customer/J0003",
+        "phone": "-",
+        "queue_number": "F58"
+      },
+      "service": {
+        "id": "J0003",
+        "service_name": "FotoCopy"
+      },
+      "status": "Waiting",
+      "created_at": "2025-03-17T03:38:02.376Z",
+      "time_start": null,
+      "time_end": null
+    },
+    {
+      "id": "06e5c901-c4aa-4d30-a9f8-b8446053d3ff",
+      "customer": {
+        "id": "30e72ee5-f403-4bf8-b8ae-b21195cb7cfb",
+        "queue_number": "D58"
+      },
+      "service": {
+        "id": "J0002",
+        "service_name": "Design"
+      },
+      "status": "Waiting",
+      "created_at": "2025-03-17T03:38:49.032Z",
+      "time_start": null,
+      "time_end": null
+    },
+    {
+      "id": "91342f64-a890-4b30-a3e5-f0a3bad321a6",
+      "customer": {
+        "id": "5e89196f-315e-43a1-a0c7-db6f4213fe1e",
+        "phone": "+628988078797897",
+        "queue_number": "D12"
+      },
+      "service": {
+        "id": "J0002",
+        "service_name": "Design"
+      },
+      "status": "Waiting",
+      "created_at": "2025-03-17T04:16:32.466Z",
+      "time_start": null,
+      "time_end": null
+    },
+    {
+      "id": "c6e3256f-ea8d-46c4-be6e-7f0f27b2cf86",
+      "customer": {
+        "id": "0930ab6c-b94f-4cf9-a9a3-4e4cf6671836",
+        "phone": "628123859475",
+        "queue_number": "D79"
+      },
+      "service": {
+        "id": "J0002",
+        "service_name": "Design"
+      },
+      "status": "Waiting",
+      "created_at": "2025-03-17T04:18:31.403Z",
+      "time_start": null,
+      "time_end": null
+    },
+    {
+      "id": "84156b2f-3e4c-4c1c-b9f1-be37a549b701",
+      "customer": {
+        "id": "8ffdbace-2694-4378-aa3c-5ad3aefb0595",
+        "phone": "886989696977",
+        "queue_number": "P24"
+      },
+      "service": {
+        "id": "J0001",
+        "service_name": "Siap Print"
+      },
+      "status": "Waiting",
+      "created_at": "2025-03-17T04:19:06.169Z",
+      "time_start": null,
+      "time_end": null
+    },
+    {
+      "id": "d91d5536-081d-46c5-a4e4-8a4b19ffdbef",
+      "customer": {
+        "id": "d0ddad8f-6cbe-4924-8cb4-bcd361be9116",
+        "customer_name": "Customer/J0002",
+        "phone": "-",
+        "queue_number": "D54"
+      },
+      "service": {
+        "id": "J0002",
+        "service_name": "Design"
+      },
+      "status": "Waiting",
+      "created_at": "2025-03-17T04:19:41.152Z",
+      "time_start": null,
+      "time_end": null
+    },
+    {
+      "id": "2b8efb6f-b4dc-4594-a6b7-03c42c86fadd",
+      "customer": {
+        "id": "f0e7ab5a-4423-41cd-8f8c-47405f4ba304",
+        "customer_name": "Customer/J0002",
+        "phone": "-",
+        "queue_number": "D13"
+      },
+      "service": {
+        "id": "J0002",
+        "service_name": "Design"
+      },
+      "status": "Waiting",
+      "created_at": "2025-03-17T05:04:27.375Z",
+      "time_start": null,
+      "time_end": null
+    },
+    {
+      "id": "20618520-407b-42b4-9ab6-8d1f2ee6e9a7",
+      "customer": {
+        "id": "4ccc6101-79ec-4227-8dfc-8d7affe598a9",
+        "customer_name": "Customer/J0003",
+        "phone": "-",
+        "queue_number": "F29"
+      },
+      "service": {
+        "id": "J0003",
+        "service_name": "FotoCopy"
+      },
+      "status": "Waiting",
+      "created_at": "2025-03-17T05:07:43.480Z",
+      "time_start": null,
+      "time_end": null
+    },
+    {
+      "id": "ad59ac7e-f6aa-4451-8de9-4889e704a3be",
+      "customer": {
+        "id": "258c3d5b-9e54-4f36-80b2-a51e9a4d7b8c",
+        "customer_name": "Rama",
+        "phone": "62875464568",
+        "queue_number": "D34"
+      },
+      "service": {
+        "id": "J0002",
+        "service_name": "Design"
+      },
+      "status": "Waiting",
+      "created_at": "2025-03-17T05:07:59.256Z",
+      "time_start": null,
+      "time_end": null
+    },
+    {
+      "id": "81db1edf-951b-495b-a551-7d11c48dbece",
+      "customer": {
+        "id": "5b6df42b-fea7-473a-af3e-8c0391d28e7c",
+        "customer_name": "Customer/J0002",
+        "phone": "-",
+        "queue_number": "D89"
+      },
+      "service": {
+        "id": "J0002",
+        "service_name": "Design"
+      },
+      "status": "Waiting",
+      "created_at": "2025-03-17T07:56:43.785Z",
       "time_start": null,
       "time_end": null
     }

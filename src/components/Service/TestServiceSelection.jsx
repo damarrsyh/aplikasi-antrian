@@ -1,9 +1,10 @@
 import { useEffect, useState, useRef } from "react";
-import { createQueueTicket, fetchQueueList, fetchServicesThunk } from "../../redux/Slice/queueSlice";
+import { createQueueTicket, fetchQueueList, fetchServicesThunk, fetchCountryCodesThunk } from "../../redux/Slice/queueSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { Container, Card, Row, Col, Form, Button, Carousel, Modal } from "react-bootstrap";
 import { FaPrint, FaPalette, FaFileAlt, FaUndo, FaTruck, FaUser } from 'react-icons/fa';
 import { v4 as uuidv4 } from "uuid";
+import Select from "react-select";
 
 const iconMap = {
   P: <FaPrint size={30} />,
@@ -16,14 +17,14 @@ const iconMap = {
 
 const ServiceSelection = () => {
   const dispatch = useDispatch();
-  const status = useSelector((state) => state.queue.status);
-  // eslint-disable-next-line no-unused-vars
-  const {qeueuList} = useSelector((state) => state.queue);
   const services = useSelector((state) => state.queue.services);
   const servicesStatus = useSelector((state) => state.queue.servicesStatus);
+  const countryCodes = useSelector((state) => state.queue.countryCodes);
+
   const [selectedService, setSelectedService] = useState(null);
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
+  const [countryCode, setCountryCode] = useState("+62");
   const [ticket, setTicket] = useState(null);
   const [enableForm, setEnableForm] = useState(false);
   const [showErrorModal, setShowErrorModal] = useState(false);
@@ -32,32 +33,54 @@ const ServiceSelection = () => {
   const ticketRef = useRef(null);
 
 useEffect(() => {
-  if (status === "idle") {
     dispatch(fetchQueueList());
     dispatch(fetchServicesThunk());
-  }
-}, [status, dispatch]);
+    dispatch(fetchCountryCodesThunk());
+
+}, [dispatch]);
+
+const customStyles = {
+  control: (provided) => ({
+    ...provided,
+    minWidth: "120px",
+    borderRadius: "5px",
+    fontSize: "14px",
+  }),
+  option: (provided) => ({
+    ...provided,
+    display: "flex",
+    alignItems: "center",
+    fontSize: "14px",
+  }),
+  singleValue: (provided) => ({
+    ...provided,
+    display: "flex",
+    alignItems: "center",
+  }),
+};
 
   const handleServiceSelect = async (serviceId) => {
     const service = services.find(s => s.id === serviceId);
-    if (servicesStatus[serviceId]) {
+    if (service && (servicesStatus[serviceId]?? true)) {
       setSelectedService(service);
+
+      if(!enableForm) { 
+        generateTicket(service);
+      }
     }
   };
 
   const generateTicket = async (service) => {
     if (service) {
-      const queuePrefix = service.kode; // Gunakan kode dari API
-      const queueNumber = `${queuePrefix}${Math.floor(10 + Math.random() * 99)}`;
-      const queueId = uuidv4();
-      const customerId = uuidv4();
+      const queueNumber = `${service.kode}${Math.floor(10 + Math.random() * 99)}`;
+      const fullPhoneNumber = enableForm ? `${countryCode.replace("+", "")}${phone.trim()}` : "-";
 
       const newTicket = {
-        id: queueId,
+        id: uuidv4(),
         customer: {
-          id: customerId,
-          customer_name: enableForm ? name : `Customer/${service.id}`,
-          phone: enableForm ? phone : "-",
+          id: uuidv4(),
+          customer_name: enableForm ? name.trim || "Anonim" : `Customer/${service.id}`,
+          phone: fullPhoneNumber,
           queue_number: queueNumber,
         },
         service: {
@@ -86,19 +109,44 @@ useEffect(() => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    generateTicket(selectedService);
+    if (enableForm && selectedService) {
+      generateTicket(selectedService);
+    }
   };
 
   const handlePrint = () => {
     if (ticketRef.current) {
-      const printContent = ticketRef.current.innerHTML;
-      const originalContent = document.body.innerHTML;
-      document.body.innerHTML = printContent;
-      window.print();
-      document.body.innerHTML = originalContent;
-      window.location.reload();
+      const printWindow = window.open("", "_blank");
+      printWindow.document.write(`
+        <html>
+          <head>
+            <title>Cetak Tiket</title>
+            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+            <style>
+              body { font-family: Poppins, sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; }
+              .ticket-container { max-width: 400px; width: 100%; padding: 20px; }
+            </style>
+          </head>
+          <body>
+            <div class="ticket-container">
+              ${ticketRef.current.innerHTML}
+            </div>
+            <script>
+              window.onload = function() {
+              window.print();
+              setTimeout(() => {
+                window.close();
+                window.opener.location.reload(); // Refresh halaman setelah cetak selesai
+              }, 500);
+            };
+            </script>
+          </body>
+        </html>
+      `);
+      printWindow.document.close();
     }
   };
+  
 
   return (
     <Container fluid>
@@ -115,12 +163,13 @@ useEffect(() => {
                         selectedService?.id === service.id ? "border-primary text-primary bg-primary-subtle" : "border-secondary bg-light text-dark"
                       }`}
                       onClick={() => handleServiceSelect(service.id)}
-                      style={{
-                        filter: isActive ? "none" : "blur(3px)", // Blur jika nonaktif
-                        pointerEvents: isActive ? "auto" : "none" // Disable klik jika nonaktif
-                      }}
                     >
-                      <Card.Body className="d-flex flex-column justify-content-center align-items-center">
+                      <Card.Body 
+                      className="d-flex flex-column justify-content-center align-items-center"                       
+                      style={{
+                        filter: isActive ? "none" : "blur(1.5px)", // Blur jika nonaktif
+                        pointerEvents: isActive ? "auto" : "none" // Disable klik jika nonaktif
+                      }}>
                         <div className={`p-4 rounded border ${selectedService?.id === service.id ? "border-primary text-primary bg-light" : "border-secondary text-dark"}`}>
                           {iconMap[service.kode] || <FaUser size={30} />}
                         </div>
@@ -133,7 +182,7 @@ useEffect(() => {
                       {!isActive && (
                         <>
                           <div className="position-absolute top-50 start-50 translate-middle w-100 h-100 d-flex align-items-center justify-content-center text-center bg-dark bg-opacity-50 rounded-3">
-                            <span className="text-white fw-bold">Layanan Sedang Off</span>
+                            <h3 className="text-danger fw-bold">Layanan <br/> Sedang Off</h3>
                           </div>
                         </>
                       )}
@@ -156,31 +205,47 @@ useEffect(() => {
               </Card.Header>
               <Card.Body className="d-flex flex-column">
                 <Form onSubmit={handleSubmit} className="flex-grow-1">
-                  <Form.Group className="mb-3 mt-3" controlId="formName">
-                    <Form.Label className={enableForm ? "text-dark" : "text-muted"}>Nama</Form.Label>
-                    <Form.Control
-                      type="text"
-                      placeholder={enableForm ? "Enter your name" : ""}
-                      value={name}
-                      onChange={(e) => setName(e.target.value)}
-                      disabled={!enableForm}
-                      className={enableForm ? "text-dark" : "text-muted"}
-                    />
-                  </Form.Group>
-                  <Form.Group className="mb-3" controlId="formPhone">
-                    <Form.Label className={enableForm ? "text-dark" : "text-muted"}>No Telepon</Form.Label>
-                    <Form.Control
-                      type="text"
-                      placeholder={enableForm ? "Enter your phone number" : ""}
-                      value={phone}
-                      onChange={(e) => setPhone(e.target.value)}
-                      disabled={!enableForm}
-                      className={enableForm ? "text-dark" : "text-muted"}
-                    />
-                  </Form.Group>
-                  <Button variant={enableForm ? "primary" : "outline-muted"} type="submit" disabled={!enableForm}>
-                    Submit
-                  </Button>
+                {enableForm && (
+                  <>
+                    <Form.Group className="mt-3">
+                      <Form.Label>Nama</Form.Label>
+                      <Form.Control type="text" value={name} onChange={(e) => setName(e.target.value)} />
+                    </Form.Group>
+                    <Form.Group className="mt-3">
+                      <Form.Label>No Telepon</Form.Label>
+                      <div className="d-flex">
+                        {/* Dropdown dengan react-select */}
+                        <Select
+                          value={countryCodes.find((c) => c.code === countryCode)}
+                          onChange={(selected) => setCountryCode(selected.code)}
+                          options={countryCodes}
+                          getOptionLabel={(e) => (
+                            <div style={{ display: "flex", alignItems: "center" }}>
+                              {e.code}
+                            </div>
+                          )}
+                          getOptionValue={(e) => e.code}
+                          styles={customStyles}
+                          isDisabled={!enableForm}
+                        />
+                        
+                        {/* Input nomor telepon */}
+                        <Form.Control
+                          type="text"
+                          placeholder="Enter phone number"
+                          value={phone}
+                          onChange={(e) => setPhone(e.target.value)}
+                          disabled={!enableForm}
+                          className="ms-2"
+                          style={{ flex: 1 }}
+                        />
+                      </div>
+                    </Form.Group>
+                    <Button className="mt-3" variant={enableForm ? "primary" : "outline-muted"} type="submit" disabled={!enableForm}>
+                      Submit
+                    </Button>
+                  </>
+                )}
                 </Form>
               </Card.Body>
             </Card>

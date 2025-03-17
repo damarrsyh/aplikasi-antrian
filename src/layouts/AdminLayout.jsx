@@ -1,13 +1,18 @@
-import { useState } from "react";
-import AdminSidebar from "../components/AdminSidebar"; // Sesuaikan dengan nama file sidebar
+import { useState, useEffect } from "react";
+import AdminSidebar from "../components/layouts/AdminSidebar"; // Sesuaikan dengan nama file sidebar
 import { Outlet } from "react-router-dom";
-import AdminNavbar from "../components/AdminNavbar";
-import AdminFooter from "../components/AdminFooter";
+import AdminNavbar from "../components/layouts/AdminNavbar";
+import AdminFooter from "../components/layouts/AdminFooter";
 
 const AdminLayout = () => {
-  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(
+    JSON.parse(localStorage.getItem("sidebarCollapsed")) || false
+  );
 
-  // Toggle sidebar secara dinamis
+  useEffect(() => {
+    localStorage.setItem("sidebarCollapsed", JSON.stringify(isSidebarCollapsed));
+  }, [isSidebarCollapsed]);
+
   const toggleSidebar = () => {
     setIsSidebarCollapsed((prev) => !prev);
   };

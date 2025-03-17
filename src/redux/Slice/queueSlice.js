@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk, createEntityAdapter } from "@reduxjs/toolkit";
-import { createTicketApi, updateQueueStatus, updateServiceStatus, fetchQueues, fetchServices } from "../../api/queueApi";
+import { createTicketApi, updateQueueStatus, updateServiceStatus, fetchQueues, fetchServices, fetchCountryCodes } from "../../api/queueApi";
 
 // Async Thunk untuk mengambil daftar antrian dari API
 export const fetchQueueList = createAsyncThunk("queue/fetchQueueList", async (_, { rejectWithValue }) => {
@@ -24,6 +24,20 @@ export const fetchServicesThunk = createAsyncThunk(
   }
 );
 
+// Async Thunk untuk mendapatkan kode negara
+export const fetchCountryCodesThunk = createAsyncThunk(
+  "queue/fetchCountryCodes",
+  async (_, { rejectWithValue }) => {
+    try {
+      const data = await fetchCountryCodes();
+      return data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data || "Gagal mengambil kode negara");
+    }
+  }
+);
+
+// Async Thunk untuk Update Service Status Antrian
 export const updateServiceStatusThunk = createAsyncThunk(
   "queue/updateServiceStatus",
   async ({ serviceId, newStatus }, { rejectWithValue }) => {
@@ -76,6 +90,7 @@ const initialState = {
   ...queueAdapter.getInitialState(),
   services: [],
   servicesStatus: {},
+  countryCodes: [],
   status: "idle",
   error: null,
 };
@@ -105,6 +120,9 @@ const queueSlice = createSlice({
           acc[service.id] = service.status;
           return acc;
         }, {});
+      })
+      .addCase(fetchCountryCodesThunk.fulfilled, (state, action) => {
+        state.countryCodes = action.payload;
       })
       .addCase(updateServiceStatusThunk.fulfilled, (state, action) => {
         const updatedService = action.payload;

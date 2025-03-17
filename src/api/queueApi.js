@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = import.meta.env.VITE_API_TEST_URL; // Gunakan env variable agar fleksibel
+const API_URL = import.meta.env.VITE_API_TEST_URL;
 
 const api = axios.create({
   baseURL: API_URL,
@@ -51,7 +51,7 @@ export const logout = async () => {
   const user = JSON.parse(localStorage.getItem("user"));
   
   if (user) {
-    await api.patch(`/users/${user.id}`, { status: "inactive" }); // Update status di API
+    await api.patch(`/users/${user.id}`, { status: "inactive" }); // Update status User di API
   }
 
   localStorage.removeItem("token");
@@ -67,6 +67,25 @@ api.interceptors.request.use((config) => {
   }
   return config;
 });
+
+
+export const fetchCountryCodes = async () => {
+  try {
+    const response = await api.get("https://restcountries.com/v3.1/all");
+    return response.data
+      .map((country) => ({
+        code: country.idd?.root
+          ? `${country.idd.root}${country.idd.suffixes ? country.idd.suffixes[0] : ""}`
+          : null,
+        name: country.name.common,
+        flag: country.flag,
+      }))
+      .filter((c) => c.code); // Hanya ambil data yang memiliki kode telepon
+  } catch (error) {
+    console.error("Error fetching country codes:", error);
+    return [];
+  }
+};
 
 // GET DATA LAYANAN
 export const fetchServices = async () => {

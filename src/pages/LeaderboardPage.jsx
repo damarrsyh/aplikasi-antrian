@@ -1,5 +1,5 @@
 import { Container } from "react-bootstrap"
-import Leaderboard from "../../components/Admin/Leaderboard"
+import Leaderboard from "../components/Admin/Leaderboard"
 
 const LeaderboardPage = () => {
   return (

@@ -1,8 +1,8 @@
 import { Navbar, Container, Dropdown, Button, Image } from "react-bootstrap";
 import { FaSun, FaMoon, FaUsers, FaBars } from "react-icons/fa"; 
-import useTheme from "./Shared/useTheme";
+import useTheme from "../Shared/useTheme";
 import { useDispatch, useSelector } from "react-redux";
-import { logout } from "../redux/Slice/authSlice";
+import { logout } from "../../redux/Slice/authSlice";
 import { useNavigate } from "react-router-dom";
 
 // eslint-disable-next-line react/prop-types
