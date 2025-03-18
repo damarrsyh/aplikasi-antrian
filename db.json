@@ -898,10 +898,11 @@
         "id": "J0004",
         "service_name": "Retur Penjualan"
       },
-      "status": "Waiting",
+      "status": "Complete",
       "created_at": "2025-03-17T02:22:01.640Z",
-      "time_start": null,
-      "time_end": null
+      "time_start": "2025-03-18T07:12:06.085Z",
+      "time_end": "2025-03-18T07:12:07.526Z",
+      "counter": "Loket 1"
     },
     {
       "id": "6179e81c-7bc6-4b25-bb5a-7f2d55a75ca7",
@@ -915,10 +916,11 @@
         "id": "J0003",
         "service_name": "FotoCopy"
       },
-      "status": "Waiting",
+      "status": "Complete",
       "created_at": "2025-03-17T02:28:39.919Z",
-      "time_start": null,
-      "time_end": null
+      "time_start": "2025-03-18T08:04:13.657Z",
+      "time_end": "2025-03-18T08:22:17.635Z",
+      "counter": "Loket 1"
     },
     {
       "id": "d1d65b8f-8d4c-4ddc-a70a-c8fad03a8393",
@@ -932,10 +934,11 @@
         "id": "J0003",
         "service_name": "FotoCopy"
       },
-      "status": "Waiting",
+      "status": "Complete",
       "created_at": "2025-03-17T02:29:14.359Z",
-      "time_start": null,
-      "time_end": null
+      "time_start": "2025-03-18T08:04:15.792Z",
+      "time_end": "2025-03-18T08:22:22.707Z",
+      "counter": "Loket 1"
     },
     {
       "id": "b7bc671a-9a92-4aeb-b628-e8e8a6cafd41",
@@ -949,10 +952,11 @@
         "id": "J0003",
         "service_name": "FotoCopy"
       },
-      "status": "Waiting",
+      "status": "Complete",
       "created_at": "2025-03-17T02:33:13.167Z",
-      "time_start": null,
-      "time_end": null
+      "time_start": "2025-03-18T08:04:18.595Z",
+      "time_end": "2025-03-18T08:22:26.699Z",
+      "counter": "Loket 1"
     },
     {
       "id": "ca68f1e7-29e7-4477-b049-fbf89fa040fb",
@@ -966,10 +970,11 @@
         "id": "J0002",
         "service_name": "Design"
       },
-      "status": "Waiting",
+      "status": "Complete",
       "created_at": "2025-03-17T02:35:59.023Z",
-      "time_start": null,
-      "time_end": null
+      "time_start": "2025-03-18T08:04:19.570Z",
+      "time_end": "2025-03-18T08:22:30.851Z",
+      "counter": "Loket 1"
     },
     {
       "id": "84c5373a-f9fe-4932-9742-3aca4d63c82f",
@@ -983,10 +988,11 @@
         "id": "J0003",
         "service_name": "FotoCopy"
       },
-      "status": "Waiting",
+      "status": "Complete",
       "created_at": "2025-03-17T02:36:21.647Z",
-      "time_start": null,
-      "time_end": null
+      "time_start": "2025-03-18T08:04:20.995Z",
+      "time_end": "2025-03-18T08:22:33.699Z",
+      "counter": "Loket 1"
     },
     {
       "id": "bfe55338-a562-4508-b968-bc0cf8c946f6",
@@ -1626,6 +1632,57 @@
       },
       "status": "Waiting",
       "created_at": "2025-03-17T07:56:43.785Z",
+      "time_start": null,
+      "time_end": null
+    },
+    {
+      "id": "cd5c9dc8-bbad-4c73-b94a-cb8201386181",
+      "customer": {
+        "id": "1ae2a714-6b6f-45b0-8ba2-d3a7ee952335",
+        "customer_name": "MAr",
+        "phone": "628565768978",
+        "queue_number": "F107"
+      },
+      "service": {
+        "id": "J0003",
+        "service_name": "FotoCopy"
+      },
+      "status": "Waiting",
+      "created_at": "2025-03-18T02:12:11.870Z",
+      "time_start": null,
+      "time_end": null
+    },
+    {
+      "id": "386af508-d2d6-4a29-b2db-f9be8e3e4ed6",
+      "customer": {
+        "id": "34308091-4c62-4498-b51f-bb746bd26750",
+        "customer_name": "Customer/J0002",
+        "phone": "-",
+        "queue_number": "D96"
+      },
+      "service": {
+        "id": "J0002",
+        "service_name": "Design"
+      },
+      "status": "Waiting",
+      "created_at": "2025-03-18T06:20:48.348Z",
+      "time_start": null,
+      "time_end": null
+    },
+    {
+      "id": "1f219d9e-8d19-4164-a632-dbf57986cdf1",
+      "customer": {
+        "id": "b106898e-658f-4783-a226-b196f6a91db6",
+        "customer_name": "Customer/J0004",
+        "phone": "-",
+        "queue_number": "R20"
+      },
+      "service": {
+        "id": "J0004",
+        "service_name": "Retur Penjualan"
+      },
+      "status": "Waiting",
+      "created_at": "2025-03-18T08:28:16.523Z",
       "time_start": null,
       "time_end": null
     }

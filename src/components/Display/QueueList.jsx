@@ -1,14 +1,17 @@
 /* eslint-disable react/prop-types */
 import { Row, Col, Card, ListGroup } from "react-bootstrap"
 
-const QueueList = ({ queueList, getRandomColor }) => {
+const QueueList = ({ queueList }) => {
+
+  const themeColor = localStorage.getItem("themeColor") || "#007bff";
+
   return (
     <>
     <Row className="flex-grow-1" style={{ width: "100%" }}>
       {Array.from(new Set(queueList.map((queue) => queue.service.service_name))).map((serviceName, index) => (
         <Col key={index} md={4} className="mb-3">
           <Card className="shadow border-0">
-            <Card.Header className={`bg-${getRandomColor(index)} text-white text-capitalize`}>
+            <Card.Header className={`text-white text-capitalize`} style={{backgroundColor: themeColor}}>
               <h5>List Antrian {serviceName}</h5>
             </Card.Header>
             <ListGroup variant="flush">

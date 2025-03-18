@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchQueueList } from "../../redux/Slice/queueSlice";
-import TestQueueTable from "../../components/Admin/TestQueueTable";
+import QueueTable from "../../components/Admin/QueueTable";
 import { Col, Container, Row, Spinner } from "react-bootstrap";
 
 const QueueListPage = () => {
@@ -28,7 +28,7 @@ const QueueListPage = () => {
           {status === "failed" && <p className="text-danger">Error: {error}</p>}
 
           {/* Menampilkan tabel antrian jika data sudah ada */}
-          {status === "succeeded" && <TestQueueTable/>}
+          {status === "succeeded" && <QueueTable/>}
         </Col>
       </Row>
     </Container>

@@ -40,8 +40,19 @@ const QueueMenuPage = () => {
     }
   };
 
+  const isValidPhoneNumber = (phone) => {
+    const phoneRegex = /^[0-9]{8,13}$/; // Hanya angka dengan panjang 10-13 digit
+    return phoneRegex.test(phone);
+  };
+
   const generateTicket = async (service) => {
     if (service) {
+      if (enableForm && !isValidPhoneNumber(phone)) {
+        setErrorMessage("Nomor HP tidak valid! Harap isi dengan angka 10-13 digit.");
+        setShowErrorModal(true);
+        return;
+      }
+
       const queueNumber = `${service.kode}${Math.floor(10 + Math.random() * 99)}`;
       const fullPhoneNumber = enableForm ? `${countryCode.replace("+", "")}${phone.trim()}` : "-";
 

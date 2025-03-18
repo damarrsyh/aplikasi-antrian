@@ -45,16 +45,7 @@ const LoginForm = () => {
     <Container fluid
       className="d-flex justify-content-center align-items-center vh-100 animated-bg"
     >
-      <Card
-        style={{
-          width: "350px",
-          padding: "1.5rem",
-          boxShadow: "0 4px 10px rgba(0, 0, 0, 0.2)",
-          backgroundColor: "rgba(255, 255, 255, 0.2)",
-          backdropFilter: "blur(10px)",
-          borderRadius: "12px",
-          border: "1px solid rgba(255, 255, 255, 0.3)",
-        }}
+      <Card className="custom-card-login rounded"
       >
         <Card.Title className="text-center mb-3 text-white">Sign In</Card.Title>
         {error && <Alert variant="danger">{error}</Alert>}

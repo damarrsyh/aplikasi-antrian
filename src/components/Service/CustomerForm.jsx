@@ -7,15 +7,15 @@ const CustomerForm = ({ enableForm, setEnableForm, name, setName, phone, setPhon
   const customStyles = {
     control: (provided) => ({
       ...provided,
-      minWidth: "120px",
+      minWidth: "100px",
       borderRadius: "5px",
-      fontSize: "14px",
+      fontSize: "16px",
     }),
     option: (provided) => ({
       ...provided,
       display: "flex",
       alignItems: "center",
-      fontSize: "14px",
+      fontSize: "16px",
     }),
     singleValue: (provided) => ({
       ...provided,
@@ -23,6 +23,8 @@ const CustomerForm = ({ enableForm, setEnableForm, name, setName, phone, setPhon
       alignItems: "center",
     }),
   };
+
+  const isValidPhoneNumber = (phone) => /^[0-9]{10,13}$/.test(phone);
 
   return (
     <Card className={`flex-grow-1 shadow-sm rounded ${enableForm ? "border-primary" : "border-secondary border"}`}>
@@ -67,10 +69,13 @@ const CustomerForm = ({ enableForm, setEnableForm, name, setName, phone, setPhon
                   placeholder="Enter Your Phone Number"
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
-                  disabled={!enableForm}
+                  isInvalid={phone && !isValidPhoneNumber(phone)}
                   className="ms-2"
                   style={{ flex: 1 }}
                 />
+                <Form.Control.Feedback>
+                  Nomor HP harus berjumlah 8-13 Digit.
+                </Form.Control.Feedback>
               </div>
             </Form.Group>
             <Button className="mt-3" variant="primary" type="submit" disabled={!enableForm}>Submit</Button>

@@ -68,7 +68,12 @@ body {
 /* START LOGIN FORM STYLING */
 
 .animated-bg {
-  background: linear-gradient(135deg, #667eea, #764ba2, #ff758c, #ff7eb3);
+  background: linear-gradient(135deg, 
+  #1a1a40 0%,   /* Ungu Tua */
+  #3b3b98 25%,  /* Biru Violet */
+  #5c33ff 50%,  /* Neon Blue */
+  #1a1a40 100%  /* Kembali ke Ungu Gelap */
+);
   background-size: 300% 300%;
   animation: gradientAnimation 6s ease infinite;
 }
@@ -90,6 +95,15 @@ body {
   right: 15px;
   top: 50%;
   transform: translateY(-50%);
+}
+
+.custom-card-login {
+  width: 350px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  background-color: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
 /* END LOGIN FORM STYLING */
@@ -239,6 +253,8 @@ footer {
 /* END FOOTER COMPONENT STYLING */
 
 
+
+/* TABLE LIST ANTRIAN */
 
 /* START PAGINATION THEME STYLING */
 
@@ -403,6 +419,44 @@ footer {
 }
 
 /* END CALL BUTTON THEME STYLING */
+
+/* END TABLE LIST ANTRIAN */
+
+
+
+/* TABLE SETTINGS MENU LAYANAN */
+
+/* STYLING SWTICH */
+
+.custom-switch .form-check-input {
+  width: 3rem;
+  height: 1.5rem;
+  background-color: red; /* Default Merah (OFF) */
+  border: none;
+  transition: background-color 0.3s ease-in-out, box-shadow 0.2s;
+  box-shadow: none !important;
+}
+
+.custom-switch .form-check-input:checked {
+  background-color: green !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.custom-switch .form-check-input:hover {
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.custom-switch .form-check-input:focus {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+
+/* END STYLING SWTICH */
+
+/* END TABLE SETTINGS MENU LAYANAN */
 
 
 

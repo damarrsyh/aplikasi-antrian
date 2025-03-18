@@ -2,14 +2,12 @@ import { useEffect, useState, useMemo, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { ProgressBar, Card, Container, Col, Row, Spinner } from "react-bootstrap";
 import { motion, AnimatePresence } from "framer-motion";
-import CountUp from "react-countup";
 import { fetchLeaderboard } from "../../redux/Slice/reportSlice";
 
 const Leaderboard = () => {
   const dispatch = useDispatch();
   const { leaderboard, status } = useSelector(state => state.report);
 
-  const [previousPendapatan, setPreviousPendapatan] = useState(0);
   const [totalPendapatanSemuaOperator, setTotalPendapatanSemuaOperator] = useState(0);
 
   // Menggunakan useMemo agar tidak dihitung ulang setiap render
@@ -39,7 +37,6 @@ const Leaderboard = () => {
   // Update total pendapatan setiap kali leaderboard berubah
   useEffect(() => {
     if (totalPendapatan !== totalPendapatanSemuaOperator) {
-      setPreviousPendapatan(totalPendapatanSemuaOperator);
       setTotalPendapatanSemuaOperator(totalPendapatan);
     }
   }, [totalPendapatan, totalPendapatanSemuaOperator]);
@@ -47,7 +44,7 @@ const Leaderboard = () => {
   return (
     <Container fluid style={{ backgroundColor: "black", color: "#fff", height: "100vh", padding: "20px" }}>
       <Row className="h-100">
-        <Col className="col-lg-8 p-0">
+        <Col className="p-0">
           <Card className="p-3 h-100" style={{ backgroundColor: "#1c283e", color: "#fff" }}>
             <Card.Title>Opportunities</Card.Title>
             <p className="text-secondary">Current Data</p>
@@ -122,33 +119,6 @@ const Leaderboard = () => {
                 ))
               )}
             </AnimatePresence>
-          </Card>
-        </Col>
-
-        {/* Total Pendapatan */}
-        <Col className="col-lg-4">
-          <Card className="p-3 mb-2" style={{ backgroundColor: "#1c283e", color: "#fff" }}>
-            <Card.Title className="fw-bold">Total Pendapatan</Card.Title>
-            <h1 className="fw-bold">
-              <CountUp
-                start={previousPendapatan} // Mulai dari nilai sebelumnya
-                end={totalPendapatanSemuaOperator} // Berhenti di nilai terbaru
-                duration={1.2} // Sedikit dipersingkat
-                separator="."
-                prefix="Rp "
-              />
-            </h1>
-          </Card>
-          <Card className="p-3" style={{ backgroundColor: "#1c283e", color: "#fff" }}>
-            <Card.Title>Conversion Rate</Card.Title>
-            <div>
-              <p>Previous 30 days</p>
-              <ProgressBar now={75} label="75%" variant="success" />
-            </div>
-            <div className="mt-3">
-              <p>Previous 90 days</p>
-              <ProgressBar now={68} label="68%" variant="success" />
-            </div>
           </Card>
         </Col>
       </Row>

@@ -1,15 +1,11 @@
-import { Col, Container, Row } from "react-bootstrap"
+import { Container } from "react-bootstrap"
 import QueueSettingsMenu from "../../components/Admin/QueueSettingsMenu"
 
 const QueueSettingsMenuPage = () => {
   return (
     <Container fluid className="p-4">
-      <h3>Settings Menu Layanan Page</h3>
-      <Row>
-        <Col>
+      <h3>Settings Menu Layanan</h3>
           <QueueSettingsMenu/>
-        </Col>
-      </Row>
     </Container>
   )
 }
