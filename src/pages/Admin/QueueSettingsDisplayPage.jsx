@@ -4,7 +4,7 @@ import QueueSettingsDisplay from "../../components/Admin/QueueSettingsDisplay"
 const QueueSettingsDisplayPage = () => {
   return (
     <Container fluid className="p-4">
-      <h3>Setting Display Antrian</h3>
+      <h3>Setting Display</h3>
       <QueueSettingsDisplay/>
     </Container>
   )
