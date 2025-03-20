@@ -15,8 +15,6 @@ export const fetchLeaderboard = createAsyncThunk("report/fetchLeaderboard", asyn
   try {
     const data = await fetchUsers(); // Ambil data dari API
 
-    // console.log("Data Users dari API:", data); // Debug respons API
-
     // Sort berdasarkan jumlah SPK tertinggi, lalu ambil 10 data teratas
     let topOperators = data
       .filter(user => user.role === "operator") // Hanya ambil operator
@@ -33,8 +31,6 @@ export const fetchLeaderboard = createAsyncThunk("report/fetchLeaderboard", asyn
       .slice(0, 10);
       
       topOperators = topOperators.sort(() => Math.random() - 0.5);
-
-    // console.log("Top 10 Leaderboard:", topOperators); // Debug hasil sorting
 
     return topOperators; // Kembalikan 10 operator terbaik
   } catch (error) {

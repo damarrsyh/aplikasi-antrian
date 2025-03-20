@@ -1,15 +1,28 @@
-import { BrowserRouter } from "react-router-dom";
-import AppRoutes from "./routes/AppRoutes";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import MultiTabSync from "./components/MultiTabSync";
-import 'bootstrap/dist/css/bootstrap.min.css'
-import './styles/style.css'
+import 'bootstrap/dist/css/bootstrap.min.css';
+import './styles/style.css';
+import AppRoutes from "./routes/AppRoutes";
+
+const router = createBrowserRouter(
+  [
+    {
+      path: "/*",
+      element: <AppRoutes />,
+    },
+  ],
+  {
+    future: {
+      v7_startTransition: true,
+    },
+  }
+);
 
 const App = () => {
   return (
-    <BrowserRouter>
+    <RouterProvider router={router}>
       <MultiTabSync />
-      <AppRoutes />
-    </BrowserRouter>
+    </RouterProvider>
   );
 };
 

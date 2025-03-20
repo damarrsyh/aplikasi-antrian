@@ -11,17 +11,14 @@ const QueueDisplayPage = () => {
 
   const dispatch = useDispatch();
   const queueList = useSelector(selectAllQueues);
-  const status = useSelector((state) => state.queue.status);
   const [currentTime, setCurrentTime] = useState(new Date());
   const [showVideo, setShowVideo] = useState(true);
   const colors = ["primary", "secondary", "success", "danger", "warning", "info", "dark"];
   const getRandomColor = (index) => colors[index % colors.length];
 
   useEffect(() => {
-    if (status === "idle") {
       dispatch(fetchQueueList());
-    }
-  }, [status, dispatch]);
+  }, [dispatch]);
 
   useEffect(() => {
     const interval = setInterval(() => setCurrentTime(new Date()), 1000);
@@ -34,8 +31,8 @@ const QueueDisplayPage = () => {
   }, []);
 
   // 🔹 Ambil antrian yang sedang "In Progress"
-  const currentQueue = queueList.find(q => q.status === "In Progress") || null;
-  const missedCustomers = queueList.filter(q => q.status === "Missed");
+  const currentQueue = queueList.find(q => q.customer.status === "In Progress") || null;
+  const missedCustomers = queueList.filter(q => q.customer.status === "Missed");
 
 
   return (

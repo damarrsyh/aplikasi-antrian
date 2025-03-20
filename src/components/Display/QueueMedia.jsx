@@ -24,12 +24,12 @@ const QueueMedia = ({ showVideo, missedCustomers }) => {
         <Card.Body>
           <ListGroup variant="flush">
             {missedCustomers.length > 0 ? (
-              missedCustomers.map((customer, index) => (
+              missedCustomers.map((c, index) => (
                 <ListGroup.Item key={index} className="d-flex justify-content-between flex-column">
                   <div className="d-flex justify-content-between">
-                    <h5 className="fw-bold">{customer.customer.queue_number}</h5>
+                    <h5 className="fw-bold">{c.customer.nomor_antrian}</h5>
                     <h5 className="text-muted fw-bold">
-                      {customer.status} - {customer.created_at ? new Date(customer.created_at).toLocaleTimeString() : "Waktu Tidak Diketahui"}
+                      {c.customer.status} - {c.created_at ? new Date(c.created_at).toLocaleTimeString() : "Waktu Tidak Diketahui"}
                     </h5>
                   </div>
                 </ListGroup.Item>

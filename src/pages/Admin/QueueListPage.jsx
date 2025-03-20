@@ -15,8 +15,9 @@ const QueueListPage = () => {
 
   return (
     <Container fluid className="p-4">
-      <h3>List Antrian</h3>
-      <Row>
+      <h5 className="m-0">Antrian</h5>
+      <span>Antrian - List Antrian</span>
+      <Row className="mt-3">
         <Col>
         {status === "loading" && (
             <div className="d-flex justify-content-center">

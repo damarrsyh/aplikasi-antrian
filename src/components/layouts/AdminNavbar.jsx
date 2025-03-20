@@ -6,17 +6,16 @@ import { logout } from "../../redux/Slice/authSlice";
 import { useNavigate } from "react-router-dom";
 
 // eslint-disable-next-line react/prop-types
-const AdminNavbar = ({ toggleSidebar }) => {
+const AdminNavbar = ({ toggleSidebar, setShowModal }) => {
   const { darkMode, toggleTheme } = useTheme();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { user } = useSelector((state) => state.auth); // Ambil user dari Redux
-  console.log("Data user dari Redux:", user);
+  const { user } = useSelector((state) => state.auth);
 
   const handleLogout = async () => {
     await logout();
     dispatch(logout());
-    navigate("/login"); 
+    navigate("/login");
   };
 
   return (
@@ -25,13 +24,15 @@ const AdminNavbar = ({ toggleSidebar }) => {
         {/* Kiri: Logo & Sidebar Button */}
         <div className="d-flex align-items-center">
           <Navbar.Brand href="/" className="d-flex align-items-center me-3">
-            <FaUsers className="me-2" />
-            <span className="fw-bold">Antrian</span>
+            <FaUsers className="me-2 d-none d-md-inline" />
+            <span className="fw-bold d-none d-md-inline">Antrian</span>
           </Navbar.Brand>
+          
+          {/* Satu Button untuk Sidebar (Modal di Mobile, Toggle di Desktop) */}
           <Button 
-            variant={darkMode ? "text-light" : "text-dark"} 
+            variant="light" 
             className="me-2"
-            onClick={toggleSidebar}
+            onClick={() => window.innerWidth < 768 ? setShowModal(true) : toggleSidebar()}
           >
             <FaBars />
           </Button>
@@ -41,9 +42,9 @@ const AdminNavbar = ({ toggleSidebar }) => {
         <div className="d-flex align-items-center">
           {/* Theme Toggle */}
           <Button 
-            variant={darkMode ? "text-light" : "text-dark"} 
+            variant="light" 
             onClick={toggleTheme} 
-            className="theme-toggle rounded-circle d-flex align-items-center justify-content-center"
+            className="theme-toggle rounded-circle d-none d-md-inline"
             style={{ width: "35px", height: "35px" }}
           >
             {darkMode ? <FaSun size={15} /> : <FaMoon size={15} />}
@@ -67,6 +68,10 @@ const AdminNavbar = ({ toggleSidebar }) => {
             </Dropdown.Toggle>
             <Dropdown.Menu>
               <Dropdown.Item href="/settings">Settings</Dropdown.Item>
+              <Dropdown.Item onClick={toggleTheme} className="d-lg-none d-md-none">
+                {darkMode ? <FaSun className="me-2" /> : <FaMoon className="me-2" />}
+                {darkMode ? "Light Mode" : "Dark Mode"}
+              </Dropdown.Item>
               <Dropdown.Divider />
               <Dropdown.Item onClick={handleLogout}>Logout</Dropdown.Item>
             </Dropdown.Menu>

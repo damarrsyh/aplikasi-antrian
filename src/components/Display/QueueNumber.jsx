@@ -15,11 +15,11 @@ const QueueNumber = ({currentQueue, queueList}) => {
           <h3 className="fw-bold" style={{fontSize: `${fontSize}px`}}>NOMOR ANTRIAN</h3>
         </Card.Header>
         <Card.Body>
-          <h1 className="display-3 fw-bold p-3" style={{fontSize: largeQueueNumber ? "60px" : "30px"}}>{currentQueue ? currentQueue.customer.queue_number : "-"}</h1>
+          <h1 className="display-3 fw-bold p-3" style={{fontSize: largeQueueNumber ? "60px" : "30px"}}>{currentQueue ? currentQueue.customer.nomor_antrian : "-"}</h1>
         </Card.Body>
         <Card.Footer style={{backgroundColor: themeColor, color: "white"}}>
           <h4 className="fw-bold"  style={{fontSize: `${fontSize}px`}}>
-            {currentQueue ? currentQueue.counter || "Tidak Diketahui" : "Tidak Ada Data"}
+            {currentQueue ? currentQueue.customer.counter || "Tidak Diketahui" : "Tidak Ada Data"}
           </h4>
         </Card.Footer>
       </Card>

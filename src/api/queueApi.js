@@ -145,7 +145,6 @@ export const updateQueueStatus = async (id, updatedData) => {
   try {
     const response = await api.put(`/queues/${id}`, {
       ...updatedData,
-      counter: updatedData.counter || "Tidak Diketahui"
     });
     return response.data;
   } catch (error) {
@@ -183,11 +182,11 @@ export const fetchQueueReport = async () => {
 
     // Hitung rata-rata waktu tunggu & pelayanan
     const waitTimes = data
-      .filter(q => q.status === "Complete")
-      .map(q => new Date(q.time_start) - new Date(q.created_at));
+      .filter(q => q.customer.status === "Complete")
+      .map(q => new Date(q.updated_at) - new Date(q.created_at));
     const serviceTimes = data
-      .filter(q => q.status === "Complete")
-      .map(q => new Date(q.time_end) - new Date(q.time_start));
+      .filter(q => q.customer.status === "Complete")
+      .map(q => new Date(q.customer.time_end) - new Date(q.customer.time_start));
 
     const avgWaitTime = waitTimes.length ? waitTimes.reduce((a, b) => a + b, 0) / waitTimes.length : 0;
     const avgServiceTime = serviceTimes.length ? serviceTimes.reduce((a, b) => a + b, 0) / serviceTimes.length : 0;

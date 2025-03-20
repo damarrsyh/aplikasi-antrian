@@ -3,22 +3,18 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchQueueList, updateQueueStatusThunk, selectAllQueues } from "../../redux/Slice/queueSlice";
 import { Card, Table, Button, Pagination } from "react-bootstrap";
 
-const TestQueueTable = () => {
+const QueueTable = () => {
   const dispatch = useDispatch();
-  const queueList = useSelector(selectAllQueues); // Menggunakan selector agar kompatibel dengan Redux Adapter
-  const status = useSelector((state) => state.queue.status);
-  const user = useSelector((state) => state.auth.user);
+  const queueList = useSelector(selectAllQueues);
 
-  // eslint-disable-next-line no-unused-vars
-  const [currentServingQueue, setCurrentServingQueue] = useState(null);
+  console.log("list Antrian", queueList);
+  const user = useSelector((state) => state.auth.user);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
 
   useEffect(() => {
-    if (status === "idle") {
       dispatch(fetchQueueList());
-    }
-  }, [status, dispatch]);
+  }, [dispatch]);
 
   const handleCallQueue = (queue) => {
     if (!user || !user.loket) {
@@ -26,42 +22,60 @@ const TestQueueTable = () => {
       return;
     }
 
-    setCurrentServingQueue(queue.id);
     dispatch(updateQueueStatusThunk({
       ...queue,
-      status: "In Progress",
-      time_start: new Date().toISOString(),
-      counter: user.loket
+      customer: {
+        ...queue.customer,
+        status: "In Progress",
+        operator: user.name,
+        email: user.email,
+        counter: user.loket,
+        time_start: Math.floor(Date.now() / 1000),
+      },
+      updated_at: new Date().toISOString()
     })).then(() => dispatch(fetchQueueList()));
   };
 
   const handleSkipQueue = (queue) => {
     dispatch(updateQueueStatusThunk({
       ...queue,
-      status: "Missed"
+      customer: {
+        ...queue.customer,
+        status: "Missed",
+        operator: null,
+        email: null,
+        counter: null,
+        time_start: null
+      }
     })).then(() => dispatch(fetchQueueList()));
   };
 
   const handleRecallQueue = (queue) => {
     dispatch(updateQueueStatusThunk({
       ...queue,
-      status: "Waiting"
+      customer: {
+        ...queue.customer,
+        status: "Waiting"
+      }
     })).then(() => dispatch(fetchQueueList()));
   };
 
   const handleCompleteQueue = (queue) => {
     dispatch(updateQueueStatusThunk({
       ...queue,
-      status: "Complete",
-      time_end: new Date().toISOString()
+      customer: {
+        ...queue.customer,
+        status: "Complete",
+        counter: null,
+        time_end: Math.floor(Date.now() / 1000),
+      },
     })).then(() => {
       dispatch(fetchQueueList());
-      setCurrentServingQueue(null);
     });
   };
 
   const sortedQueues = queueList
-    .filter(q => ["Waiting", "In Progress", "Missed"].includes(q.status))
+    .filter(q => ["Waiting", "In Progress", "Missed"].includes(q.customer?.status))
     .sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
   
     const totalPages = Math.ceil(sortedQueues.length / itemsPerPage);
@@ -96,7 +110,6 @@ const TestQueueTable = () => {
             onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))} 
             disabled={currentPage === 1} 
           />
-          
           {pageNumbers.map((page, index) => (
             <Pagination.Item 
               key={index} 
@@ -110,7 +123,7 @@ const TestQueueTable = () => {
 
           <Pagination.Next 
             onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))} 
-            disabled={currentPage === totalPages} 
+            disabled={currentPage === totalPages}
           />
         </Pagination>
       </Card.Header>
@@ -130,36 +143,36 @@ const TestQueueTable = () => {
               currentQueues.map((queue) => (
                 <tr key={queue.id}>
                   <td>{queue.customer?.customer_name}</td>
-                  <td className="text-center fw-bold">{queue.customer?.queue_number}</td>
-                  <td>{queue.service?.service_name}</td>
+                  <td className="text-center fw-bold">{queue.customer?.nomor_antrian}</td>
+                  <td>{queue.customer?.nama_antrian}</td>
                   <td className="text-center">  
                   <span className={`status-badge ${
-                      queue.status === "Waiting" ? "status-waiting" :
-                      queue.status === "In Progress" ? "status-in-progress" :
-                      queue.status === "Complete" ? "status-complete" :
-                      queue.status === "Missed" ? "status-missed" : "bg-secondary"
+                      queue.customer.status === "Waiting" ? "status-waiting" :
+                      queue.customer.status === "In Progress" ? "status-in-progress" :
+                      queue.customer.status === "Complete" ? "status-complete" :
+                      queue.customer.status === "Missed" ? "status-missed" : "bg-secondary"
                     }`}>
-                      {queue.status}
+                      {queue.customer.status}
                     </span>
                   </td>
                   <td>
                     <span className="d-flex justify-content-center gap-2">
-                      {queue.status === "Waiting" && (
+                      {queue.customer.status === "Waiting" && (
                         <Button className="btn-action btn-call" size="sm" onClick={() => handleCallQueue(queue)}>
                           Panggil
                         </Button>
                       )}
-                      {queue.status === "In Progress" && (
+                      {queue.customer.status === "In Progress" && (
                         <Button className="btn-action btn-skip" size="sm" onClick={() => handleSkipQueue(queue)}>
                           Lewati
                         </Button>
                       )}
-                      {queue.status === "Missed" && (
+                      {queue.customer.status === "Missed" && (
                         <Button className="btn-action btn-recall" size="sm" onClick={() => handleRecallQueue(queue)}>
                           Panggil Ulang
                         </Button>
                       )}
-                      {queue.status === "In Progress" && (
+                      {queue.customer.status === "In Progress" && (
                         <Button className="btn-action btn-complete" size="sm" onClick={() => handleCompleteQueue(queue)}>
                           Selesai
                         </Button>
@@ -180,4 +193,4 @@ const TestQueueTable = () => {
   );
 };
 
-export default TestQueueTable;
+export default QueueTable;

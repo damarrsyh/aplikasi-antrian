@@ -62,16 +62,15 @@ const QueueMenuPage = () => {
           id: uuidv4(),
           customer_name: enableForm ? name.trim() || "Anonim" : `Customer/${service.id}`,
           phone: fullPhoneNumber,
-          queue_number: queueNumber,
+          nomor_antrian: queueNumber,
+          status: "Waiting",
+          kode_antrian: service.kode,
+          nama_antrian: service.nama,
+          time_start: null,
+          time_end: null,
         },
-        service: {
-          id: service.id,
-          service_name: service.nama,
-        },
-        status: "Waiting",
         created_at: new Date().toISOString(),
-        time_start: null,
-        time_end: null,
+        updated_at: null,
       };
 
       try {
@@ -147,8 +146,8 @@ const QueueMenuPage = () => {
             <Card.Body>
               <Card.Title className="fw-bold text-uppercase fs-5">Pandawa24Jam <br /> Margonda, Depok</Card.Title>
               <hr />
-              <Card.Text className="fw-bold text-uppercase fs-1 bg-light p-3 rounded border border-dark">{ticket?.customer?.queue_number}</Card.Text>
-              <Card.Text className="fw-bold fs-5">ANTRIAN {ticket?.service?.service_name?.toUpperCase()}</Card.Text>
+              <Card.Text className="fw-bold text-uppercase fs-1 bg-light p-3 rounded border border-dark">{ticket?.customer?.nomor_antrian}</Card.Text>
+              <Card.Text className="fw-bold fs-5">ANTRIAN {ticket?.customer?.nama_antrian?.toUpperCase()}</Card.Text>
               <hr />
               <Card.Text className="text-muted">Cs: +62 899 414 9569</Card.Text>
             </Card.Body>

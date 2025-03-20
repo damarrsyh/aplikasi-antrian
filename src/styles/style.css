@@ -27,7 +27,7 @@ body {
 
 .main-content {
   margin-left: 250px;
-  transition: margin-left 0.4s ease-in-out;
+  transition: margin-left 0.4s ease-in-out, background-color 0.3s ease-in-out;
   background-color: var(--primary-hover);
 }
 
@@ -60,8 +60,57 @@ body {
   padding: 5px 8px;
 }
 
-
 /* END UMUM DARK/LIGHT THEME & FONT */
+
+
+
+/* RESPONSIVE DASHBOARD */
+
+/* Tablet */
+@media (max-width: 768px) {
+  .main-content {
+    margin-left: 0 !important; /* Tidak ada margin kiri */
+  }
+
+  .custom-card-login {
+    width: 90%;
+    max-width: 350px;
+    padding: 1.5rem;
+  }
+
+  .custom-input, .custom-select {
+    font-size: 0.95rem;
+    padding: 10px;
+  }
+
+  .custom-button {
+    font-size: 1rem;
+    padding: 10px;
+  }
+}
+
+/* Mobile */
+@media (max-width: 480px) {
+  
+  .custom-card-login {
+    width: 95%;
+    max-width: 300px;
+    padding: 1.2rem;
+    margin-bottom: 100px;
+  }
+
+  .custom-input, .custom-select {
+    font-size: 0.9rem;
+    padding: 8px;
+  }
+
+  .custom-button {
+    font-size: 0.9rem;
+    padding: 8px;
+  }
+}
+
+/* END RESPONSIVE DASHBOARD */
 
 
 
@@ -84,26 +133,33 @@ body {
   100% { background-position: 0% 50%; }
 }
 
-.custom-select {
-  position: relative;
-}
-.custom-select::after {
-  content: "▼";
-  font-size: 12px;
-  color: #fff;
-  position: absolute;
-  right: 15px;
-  top: 50%;
-  transform: translateY(-50%);
-}
-
 .custom-card-login {
-  width: 350px;
+  width: 100%;
+  max-width: 400px;
   padding: 1.5rem;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
   background-color: rgba(255, 255, 255, 0.2);
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(12px);
   border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.custom-input, .custom-select {
+  background-color: rgba(255, 255, 255, 0.3);
+  color: #fff;
+  border: none;
+  padding: 12px;
+  font-size: 1rem;
+}
+
+.custom-select {
+  color: black;
+  position: relative;
+  padding-right: 40px;
+}
+
+.custom-button {
+  font-size: 1rem;
+  padding: 12px;
 }
 
 /* END LOGIN FORM STYLING */
@@ -192,7 +248,6 @@ body {
   transition: transform 0.4s ease-in-out, width 0.4s ease-in-out, opacity 0.3s ease-in-out;
   z-index: 1000;
   transform: translateX(0);
-  transition: transform 0.4s ease-in-out, width 0.4s ease-in-out, opacity 0.3s ease-in-out;
 }
 
 .sidebar.collapsed {
@@ -263,6 +318,7 @@ footer {
   background-color: var(--secondary-color);
   border: 1px solid #cacaca;
   transition: all var(--transition-speed);
+  margin: 10px 0 0 0;
   padding: 6px 12px;
   border-radius: 6px;
 }

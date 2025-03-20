@@ -1,24 +1,32 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { FaList, FaTv, FaChevronDown, FaChevronRight, FaTrophy, FaChartBar, FaClipboardList, FaCogs, FaBars } from "react-icons/fa";
+import { FaList, FaTv, FaChevronDown, FaChevronRight, FaTrophy, FaChartBar, FaClipboardList, FaCogs, FaBars, FaTimes } from "react-icons/fa";
+import { Modal, Button } from "react-bootstrap";
 
 // eslint-disable-next-line react/prop-types
-const AdminSidebar = ({ isCollapsed, setIsCollapsed }) => {
-  const [openMenu, setOpenMenu] = useState(null);
+const AdminSidebar = ({ isCollapsed, setIsCollapsed, showModal, setShowModal }) => {
   const { user } = useSelector((state) => state.auth);
+  const [openMenu, setOpenMenu] = useState(null);
 
   const toggleMenu = (menu) => {
-    // Jika sidebar tertutup, buka sidebar terlebih dahulu
     if (isCollapsed) {
       setIsCollapsed(false);
     }
-    // Toggle menu seperti biasa
     setOpenMenu(openMenu === menu ? null : menu);
   };
 
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 768) setShowModal(false);
+    };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, [setShowModal]);
+
   return (
-    <div className={`sidebar ${isCollapsed ? "collapsed" : ""}`}>
+    <div className={`sidebar d-none d-md-block ${isCollapsed ? "collapsed" : ""}`}>
+      
       {/* Header Sidebar */}
       <div className="m-2 sidebar-header">
         {!isCollapsed && (
@@ -63,16 +71,16 @@ const AdminSidebar = ({ isCollapsed, setIsCollapsed }) => {
           {/* Menu: Monitor */}
           <div>
             <button
-              onClick={() => toggleMenu("monitor")}
+              onClick={() => toggleMenu("Display")}
               className="btn shadow-sm w-100 text-start mb-2 d-flex align-items-center justify-content-between"
             >
               <span>
                 <FaTv className="me-2" />
-                {!isCollapsed && "Monitor"}
+                {!isCollapsed && "Display"}
               </span>
-              {!isCollapsed && (openMenu === "monitor" ? <FaChevronDown /> : <FaChevronRight />)}
+              {!isCollapsed && (openMenu === "Display" ? <FaChevronDown /> : <FaChevronRight />)}
             </button>
-            <div className={`sidebar-menu ${openMenu === "monitor" ? "show" : ""}`}>
+            <div className={`sidebar-menu ${openMenu === "Display" ? "show" : ""}`}>
               <div className="ms-3 my-2 d-grid gap-2">
                 <NavLink to="/leaderboard" className="btn shadow-sm d-flex align-items-center">
                   <FaTrophy className="me-2" />
@@ -98,7 +106,7 @@ const AdminSidebar = ({ isCollapsed, setIsCollapsed }) => {
             >
               <span>
                 <FaCogs className="me-2" />
-                {!isCollapsed && "Pengaturan"}
+                {!isCollapsed && "Settings"}
               </span>
               {!isCollapsed && (openMenu === "settings" ? <FaChevronDown /> : <FaChevronRight />)}
             </button>
@@ -117,7 +125,38 @@ const AdminSidebar = ({ isCollapsed, setIsCollapsed }) => {
           </div>
         </div>
       )}
+      <Modal show={showModal} onHide={() => setShowModal(false)} centered>
+        <Modal.Header>
+          <h5 className="m-0">Menu</h5>
+          <Button variant="light" onClick={() => setShowModal(false)}>
+            <FaTimes />
+          </Button>
+        </Modal.Header>
+        <Modal.Body>
+          <NavLink to="/dashboard/queue-list" className="btn d-flex align-items-center w-100">
+            <FaList className="me-2" />
+            <span>Daftar Antrian</span>
+          </NavLink>
+          {user?.role === "hc" && (
+            <>
+            <NavLink to="/dashboard/queue-report" className="btn d-flex align-items-center w-100">
+              <FaChartBar className="me-2" />
+              <span>Report Antrian</span>
+            </NavLink>
+            <NavLink to="/dashboard/queue-settings-display" className="btn shadow-sm d-flex align-items-center">
+              <FaTv className="me-2" />
+              <span>Setting Display Antrian</span>
+            </NavLink>
+            <NavLink to="/dashboard/queue-settings-menu" className="btn shadow-sm d-flex align-items-center">
+              <FaBars className="me-2" />
+              <span>Setting Menu Layanan</span>
+            </NavLink>
+            </>
+          )}
+        </Modal.Body>
+      </Modal>
     </div>
+    
   );
 };
 
