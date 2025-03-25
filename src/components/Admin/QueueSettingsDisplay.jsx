@@ -23,7 +23,7 @@ const QueueSettingsDisplay = () => {
     <Card>
       <Card.Header>Setting Display</Card.Header>
       <Card.Body>
-        <Row className="d-flex align-items-center justify-content-center">
+        <Row className="d-flex align-items-center justify-content-center g-3">
           <Col md={6}>
             <Form.Group className="mb-3">
               <Form.Label>Tema Warna</Form.Label>
@@ -40,7 +40,6 @@ const QueueSettingsDisplay = () => {
                 onChange={(e) => setFontSize(e.target.value)}
               />
             </Form.Group>
-
 
             <Form.Group className="mb-3">
               <Form.Label>URL Video Komersial</Form.Label>

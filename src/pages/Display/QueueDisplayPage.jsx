@@ -20,6 +20,7 @@ const QueueDisplayPage = () => {
       dispatch(fetchQueueList());
   }, [dispatch]);
 
+  // Jam
   useEffect(() => {
     const interval = setInterval(() => setCurrentTime(new Date()), 1000);
     return () => clearInterval(interval);

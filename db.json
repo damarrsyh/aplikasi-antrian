@@ -132,6 +132,200 @@
       },
       "created_at": "2025-03-20T08:58:15.322Z",
       "updated_at": "2025-03-20T09:00:43.913Z"
+    },
+    {
+      "id": "3169ea0c-93db-4331-b54b-d17756ed4f5e",
+      "customer": {
+        "id": "0f606e83-d00d-4547-85b6-3145d80e6558",
+        "customer_name": "Customer/J0001",
+        "phone": "-",
+        "nomor_antrian": "P100",
+        "status": "Complete",
+        "kode_antrian": "P",
+        "nama_antrian": "Siap Print",
+        "time_start": 1742519147,
+        "time_end": 1742519147,
+        "operator": "Dedi Supriyadi",
+        "email": "dedi@example.com",
+        "counter": null
+      },
+      "created_at": "2025-03-21T01:05:04.943Z",
+      "updated_at": "2025-03-21T01:05:47.149Z"
+    },
+    {
+      "id": "89b815f2-42a0-4cc2-8770-f1651e7f9bea",
+      "customer": {
+        "id": "1f0b8259-0e2e-4a2f-a21f-bcfadbbbde98",
+        "customer_name": "Customer/J0003",
+        "phone": "-",
+        "nomor_antrian": "F18",
+        "status": "Complete",
+        "kode_antrian": "F",
+        "nama_antrian": "FotoCopy",
+        "time_start": 1742519148,
+        "time_end": 1742519148,
+        "operator": "Dedi Supriyadi",
+        "email": "dedi@example.com",
+        "counter": null
+      },
+      "created_at": "2025-03-21T01:05:09.348Z",
+      "updated_at": "2025-03-21T01:05:48.604Z"
+    },
+    {
+      "id": "af2cb75e-3b9b-49a9-9a5f-10330f4d9c74",
+      "customer": {
+        "id": "4db35cde-c0bd-4c6a-af24-19be381d8d4d",
+        "customer_name": "Customer/J0005",
+        "phone": "-",
+        "nomor_antrian": "O36",
+        "status": "Complete",
+        "kode_antrian": "O",
+        "nama_antrian": "Online Pickup",
+        "time_start": 1742519149,
+        "time_end": 1742519149,
+        "operator": "Dedi Supriyadi",
+        "email": "dedi@example.com",
+        "counter": null
+      },
+      "created_at": "2025-03-21T01:05:13.036Z",
+      "updated_at": "2025-03-21T01:05:49.222Z"
+    },
+    {
+      "id": "6ac10cee-de7f-4cbd-b620-12669f7385a0",
+      "customer": {
+        "id": "68141e9a-b75c-4411-bed1-1d884d922ca3",
+        "customer_name": "Customer/J0004",
+        "phone": "-",
+        "nomor_antrian": "R86",
+        "status": "Complete",
+        "kode_antrian": "R",
+        "nama_antrian": "Retur Penjualan",
+        "time_start": 1742519149,
+        "time_end": 1742519154,
+        "operator": "Dedi Supriyadi",
+        "email": "dedi@example.com",
+        "counter": null
+      },
+      "created_at": "2025-03-21T01:05:16.676Z",
+      "updated_at": "2025-03-21T01:05:49.860Z"
+    },
+    {
+      "id": "d20e7b3b-284e-4b2e-a81c-522a2d3583bc",
+      "customer": {
+        "id": "8010d27e-e935-4228-abd1-2b97e854b1a8",
+        "customer_name": "Customer/J0004",
+        "phone": "-",
+        "nomor_antrian": "R97",
+        "status": "Complete",
+        "kode_antrian": "R",
+        "nama_antrian": "Retur Penjualan",
+        "time_start": 1742890535,
+        "time_end": 1742890536,
+        "operator": "Santi",
+        "email": "hc@pdw.com",
+        "counter": null
+      },
+      "created_at": "2025-03-21T01:19:16.740Z",
+      "updated_at": "2025-03-25T08:15:35.447Z"
+    },
+    {
+      "id": "cfe2e54a-109c-4151-a360-bf14f24f2b17",
+      "customer": {
+        "id": "5ee22dc4-f241-413b-8c15-e9642e25dcc5",
+        "customer_name": "Customer/J0005",
+        "phone": "-",
+        "nomor_antrian": "O99",
+        "status": "Waiting",
+        "kode_antrian": "O",
+        "nama_antrian": "Online Pickup",
+        "time_start": null,
+        "time_end": null,
+        "operator": null,
+        "email": null,
+        "counter": null
+      },
+      "created_at": "2025-03-21T01:19:20.724Z",
+      "updated_at": "2025-03-25T08:37:24.099Z"
+    },
+    {
+      "id": "940f736f-ea7f-4964-8ffd-5b3074efacc6",
+      "customer": {
+        "id": "32e6d9e1-982e-4da9-9c16-b7040148ae87",
+        "customer_name": "Customer/J0003",
+        "phone": "-",
+        "nomor_antrian": "F107",
+        "status": "Waiting",
+        "kode_antrian": "F",
+        "nama_antrian": "FotoCopy",
+        "time_start": null,
+        "time_end": null
+      },
+      "created_at": "2025-03-21T01:19:24.460Z",
+      "updated_at": null
+    },
+    {
+      "id": "fa50e362-5122-407f-9b44-98e9d588dd64",
+      "customer": {
+        "id": "2d3480d0-647a-45bb-b788-5a771e7c842e",
+        "customer_name": "Customer/J0001",
+        "phone": "-",
+        "nomor_antrian": "P28",
+        "status": "Waiting",
+        "kode_antrian": "P",
+        "nama_antrian": "Siap Print",
+        "time_start": null,
+        "time_end": null
+      },
+      "created_at": "2025-03-21T01:19:28.316Z",
+      "updated_at": null
+    },
+    {
+      "id": "a7583af1-f830-4f3c-87ca-2458904b9b82",
+      "customer": {
+        "id": "c47ad199-59dc-40fc-95b6-31c9d3868197",
+        "customer_name": "Customer/J0006",
+        "phone": "-",
+        "nomor_antrian": "T32",
+        "status": "Waiting",
+        "kode_antrian": "T",
+        "nama_antrian": "Tamu",
+        "time_start": null,
+        "time_end": null
+      },
+      "created_at": "2025-03-21T01:19:32.028Z",
+      "updated_at": null
+    },
+    {
+      "id": "6b809a8a-4552-4f0f-a231-ff7427a07db4",
+      "customer": {
+        "id": "e0a9c319-471f-4608-bf17-44263702a5ec",
+        "customer_name": "Mar",
+        "phone": "6281374832943",
+        "nomor_antrian": "F33",
+        "status": "Waiting",
+        "kode_antrian": "F",
+        "nama_antrian": "FotoCopy",
+        "time_start": null,
+        "time_end": null
+      },
+      "created_at": "2025-03-21T01:20:08.060Z",
+      "updated_at": null
+    },
+    {
+      "id": "23c49dc3-ee37-4533-ae83-e84da8c92f52",
+      "customer": {
+        "id": "d79e5895-94a7-4ae9-aa2a-c83bf202f473",
+        "customer_name": "Customer/J0002",
+        "phone": "-",
+        "nomor_antrian": "D83",
+        "status": "Waiting",
+        "kode_antrian": "D",
+        "nama_antrian": "Design",
+        "time_start": null,
+        "time_end": null
+      },
+      "created_at": "2025-03-21T01:20:26.492Z",
+      "updated_at": null
     }
   ],
   "users": [

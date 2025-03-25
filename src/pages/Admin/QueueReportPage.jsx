@@ -3,13 +3,14 @@ import ReportStats from "../../components/Report/ReportStats";
 import ReportTimes from "../../components/Report/ReportTimes";
 import ReportChart from "../../components/Report/ReportCharts";
 import ReportTable from "../../components/Report/ReportTable";
+import ErrorBoundary from "../../components/ErrorBoundary";
 
 const QueueReportPage = () => {
   return (
     <Container fluid className="p-4">
       <h5 className="m-0">Antrian</h5>
       <span>Antrian - Report Antrian</span>
-      <Row className="mt-3">
+      <Row className="g-3">
         <Col md={6}>
           <ReportStats />
         </Col>
@@ -17,12 +18,14 @@ const QueueReportPage = () => {
           <ReportTimes />
         </Col>
       </Row>
-      <Row className="mt-4">
+      <Row className="mt-3">
         <Col>
-          <ReportTable />
+          <ErrorBoundary>
+            <ReportTable />
+          </ErrorBoundary>
         </Col>
       </Row>
-      <Row className="mt-4">
+      <Row className="mt-3">
         <Col>
           <ReportChart />
         </Col>

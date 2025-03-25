@@ -9,66 +9,6 @@ const api = axios.create({
   },
 });
 
-// 🔹 Fungsi Login → Cari user berdasarkan email & password
-
-// eslint-disable-next-line no-unused-vars
-export const login = async (email, password, loket) => {
-  try {
-    // Cari user di JSON Server berdasarkan email & password
-    const response = await api.get(`/users?email=${email}&password=${password}`);
-
-    if (response.data.length === 0) {
-      throw new Error("Email atau password salah");
-    }
-
-    let user = response.data[0];
-    
-    // Tambahkan loket yang dipilih oleh user
-    user = { ...user, loket, status: "active" };
-
-    console.log("Data user setelah Update di API:", user);
-
-    // Simpan user dan loket ke localStorage
-    localStorage.setItem("user", JSON.stringify(user));
-    localStorage.setItem("token", "dummy-token"); // JSON Server tidak mendukung JWT
-
-    await api.patch(`/users/${user.id}`, { status: "active" });
-
-    return user;
-  } catch (error) {
-    throw error.message || "Login gagal, coba lagi.";
-  }
-};
-
-// 🔹 Fungsi untuk mendapatkan data user dari localStorage
-export const getUser = () => {
-  const user = localStorage.getItem("user");
-  return user ? JSON.parse(user) : null;
-};
-
-// 🔹 Fungsi Logout → Hapus token & user
-export const logout = async () => {
-  const user = JSON.parse(localStorage.getItem("user"));
-  
-  if (user) {
-    await api.patch(`/users/${user.id}`, { status: "inactive" }); // Update status User di API
-  }
-
-  localStorage.removeItem("token");
-  localStorage.removeItem("user");
-  window.location.href = "/login";
-};
-
-// 🔹 Interceptor untuk menyertakan token (Dummy karena JSON Server tidak pakai JWT)
-api.interceptors.request.use((config) => {
-  const token = localStorage.getItem("token");
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
-  }
-  return config;
-});
-
-
 export const fetchCountryCodes = async () => {
   try {
     const response = await api.get("https://restcountries.com/v3.1/all");
@@ -121,7 +61,6 @@ export const fetchUsers = async () => {
 export const fetchQueues = async () => {
   try {
     const response = await api.get("/queues");
-    console.log("Response fetchQueues:", response.data); // DEBUGGING
     return response.data;
   } catch (error) {
     console.error("Error fetching queues:", error);

@@ -9,7 +9,6 @@ import QueueDisplayPage from "../pages/Display/QueueDisplayPage";
 import QueueMenuPage from "../pages/Service/QueueMenuPage";
 import LoginForm from "../components/LoginForm";
 import UnauthorizedPage from "../pages/UnauthorizedPage";
-import ProtectedRoute from "./ProtectedRoute";
 import { useSelector } from "react-redux";
 
 const AppRoutes = () => {
@@ -20,27 +19,18 @@ const AppRoutes = () => {
       {/* Halaman Login */}
       <Route path="/login" element={<LoginForm />} />
 
-      {/* Proteksi untuk Operator */}
-      <Route element={<ProtectedRoute allowedRoles={["operator", "hc"]} />}>
-        <Route path="/dashboard" element={<AdminLayout />}>
-          <Route path="queue-list" element={<QueueListPage />} />
-        </Route>
-      </Route>
-
-      {/* Proteksi untuk Human Capital */}
-      <Route element={<ProtectedRoute allowedRoles={["hc"]} />}>
-        <Route path="/dashboard" element={<AdminLayout />}>
-          <Route path="queue-report" element={<QueueReportPage />} />
-          <Route path="queue-settings-display" element={<QueueSettingsDisplayPage />} />
-          <Route path="queue-settings-menu" element={<QueueSettingsMenuPage />} />
-        </Route>
-      </Route>
-
       {/* Redirect Default */}
       <Route path="/" element={isAuthenticated ? <Navigate to="/dashboard/queue-list" replace /> : <Navigate to="/login" replace />} />
 
       {/* Halaman Unauthorized */}
       <Route path="/unauthorized" element={<UnauthorizedPage />} />
+
+      <Route path="/dashboard" element={<AdminLayout />}>
+        <Route path="queue-list" element={<QueueListPage />} />
+        <Route path="queue-report" element={<QueueReportPage />} />
+        <Route path="queue-settings-display" element={<QueueSettingsDisplayPage />} />
+        <Route path="queue-settings-menu" element={<QueueSettingsMenuPage />} />
+      </Route>
 
       {/* Halaman Customer */}
       <Route path="/queue-display" element={<QueueDisplayPage />} />

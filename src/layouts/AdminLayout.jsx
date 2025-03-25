@@ -16,17 +16,18 @@ const AdminLayout = () => {
   }, [isSidebarCollapsed]);
 
   return (
-    <Container fluid className="d-flex flex-column vh-100 position-relative p-0">
+    <Container fluid className="d-flex flex-column min-vh-100 p-0">
       {/* Navbar */}
-      <div className="position-sticky top-0 w-100" style={{ zIndex: 1050 }}>
+      <div className="position-fixed top-0 w-100 shadow-sm bg-white" style={{ zIndex: 1050 }}>
         <AdminNavbar 
           toggleSidebar={() => setIsSidebarCollapsed((prev) => !prev)} 
           setShowModal={setShowModal} 
         />
       </div>
 
-      <div className="d-flex flex-grow-1">
-        {/* Sidebar dengan modal di mobile */}
+      {/* Content Wrapper */}
+      <div className="d-flex flex-grow-1 pt-5">
+        {/* Sidebar (Modal for mobile) */}
         <AdminSidebar 
           isCollapsed={isSidebarCollapsed} 
           setIsCollapsed={setIsSidebarCollapsed} 
@@ -35,13 +36,13 @@ const AdminLayout = () => {
         />
 
         {/* Main Content */}
-        <div className="main-content flex-grow-1 p-3">
+        <div className={`main-content ${isSidebarCollapsed ? "full-width" : ""}`}>
           <Outlet />
         </div>
       </div>
 
       {/* Footer */}
-      <div className="bottom-0 w-100" style={{ zIndex: 1050 }}>
+      <div className="w-100 mt-auto">
         <AdminFooter />
       </div>
     </Container>

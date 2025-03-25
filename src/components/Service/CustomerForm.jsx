@@ -43,8 +43,15 @@ const CustomerForm = ({ enableForm, setEnableForm, name, setName, phone, setPhon
           <>
             <Form.Group className="mt-3">
               <Form.Label>Nama</Form.Label>
-              <Form.Control type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="Enter Your Name" />
+              <Form.Control 
+              type="text" 
+              value={name} 
+              onChange={(e) => setName(e.target.value)} 
+              placeholder="Enter Your Name"
+              className="custom-input"
+              />
             </Form.Group>
+            
             <Form.Group className="mt-3">
               <Form.Label>No Telepon</Form.Label>
               <div className="d-flex">
@@ -70,7 +77,7 @@ const CustomerForm = ({ enableForm, setEnableForm, name, setName, phone, setPhon
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
                   isInvalid={phone && !isValidPhoneNumber(phone)}
-                  className="ms-2"
+                  className="ms-2 custom-input"
                   style={{ flex: 1 }}
                 />
                 <Form.Control.Feedback>
