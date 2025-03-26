@@ -3,6 +3,7 @@ import ReportStats from "../../components/Report/ReportStats";
 import ReportTimes from "../../components/Report/ReportTimes";
 import ReportChart from "../../components/Report/ReportCharts";
 import ReportTable from "../../components/Report/ReportTable";
+import ReportQueueList from "../../components/Report/ReportQueueList";
 import ErrorBoundary from "../../components/ErrorBoundary";
 
 const QueueReportPage = () => {
@@ -22,6 +23,7 @@ const QueueReportPage = () => {
         <Col>
           <ErrorBoundary>
             <ReportTable />
+            <ReportQueueList/>
           </ErrorBoundary>
         </Col>
       </Row>

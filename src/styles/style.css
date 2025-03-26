@@ -691,7 +691,6 @@ footer {
 
 .custom-input:focus,
 .custom-input:hover {
-  color: #28a745 !important;
   border-color: #28a745 !important; /* Warna hijau Bootstrap (success) */
   box-shadow: 0 0 5px rgba(40, 167, 69, 0.5) !important; /* Efek glow hijau */
 }

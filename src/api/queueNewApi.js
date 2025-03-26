@@ -1,6 +1,8 @@
 import api from "../utils/api";
 import { loginSuccess, logout } from "../redux/Slice/authSlice";
 
+//  LOGIN API  //
+
 // Fungsi helper untuk menangani error API
 const handleApiError = (error) => {
   if (error.response) {
@@ -42,6 +44,12 @@ export const logoutUser = () => (dispatch) => {
   dispatch(logout());
 };
 
+//  END LOGIN API  //
+
+
+
+// ANTRIAN API //
+
 // **AMBIL DATA CUSTOMER**
 export const fetchCustomers = async () => {
   try {
@@ -52,6 +60,16 @@ export const fetchCustomers = async () => {
     handleApiError(error);
   }
 };
+
+// **AMBIL DATA JENIS ANTRIAN**
+export const fetchType = async () => {
+  try {
+    const response = await api.get("/type");
+    return response.data;
+  } catch (error) {
+    handleApiError(error);
+  }
+}
 
 // **BUAT TIKET ANTRIAN**
 export const createQueueTicket = async (type, nama, telp) => {
@@ -83,33 +101,57 @@ export const fetchCountryCodes = async () => {
   }
 };
 
-// **AMBIL JENIS LAYANAN ANTRIAN**
-export const fetchQueuesType = async () => {
+// PANGGIL DATA ANTRIAN MENUNGGU
+export const fetchQueueWait = async () => {
   try {
-    const response = await api.get("/type");
-    console.log("Data Services", response.data);
+    const response = await api.get("/menunggu");
+    console.log("Data Menunggu", response.data);
     return response.data;
   } catch (error) {
     handleApiError(error);
+  }
+}
+
+// PANGGIL DATA LIVE ANTRIAN
+export const fetchQueueLive = async () => {
+  try {
+    const response = await api.get("/live");
+    console.log("Data Live", response.data);
+    return response.data;
+  } catch (error) {
+    handleApiError(error);
+  }
+}
+
+// PANGGIL DATA ANTRIAN SELESAI
+export const fetchQueueDone = async () => {
+  try {
+    const response = await api.get("/selesai");
+    console.log("Data Selesai", response.data);
+    return response.data;
+  } catch (error) {
+    handleApiError(error);
+  }
+}
+
+// END ANTRIAN API //
+
+
+
+// REPORT ANTRIAN API //
+
+export const fetchQueueByDate = async (tanggal, type, nomor) => {
+  try {
+    const response = await api.get(`/by-date`, {
+      params: { tanggal, type, nomor },
+    });
+    // console.log("Data Antrian", response.data);
+    return response.data; // Hanya mengambil data yang dibutuhkan
+  } catch (error) {
+    console.error("Error fetching queue:", error);
+    throw error; // Melempar error agar bisa ditangani di komponen
   }
 };
 
-// **AMBIL ANTRIAN BERDASARKAN TANGGAL**
-export const fetchQueuesByDate = async (tanggal) => {
-  try {
-    const response = await api.get(`/by-date?tanggal=${tanggal}`);
-    return response.data;
-  } catch (error) {
-    handleApiError(error);
-  }
-};
+// END REPORT ANTRIAN API //
 
-// **AMBIL DETAIL ANTRIAN BERDASARKAN TANGGAL, JENIS LAYANAN, DAN NOMOR**
-export const fetchQueueDetail = async (tanggal, type, nomor) => {
-  try {
-    const response = await api.get(`/by-date?tanggal=${tanggal}&type=${type}&nomor=${nomor}`);
-    return response.data;
-  } catch (error) {
-    handleApiError(error);
-  }
-};
