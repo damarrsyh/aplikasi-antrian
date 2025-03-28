@@ -18,7 +18,8 @@ const authSlice = createSlice({
         console.log("Payload loginSuccess:", action.payload);
         state.user = { 
           namalengkap: action.payload.namalengkap, 
-          email: action.payload.email 
+          email: action.payload.email,
+          counter: action.payload.counter 
       };
         state.token = action.payload.token;
         state.isAuthenticated = true;

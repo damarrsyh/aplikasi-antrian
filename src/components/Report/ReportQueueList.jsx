@@ -1,57 +1,80 @@
-/* eslint-disable react/prop-types */
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchQueueByDateThunk } from "../../redux/Slice/queueNewSlice";
-import { Table } from "react-bootstrap";
+import { getQueueDateNow } from "../../redux/Slice/queueNewSlice";
+import { Card, Table } from "react-bootstrap";
 
-const ReportQueueList = ({ tanggal, type, nomor }) => {
+const ReportQueueList = () => {
   const dispatch = useDispatch();
-  const { queuesByDate, loadingQueuesByDate, error } = useSelector((state) => state.queueNew);
+  const { queueDateNow, loadingQueueDateNow, errorQueueDateNow } = useSelector(
+    (state) => state.queueNew
+  );
 
   useEffect(() => {
-    dispatch(fetchQueueByDateThunk({ tanggal, type, nomor }));
-  }, [dispatch, tanggal, type, nomor]);
+    dispatch(getQueueDateNow());
+  }, [dispatch]);
 
-  if (loadingQueuesByDate) return <p>Loading...</p>;
-  if (error) return <p>{error}</p>;
+  if (loadingQueueDateNow) {
+    return <p>Loading data antrian...</p>;
+  }
+
+  if (errorQueueDateNow) {
+    return <p style={{ color: "red" }}>Terjadi kesalahan: {errorQueueDateNow}</p>;
+  }
+
+  const queueData = queueDateNow?.[0]?.data_now?.data || [];
+  const totalQueue = queueDateNow?.[0]?.data_now?.total_qlast || 0;
+  const reportDate = queueDateNow?.[0]?.data_now?.date || "Tanggal tidak tersedia";
 
   return (
-    <Table striped bordered hover>
-      <thead>
-        <tr>
-          <th>#</th>
-          <th>Operator</th>
-          <th>Nomor Antrian</th>
-          <th>Jenis Antrian</th>
-          <th>Counter</th>
-          <th>Email</th>
-          <th>Customer ID</th>
-          <th>Waktu Cetak</th>
-          <th>Waktu Dilayani</th>
-        </tr>
-      </thead>
-      <tbody>
-        {queuesByDate.length > 0 ? (
-          queuesByDate.map((queue, index) => (
-            <tr key={queue._id || index}>
-              <td>{index + 1}</td>
-              <td>{queue.user || "-"}</td>
-              <td>{queue.nomor}</td>
-              <td>{queue.kd_jenis_antrian}</td>
-              <td>{queue.counter || "-"}</td>
-              <td>{queue.email || "-"}</td>
-              <td>{queue.customer}</td>
-              <td>{new Date(queue.waktu_cetak).toLocaleString()}</td>
-              <td>{queue.waktu_dilayani ? new Date(queue.waktu_dilayani).toLocaleString() : "-"}</td>
+    <Card>
+      <Card.Header className="d-flex justify-content-between">
+        <div>
+          <h5>Data Antrian Hari Ini</h5>
+        </div>
+        <div className="d-flex flex-column">
+          <span>{reportDate}</span>
+          <span>Total Antrian: <strong>{totalQueue}</strong></span>
+        </div>
+      </Card.Header>
+      <Card.Body>
+        <Table responsive striped bordered hover className="mb-0">
+          <thead>
+            <tr>
+              <th>No</th>
+              <th>Waktu Cetak</th>
+              <th>Waktu Dilayani</th>
+              <th>Nomor</th>
+              <th>Jenis Antrian</th>
+              <th>Counter</th>
+              <th>Operator</th>
+              <th>Email</th>
             </tr>
-          ))
-        ) : (
-          <tr>
-            <td colSpan="9" style={{ textAlign: "center" }}>Tidak ada data antrian</td>
-          </tr>
-        )}
-      </tbody>
-    </Table>
+          </thead>
+          <tbody>
+            {queueData.length > 0 ? (
+              queueData.map((item, index) => (
+                <tr key={item._id || index}>
+                  <td>{index + 1}</td>
+                  <td>{new Date(item.waktu_cetak).toLocaleString()}</td>
+                  <td>{item.waktu_dilayani ? new Date(item.waktu_dilayani).toLocaleString() : "Belum Dilayani"}</td>
+                  <td>{item.nomor}</td>
+                  <td>{item.kd_jenis_antrian}</td>
+                  <td>{item.counter || "-"}</td>
+                  <td>{item.user || "-"}</td>
+                  <td>{item.email || "-"}</td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan="8" style={{ textAlign: "center" }}>
+                  Tidak ada data antrian untuk hari ini.
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </Table>
+      </Card.Body>
+    </Card>
   );
 };
 

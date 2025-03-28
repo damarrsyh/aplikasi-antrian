@@ -1,50 +1,100 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getQueueWait } from "../../redux/Slice/queueNewSlice";
-import { Table } from "react-bootstrap";
+import { getQueueWait, getType } from "../../redux/Slice/queueNewSlice";
+import { Alert, Card, Spinner, Table } from "react-bootstrap";
+import { useMediaQuery } from "react-responsive";
 
-const QueueTable = () => {
+const QueueWait = () => {
   const dispatch = useDispatch();
-  const { queueWait, loadingQueueWait, errorQueueWait } = useSelector(
+  const { queueWait, loadingQueueWait, errorQueueWait, type } = useSelector(
     (state) => state.queueNew
   );
-
-  console.log("queueWait:", queueWait);
+  const isMobile = useMediaQuery({maxWidth: 768});
 
   useEffect(() => {
     dispatch(getQueueWait());
+    dispatch(getType()); // Ambil data jenis antrian
   }, [dispatch]);
 
-  return (
-    <div className="p-2">
-      <span className="fw-bold">Antrian Menunggu</span>
-      {loadingQueueWait && <p>Loading...</p>}
-      {errorQueueWait && <p style={{ color: "red" }}>{errorQueueWait}</p>}
+  // Mapping untuk mencari kd_identifikasi berdasarkan kd_jenis_antrian
+  const jenisAntrianMap = type?.reduce((acc, item) => {
+    acc[item.kd_jenis_antrian] = item.kd_identifikasi;
+    return acc;
+  }, {});
 
-      <Table striped bordered responsive hover className="mt-2">
-        <thead>
-          <tr>
-            <th>No.</th>
-            <th>Jenis Antrian</th>
-            <th>Nomor Antrian</th>
-            <th>Waktu Cetak</th>
-          </tr>
-        </thead>
-        <tbody>
-          {queueWait?.data?.map((item, index) =>
-            item.list_menunggu?.map((queue) => (
-              <tr key={queue._id}>
-                <td>{index + 1}</td>
-                <td>{queue.jenis_antrian}</td>
-                <td className="text-center">{queue.nomor}</td>
-                <td>{new Date(queue.waktu_cetak).toLocaleString()}</td>
-              </tr>
-            ))
+  const totalQueue = queueWait?.data?.reduce(
+    (acc, item) => acc + (item.list_menunggu?.length || 0),
+    0
+  );
+
+  return (
+    <Card>
+      <Card.Header className="d-flex justify-content-between bg-warning-subtle">
+        <span className="fw-bold">Antrian Menunggu</span>
+        <span className="text-danger">Total Antrian: {totalQueue}</span>
+      </Card.Header>
+      <Card.Body>
+
+        {loadingQueueWait && <Spinner animation="border" className="d-block mx-auto my-3"/>}
+        {errorQueueWait && <Alert variant="danger">{errorQueueWait}</Alert>}
+        {isMobile ? (
+          <div className="d-flex flex-column gap-3">
+          {totalQueue > 0 ? (
+            queueWait?.data?.map((item) =>
+              item.list_menunggu?.map((queue) => (
+              <div key={queue._id} className="card p-3 shadow-sm">
+                <p className="fw-bold">{queue.jenis_antrian}</p>
+                <p>Nomor Antrian: <strong>{jenisAntrianMap[queue.kd_jenis_antrian] || "-"}
+                {queue.nomor}</strong></p>
+                <p>Waktu Cetak: {new Date(queue.waktu_cetak).toLocaleString()}</p>
+                <span className="fw-semibold bg-warning p-2 rounded text-dark">Waiting</span>
+              </div>
+              ))
+            )
+          ) : (
+            <p className="text-center text-muted">Tidak ada antrian</p>
           )}
-        </tbody>
-      </Table>
-    </div>
+        </div>
+        ) : (
+        <Table striped bordered responsive hover className="mt-2 mb-0">
+          <thead>
+            <tr className="text-center">
+              <th>Jenis Antrian</th>
+              <th>Nomor Antrian</th>
+              <th>Waktu Cetak</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            {totalQueue > 0 ? (
+              queueWait?.data?.map((item) =>
+                item.list_menunggu?.map((queue) => (
+                  <tr key={queue._id} className="text-center">
+                    <td className="p-3">{queue.jenis_antrian}</td>
+                    <td className="p-3">
+                      {jenisAntrianMap[queue.kd_jenis_antrian] || "-"}
+                      {queue.nomor}
+                    </td>
+                    <td className="p-3">{new Date(queue.waktu_cetak).toLocaleString()}</td>
+                    <td className="p-3">
+                      <span className="fw-semibold bg-warning p-2 rounded text-dark">Waiting</span>
+                    </td>
+                  </tr>
+                ))
+              )
+            ) : (
+              <tr>
+                <td colSpan="5" className="text-center">
+                  Data Kosong
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </Table>
+        )}
+      </Card.Body>
+    </Card>
   );
 };
 
-export default QueueTable;
+export default QueueWait;

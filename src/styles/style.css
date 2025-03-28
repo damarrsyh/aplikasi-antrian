@@ -467,6 +467,44 @@ footer {
 /* TABLE LIST ANTRIAN */
 
 
+/* STYLING PANGGIL ANTRIAN */
+
+.custom-select {
+  width: 75%;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ced4da;
+  background-color: #fff;
+  font-size: 14px;
+  transition: all 0.3s ease-in-out;
+}
+
+/* Hover & Focus Effects */
+.custom-select:hover {
+  border-color: #007bff;
+}
+
+.custom-select:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+/* Styling untuk Dropdown */
+.custom-select option {
+  background: #fff;
+  padding: 10px;
+  font-size: 14px;
+}
+
+.custom-select option:hover {
+  background: #007bff;
+  color: white;
+}
+
+/* END STYLING PANGGIL ANTRIAN */
+
+
+
 /* START PAGINATION THEME STYLING */
 
 .custom-pagination .page-item .page-link {
@@ -689,11 +727,6 @@ footer {
   box-shadow: 0 0.3rem 0.8rem rgba(0, 0, 0, 0.2);
 }
 
-.custom-input:focus,
-.custom-input:hover {
-  border-color: #28a745 !important; /* Warna hijau Bootstrap (success) */
-  box-shadow: 0 0 5px rgba(40, 167, 69, 0.5) !important; /* Efek glow hijau */
-}
 
 /* END CARD SERVICE LAYANAN STYLING */
 

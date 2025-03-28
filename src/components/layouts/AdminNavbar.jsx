@@ -1,21 +1,29 @@
 import { Navbar, Container, Dropdown, Button, Image } from "react-bootstrap";
 import { FaSun, FaMoon, FaUsers, FaBars, FaCog, FaSignOutAlt } from "react-icons/fa"; 
 import useTheme from "../Shared/useTheme";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { logoutUser } from "../../api/queueNewApi";
 import { useNavigate } from "react-router-dom";
+
+  
+const getUserData = () => {
+  const userData = localStorage.getItem("user");
+  return userData ? JSON.parse(userData) : null;
+};
 
 // eslint-disable-next-line react/prop-types
 const AdminNavbar = ({ toggleSidebar, setShowModal }) => {
   const { darkMode, toggleTheme } = useTheme();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const user = useSelector((state) => state.auth.user);
+
+  const user = getUserData(); // Ambil data user
+  const userCounter = user?.counter || "-"; // Default "-" jika tidak ada data
 
   const handleLogout = () => {
     dispatch(logoutUser());
     navigate("/login");
- };
+};
 
   return (
     <Navbar expand="lg" className="shadow-sm">
@@ -51,7 +59,7 @@ const AdminNavbar = ({ toggleSidebar, setShowModal }) => {
           {/* Dropdown Profile */}
           <Dropdown align="end" className="ms-3 d-flex align-items-center profile-dropdown">
             <span className="me-2">
-              {user?.role} - {user?.loket || "All"}
+              Loket {userCounter}
             </span>
             <Dropdown.Toggle 
               variant="transparent" 

@@ -13,12 +13,12 @@ const QueueServiceMenu = () => {
 
   // Data queue type & carousel di-memo agar tidak dibuat ulang
   const queueTypes = useMemo(() => [
-    { id: "siap_print", label: "Print", icon: "/assets/icons/print.png" },
-    { id: "design", label: "Design", icon: "/assets/icons/design.png" },
-    { id: "fotocopy", label: "Fotocopy", icon: "/assets/icons/fc.png" },
-    { id: "retur", label: "Retur Barang", icon: "/assets/icons/retur.webp" },
-    { id: "pick", label: "Online Pick Up", icon: "/assets/icons/pick.png" },
-    { id: "tamu", label: "Tamu / Supplier", icon: "/assets/icons/tamu.webp" },
+    { id: "siap_print", label: "Print", kd_jenis_antrian: "J0001", icon: "/assets/icons/print.png" },
+    { id: "design", label: "Design", kd_jenis_antrian: "J0002", icon: "/assets/icons/design.png" },
+    { id: "fotocopy", label: "Fotocopy", kd_jenis_antrian: "J0003", icon: "/assets/icons/fc.png" },
+    { id: "retur", label: "Retur Barang", kd_jenis_antrian: "J0004", icon: "/assets/icons/retur.webp" },
+    { id: "pick", label: "Online Pick Up", kd_jenis_antrian: "J0005", icon: "/assets/icons/pick.png" },
+    { id: "tamu", label: "Tamu / Supplier", kd_jenis_antrian: "J0006", icon: "/assets/icons/tamu.webp" },
   ], []);
 
   const carouselImages = useMemo(() => ["c1.png", "c2.jpg", "c3.jpg"], []);

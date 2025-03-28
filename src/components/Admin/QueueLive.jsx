@@ -1,15 +1,13 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getQueueLive } from "../../redux/Slice/queueNewSlice";
-import { Table, Spinner, Alert } from "react-bootstrap";
+import { Spinner, Alert, Card, Col, Row } from "react-bootstrap";
 
-const QueueTable = () => {
+const QueueLive = () => {
   const dispatch = useDispatch();
   const { queueLive, loadingQueueLive, errorQueueLive } = useSelector(
     (state) => state.queueNew
   );
-
-  console.log("queueLive:", queueLive);
 
   useEffect(() => {
     dispatch(getQueueLive());
@@ -20,49 +18,54 @@ const QueueTable = () => {
   const totalAntrian = queueLive?.data?.live_antrian[0]?.total || 0;
 
   return (
-    <div className="p-2">
-      <div className="d-flex justify-content-between">
+    <Card>
+      <Card.Header className="d-flex justify-content-between bg-info-subtle">
         <span className="fw-bold">Live Antrian</span>
-        <span className="fw-bold">Total Antrian :({totalAntrian})</span>
-      </div>
+        <span className="text-danger">Total Antrian: {totalAntrian}</span>
+      </Card.Header>
+      <Card.Body>
+        {/* Loading State */}
+        {loadingQueueLive && <Spinner animation="border" className="d-block mx-auto my-3" />}
 
-      {/* Loading State */}
-      {loadingQueueLive && <Spinner animation="border" className="d-block mx-auto my-3" />}
+        {/* Error State */}
+        {errorQueueLive && <Alert variant="danger">{errorQueueLive}</Alert>}
 
-      {/* Error State */}
-      {errorQueueLive && <Alert variant="danger">{errorQueueLive}</Alert>}
-
-      {/* Table */}
-      <Table striped bordered hover responsive className="mt-2">
-        <thead>
-          <tr>
-            <th>Jenis Antrian</th>
-            <th>Total</th>
-            <th>Menunggu</th>
-            <th>Dipanggil</th>
-          </tr>
-        </thead>
-        <tbody>
+        {/* Data Antrian */}
+        <Row className="g-3">
           {queueData.length > 0 ? (
             queueData.map((queue, index) => (
-              <tr key={index} className="text-center">
-                <td>{queue.jenis_antrian}</td>
-                <td>{queue.total}</td>
-                <td>{queue.menunggu}</td>
-                <td>{queue.dipanggil}</td>
-              </tr>
+              <Col key={index} xs={12} sm={6} md={4}>
+                <Card className="shadow-sm" style={{fontSize: 12}}>
+                  <Card.Header className="d-flex justify-content-between bg-info-subtle text-center">
+                    <span className="fw-semibold">
+                      {queue.jenis_antrian} 
+                    </span>
+                    <span>
+                      Jumlah: {queue.total}
+                    </span>
+                  </Card.Header>
+                  <Card.Body className="d-flex justify-content-between text-center">
+                    <span>
+                      <strong>Waiting:</strong> {queue.menunggu}
+                    </span>
+                    <span>
+                      <strong>Called:</strong> {queue.dipanggil}
+                    </span>
+                  </Card.Body>
+                </Card>
+              </Col>
             ))
           ) : (
-            <tr>
-              <td colSpan="4" className="text-center">
+            <Col xs={12}>
+              <Alert variant="secondary" className="text-center">
                 Tidak ada data antrian.
-              </td>
-            </tr>
+              </Alert>
+            </Col>
           )}
-        </tbody>
-      </Table>
-    </div>
+        </Row>
+      </Card.Body>
+    </Card>
   );
 };
 
-export default QueueTable;
+export default QueueLive;
