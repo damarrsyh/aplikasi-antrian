@@ -7,7 +7,7 @@ import { Form, Button, Container, Alert, Card } from "react-bootstrap";
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [counter, setCounter] = useState(""); // State untuk counter
+  const [counter, setCounter] = useState("");
   const [error, setError] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -17,7 +17,7 @@ const Login = () => {
     setError("");
 
     try {
-      await dispatch(loginUser(email, password, counter)); // Kirim counter juga
+      await dispatch(loginUser(email, password, counter));
       navigate("/dashboard/queue-list");
     } catch (err) {
       setError(err.message);

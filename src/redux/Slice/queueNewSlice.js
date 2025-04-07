@@ -20,6 +20,7 @@ export const getType = createAsyncThunk(
   async(_, {rejectWithValue}) => {
     try {
       const data = await fetchType();
+      // console.log("Data redux type antrian", data);
       return data;
     }catch (error) {
       return rejectWithValue(error.response?.data?.message || "Gagal mengambil data jenis antrian");
@@ -61,7 +62,7 @@ export const getQueueLive = createAsyncThunk(
       // console.log("Data Live Redux", data);
       return data;
     } catch (error) {
-      return rejectWithValue(error.response?.data?.message || "Gagal mengambil daftar antrian selesai");
+      return rejectWithValue(error.response?.data?.message || "Gagal mengambil daftar antrian Live");
     }
   }
 );
@@ -98,17 +99,19 @@ const queueNewSlice = createSlice({
     customers: [],
     type: [],
     countryCodes: [],
-    queueWait: [],
+    queueWait: {},
     queueLive: [],
     queueDone: [],
     queueDateNow: [],
     loadingCustomers: false,
+    loadingType: false,
     loadingCountryCodes: false,
     loadingQueueWait: false,
     loadingQueueLive: false,
     loadingQueueDone: false,
     loadingQueueDateNow: false,
     errorCustomers: null,
+    errorType: null,
     errorCountryCodes: null,
     errorQueueWait: null,
     errorQueueLive: null,
@@ -138,6 +141,7 @@ const queueNewSlice = createSlice({
       state.errorType = null;
     })
     .addCase(getType.fulfilled, (state, action) => {
+      // console.log("API Type Antrian", action.payload)
       state.loadingType = false;
       state.type = action.payload;
     })
@@ -181,7 +185,7 @@ const queueNewSlice = createSlice({
       state.errorQueueLive = null;
     })
     .addCase(getQueueLive.fulfilled, (state, action) => {
-      console.log("API Live Success:", action.payload);
+      // console.log("API Live Success:", action.payload);
       state.loadingQueueLive = false;
       state.queueLive = action.payload;
     })

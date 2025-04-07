@@ -62,6 +62,7 @@ export const fetchCustomers = async () => {
 export const fetchType = async () => {
   try {
     const response = await api.get("/type");
+    // console.log("Data Type Antrian", response.data)
     return response.data;
   } catch (error) {
     handleApiError(error);
@@ -72,7 +73,7 @@ export const fetchType = async () => {
 export const createQueueTicket = async (type, nama, telp) => {
   try {
     const response = await api.post(`/tiket?type=${type}&nama=${nama}&telp=${telp}`);
-    // console.log("Response Tiket:", response.data); DEBUGGING
+    console.log("Response Tiket:", response.data);
     return response.data;
   } catch (error) {
     handleApiError(error);
@@ -147,7 +148,7 @@ export const fetchQueueLive = async () => {
 export const fetchQueueDone = async () => {
   try {
     const response = await api.get("/selesai");
-    console.log("Data Selesai", response.data);
+    // console.log("Data Selesai", response.data);
     return response.data;
   } catch (error) {
     handleApiError(error);

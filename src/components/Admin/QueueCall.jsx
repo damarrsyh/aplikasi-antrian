@@ -4,7 +4,6 @@ import { playQueueAudio } from "../../utils/audio";
 import { Form, Card, Modal, Button } from "react-bootstrap";
 import { FaBullhorn } from "react-icons/fa";
 
-
 const QueueCall = () => {
   const [counter, setCounter] = useState("");
   const [type, setType] = useState("");
@@ -44,6 +43,49 @@ const QueueCall = () => {
     fetchData();
   }, []);
 
+  useEffect(() => {
+    const socket = new WebSocket("ws://192.168.4.141:3000/ws");
+  
+    socket.onopen = () => {
+      console.log("✅ WebSocket connected (QueueCall)");
+    };
+  
+    socket.onmessage = async (event) => {
+      try {
+        const data = JSON.parse(event.data);
+    
+        // Pastikan data berupa array
+        if (Array.isArray(data)) {
+          const sequenceData = data.find(
+            (item) => item.sequence && item.number
+          );
+    
+          if (sequenceData) {
+            await playQueueAudio(sequenceData.sequence); // Mainkan audio
+    
+            const displayText = `Nomor Antrian ${sequenceData.number} Silahkan ke Loket No ${sequenceData.counter || counter}`;
+            setCalledQueue(displayText);
+            setShowModal(true);
+          } else {
+            console.warn("🔍 Tidak ada item valid untuk diputar audionya.");
+          }
+        }
+      } catch (err) {
+        console.error("❌ WebSocket message error:", err);
+      }
+    };
+  
+    socket.onerror = (error) => {
+      console.error("🚨 WebSocket error:", error);
+    };
+  
+    socket.onclose = () => {
+      console.log("🔌 WebSocket disconnected (QueueCall)");
+    };
+  
+    return () => socket.close();
+  }, [counter]);
+
   const handleServiceChange = (e) => {
     const selectedType = e.target.value;
     setType(selectedType); // Simpan ID jenis antrian yang dipilih
@@ -78,11 +120,8 @@ const QueueCall = () => {
 
     try {
       const response = await callQueue(counter, type, queueNumber);
-      // console.log("Antrian Dipanggil:", response);
+      console.log("Antrian Dipanggil:", response);
 
-      if (response.sequence) {
-        await playQueueAudio(response.sequence);
-      }
 
       setCalledQueue(`Nomor Antrian ${queueNumber} - ${type} Silahkan ke Loket No ${counter}`);
       setShowModal(true);
