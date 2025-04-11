@@ -45,7 +45,7 @@ const QueueSettingsDisplay = () => {
               <Form.Label>URL Video Komersial</Form.Label>
               <Form.Control
                 type="text"
-                placeholder="Masukkan URL Video YouTube/Vimeo"
+                placeholder="Masukkan URL Video"
                 value={videoUrl}
                 onChange={(e) => setVideoUrl(e.target.value)}
               />
@@ -67,7 +67,7 @@ const QueueSettingsDisplay = () => {
           <Col md={6}>
             <h5>Preview Tampilan</h5>
             <Card className="shadow flex-grow-1 text-center text-white" style={{  borderRadius: "10px", width: "100%", minHeight: "250px" }}>
-              <Card.Header style={{backgroundColor: themeColor}}>
+              <Card.Header className="d-flex justify-content-center" style={{backgroundColor: themeColor}}>
               <h4 style={{ fontSize: `${fontSize}px` }} className="fw-bold">NOMOR ANTRIAN</h4>
               </Card.Header>
               <Card.Body className="bg-light text-dark">

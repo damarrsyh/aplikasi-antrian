@@ -18,22 +18,19 @@ const QueueDone = () => {
 
   // Mapping kd_jenis_antrian ke kd_identifikasi
   const isTypeReady =
-  type &&
-  Array.isArray(type.cachedData) &&
-  type.cachedData.length > 0;
+    type && Array.isArray(type.cachedData) && type.cachedData.length > 0;
 
-const jenisAntrianMap = isTypeReady
-  ? type.cachedData.reduce((acc, item) => {
-      acc[item.kd_jenis_antrian] = item.kd_identifikasi;
-      return acc;
-    }, {})
-  : {};
+  const jenisAntrianMap = isTypeReady
+    ? type.cachedData.reduce((acc, item) => {
+        acc[item.kd_jenis_antrian] = item.kd_identifikasi;
+        return acc;
+      }, {})
+    : {};
 
-    const formatNomorAntrian = (kdJenis, nomor) => {
-      const prefix = jenisAntrianMap[kdJenis] || "";
-      const nomorFormatted = String(nomor).padStart(3, "0");
-      return `${prefix}${nomorFormatted}`;
-    };
+  const formatNomorAntrian = (kdJenis, nomor) => {
+    const prefix = jenisAntrianMap[kdJenis] || "";
+    return `${prefix}${nomor}`;
+  };
 
   const totalQueueDone = queueDone?.data?.reduce(
     (acc, item) => acc + (item.list_selesai?.length || 0),
@@ -44,7 +41,7 @@ const jenisAntrianMap = isTypeReady
     <Card>
       <Card.Header className="d-flex justify-content-between bg-success-subtle">
         <span className="fw-bold">Antrian Selesai</span>
-        <span className="text-success">Total Antrian: {totalQueueDone}</span>
+        <span className="text-danger">Total Antrian: {totalQueueDone}</span>
       </Card.Header>
       <Card.Body>
         {loadingQueueDone && <Spinner animation="border" className="d-block mx-auto my-3" />}
@@ -63,8 +60,12 @@ const jenisAntrianMap = isTypeReady
                         {formatNomorAntrian(queue.kd_jenis_antrian, queue.nomor)}
                       </strong>
                     </p>
-                    <p>Waktu Cetak: {new Date(queue.waktu_cetak).toLocaleString()}</p>
-                    <span className="fw-semibold bg-success p-2 rounded text-light">Finished</span>
+                    <p>Waktu Cetak:{" "}
+                      {new Date(queue.waktu_cetak).toLocaleString()}
+                    </p>
+                    <span className="fw-semibold bg-success p-2 rounded text-light">
+                      Finished
+                    </span>
                   </div>
                 ))
               )

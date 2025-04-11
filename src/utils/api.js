@@ -19,14 +19,14 @@ api.interceptors.request.use((config) => {
 // Interceptor response untuk menangani error 401 (token expired)
 api.interceptors.response.use(
   (response) => response,
-  async (error) => {
-    if (error.response?.status === 401) {
-      // Hapus token dari localStorage
-      localStorage.removeItem("token");
-      localStorage.removeItem("refreshToken");
-
-      // Redirect ke halaman login
-      window.location.href = "/login";
+  (error) => {
+    // Jika error 403 dan message-nya "Invalid token", redirect ke /login
+    if (
+      error.response?.status === 403 &&
+      error.response?.data?.message === 'Invalid token.'
+    ) {
+      localStorage.removeItem('token'); // hapus token lama
+      window.location.href = '/login'; // redirect
     }
     return Promise.reject(error);
   }

@@ -13,8 +13,6 @@ const QueueDisplayPage = () => {
   const queueList = useSelector(selectAllQueues);
   const [currentTime, setCurrentTime] = useState(new Date());
   const [showVideo, setShowVideo] = useState(true);
-  const colors = ["primary", "secondary", "success", "danger", "warning", "info", "dark"];
-  const getRandomColor = (index) => colors[index % colors.length];
 
   useEffect(() => {
       dispatch(fetchQueueList());
@@ -27,29 +25,26 @@ const QueueDisplayPage = () => {
   }, []);
 
   useEffect(() => {
-    const interval = setInterval(() => setShowVideo((prev) => !prev), 2000);
+    const interval = setInterval(() => setShowVideo((prev) => !prev), 5000);
     return () => clearInterval(interval);
   }, []);
 
-  // 🔹 Ambil antrian yang sedang "In Progress"
-  const currentQueue = queueList.find(q => q.customer.status === "In Progress") || null;
   const missedCustomers = queueList.filter(q => q.customer.status === "Missed");
-
 
   return (
     <Container fluid className="p-3" style={{ overflowX: "hidden", maxHeight: "100vh", overflow: "hidden" }}>
-      <Row className="mb-3 g-0">
-      <Col md={4} className="d-flex flex-column justify-content-between">
+      <Row className="g-2 mb-2">
+      <Col md={4} className="g-2 d-flex flex-column justify-content-between">
         <QueueHeader currentTime={currentTime} />
-        <QueueNumber currentQueue={currentQueue} queueList={queueList}/>
+        <QueueNumber/>
       </Col>
-      <Col md={8} className="ps-3 d-flex align-items-stretch">
+      <Col md={8} className="d-flex align-items-stretch">
         <QueueMedia showVideo={showVideo} queueList={queueList} missedCustomers={missedCustomers}/>
       </Col>
       </Row>
-      <Row className="g-0">
+      <Row>
         <Col className="d-flex justify-content-center">
-          <QueueList queueList={queueList} getRandomColor={getRandomColor}/>
+          <QueueList/>
         </Col>
       </Row>
     </Container>

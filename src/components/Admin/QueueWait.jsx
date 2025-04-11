@@ -17,27 +17,23 @@ const QueueWait = () => {
     dispatch(getType());
   }, [dispatch]);
 
-  // Mapping kd_jenis_antrian ke kd_identifikasi
+  // Mapping kd_jenis_antrian to kd_identifikasi
   const isTypeReady =
-  type &&
-  Array.isArray(type.cachedData) &&
-  type.cachedData.length > 0;
+    type && Array.isArray(type.cachedData) && type.cachedData.length > 0;
 
-const jenisAntrianMap = isTypeReady
-  ? type.cachedData.reduce((acc, item) => {
-      acc[item.kd_jenis_antrian] = item.kd_identifikasi;
-      return acc;
-    }, {})
-  : {};
+  const jenisAntrianMap = isTypeReady
+    ? type.cachedData.reduce((acc, item) => {
+        acc[item.kd_jenis_antrian] = item.kd_identifikasi;
+        return acc;
+      }, {})
+    : {};
 
-  // Format nomor antrian (contoh: D002)
   const formatNomorAntrian = (kdJenis, nomor) => {
     const prefix = jenisAntrianMap[kdJenis] || "";
-    const nomorFormatted = String(nomor).padStart(3, "0");
-    return `${prefix}${nomorFormatted}`;
+    return `${prefix}${nomor}`;
   };
 
-  const totalQueue = queueWait?.data?.reduce(
+  const totalQueueWait = queueWait?.data?.reduce(
     (acc, item) => acc + (item.list_menunggu?.length || 0),
     0
   );
@@ -46,7 +42,7 @@ const jenisAntrianMap = isTypeReady
     <Card>
       <Card.Header className="d-flex justify-content-between bg-warning-subtle">
         <span className="fw-bold">Antrian Menunggu</span>
-        <span className="text-danger">Total Antrian: {totalQueue}</span>
+        <span className="text-danger">Total Antrian: {totalQueueWait}</span>
       </Card.Header>
       <Card.Body>
         {loadingQueueWait && (
@@ -54,9 +50,9 @@ const jenisAntrianMap = isTypeReady
         )}
         {errorQueueWait && <Alert variant="danger">{errorQueueWait}</Alert>}
 
-        {isMobile ? (
+          {isMobile ? (
           <div className="d-flex flex-column gap-3">
-            {totalQueue > 0 ? (
+            {totalQueueWait > 0 ? (
               queueWait?.data?.map((item) =>
                 item.list_menunggu?.map((queue) => (
                   <div key={queue._id} className="card p-3 shadow-sm">
@@ -92,7 +88,7 @@ const jenisAntrianMap = isTypeReady
               </tr>
             </thead>
             <tbody>
-              {totalQueue > 0 ? (
+              {totalQueueWait > 0 ? (
                 queueWait?.data?.map((item) =>
                   item.list_menunggu?.map((queue) => (
                     <tr key={queue._id} className="text-center">

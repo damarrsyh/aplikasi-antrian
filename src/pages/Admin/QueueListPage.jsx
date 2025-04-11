@@ -30,7 +30,7 @@ const QueueListPage = () => {
       </Row>
 
       {/* Section: Queue Wait & Done */}
-      <Row className="mb-3">
+      <Row className="mb-3 g-3">
         <Col md={6} xs={12}>
           <QueueWait />
         </Col>

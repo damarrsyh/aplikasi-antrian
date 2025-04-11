@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { fetchCustomers, fetchType, fetchCountryCodes, fetchQueueWait, fetchQueueDone, fetchQueueDateNow, fetchQueueLive } from "../../api/queueNewApi";
+import { fetchCustomers, fetchType, updateTypeStatus, fetchQueueWait, fetchQueueDone, fetchQueueDateNow, fetchQueueLive } from "../../api/queueNewApi";
 
 // Thunk untuk mengambil daftar pelanggan
 export const getCustomers = createAsyncThunk(
@@ -28,15 +28,26 @@ export const getType = createAsyncThunk(
   }
 );
 
-// Thunk untuk mengambil kode negara
-export const fetchCountryCodesThunk = createAsyncThunk(
-  "queueNew/fetchCountryCodes",
-  async (_, { rejectWithValue }) => {
+export const toggleQueueTypeStatus = createAsyncThunk(
+  "queue/toggleQueueTypeStatus",
+  async ({ jenisAntrian, currentStatus }, { rejectWithValue }) => {
     try {
-      const data = await fetchCountryCodes();
-      return data;
+      const slugMap = {
+        "Siap print": "siap_print",
+        "Design/Edit/Kreatif": "design",
+        "Fotocopy/Jilid/Scan": "fotocopy",
+        "Online Pick-up": "online",
+        "Retur Penjualan": "retur",
+        "Tamu/Supplier": "tamu",
+      };
+
+      const slug = slugMap[jenisAntrian];
+      const newStatus = currentStatus === "Y" ? "N" : "Y";
+
+      const result = await updateTypeStatus(slug, newStatus);
+      return { jenisAntrian, newStatus, result }; // bisa juga return slug jika ingin mapping ulang
     } catch (error) {
-      return rejectWithValue(error.response?.data?.message || "Gagal mengambil kode negara");
+      return rejectWithValue(error.message);
     }
   }
 );
@@ -91,28 +102,25 @@ export const getQueueDateNow = createAsyncThunk(
       return rejectWithValue(error.response?.data?.message || "Gagal mengambil data antrian tanggal hari ini");
     }
   }
-)
+);
 
 const queueNewSlice = createSlice({
   name: "queueNew",
   initialState: {
     customers: [],
     type: [],
-    countryCodes: [],
-    queueWait: {},
+    queueWait: [],
     queueLive: [],
     queueDone: [],
     queueDateNow: [],
     loadingCustomers: false,
     loadingType: false,
-    loadingCountryCodes: false,
     loadingQueueWait: false,
     loadingQueueLive: false,
     loadingQueueDone: false,
     loadingQueueDateNow: false,
     errorCustomers: null,
     errorType: null,
-    errorCountryCodes: null,
     errorQueueWait: null,
     errorQueueLive: null,
     errorQueueDone: null,
@@ -150,18 +158,26 @@ const queueNewSlice = createSlice({
       state.errorType = action.payload;
     })
 
-    // ✅ State untuk kode negara
-    .addCase(fetchCountryCodesThunk.pending, (state) => {
-      state.loadingCountryCodes = true;
-      state.errorCountryCodes = null;
+    .addCase(toggleQueueTypeStatus.pending, (state) => {
+      state.loadingType = true;
     })
-    .addCase(fetchCountryCodesThunk.fulfilled, (state, action) => {
-      state.loadingCountryCodes = false;
-      state.countryCodes = action.payload;
+    .addCase(toggleQueueTypeStatus.fulfilled, (state, action) => {
+      const { jenisAntrian, newStatus } = action.payload;
+
+      // Update status aktif di cachedData
+      const index = state.type.cachedData.findIndex(
+        (item) => item.jenis_antrian === jenisAntrian
+      );
+      if (index !== -1) {
+        state.type.cachedData[index].aktif = newStatus;
+      }
+
+      state.loadingType = false;
+      state.errorType = null;
     })
-    .addCase(fetchCountryCodesThunk.rejected, (state, action) => {
-      state.loadingCountryCodes = false;
-      state.errorCountryCodes = action.payload;
+    .addCase(toggleQueueTypeStatus.rejected, (state, action) => {
+      state.loadingType = false;
+      state.errorType = action.payload || "Gagal update jenis layanan.";
     })
 
     // ✅ State untuk daftar antrian menunggu
@@ -215,7 +231,7 @@ const queueNewSlice = createSlice({
       state.errorQueueDateNow = null;
     })
     .addCase(getQueueDateNow.fulfilled, (state, action) => {
-      // console.log("API Done Success:", action.payload);
+      // console.log("Data Now Success:", action.payload);
       state.loadingQueueDateNow = false;
       state.queueDateNow = action.payload;
     })

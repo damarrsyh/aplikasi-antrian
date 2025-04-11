@@ -127,42 +127,48 @@ const AdminSidebar = ({ isCollapsed, setIsCollapsed, showModal, setShowModal }) 
             </Button>
           </Modal.Header>
           <Modal.Body>
-            <span>List Antrian</span>
-            <NavLink to="/dashboard/queue-list" className="btn my-2 d-flex align-items-center w-100">
-              <FaList className="me-2" />
-              <span>Daftar Antrian</span>
-            </NavLink>
-            <>
-              <NavLink to="/dashboard/queue-report" className="btn my-2 d-flex align-items-center w-100">
-                <FaChartBar className="me-2" />
-                <span>Report Antrian</span>
-              </NavLink>
-              <hr />
-              <span>Display</span>
-              <NavLink to="/leaderboard" className="btn my-2 d-flex align-items-center">
-                <FaTrophy className="me-2" />
-                <span>Leaderboard</span>
-              </NavLink>
-              <NavLink to="/queue-display" className="btn my-2 d-flex align-items-center">
-                <FaTv className="me-2" />
-                <span>Display Antrian</span>
-              </NavLink>
-              <NavLink to="/queue-menu" className="btn my-2 d-flex align-items-center">
-                <FaBars className="me-2" />
-                <span>Menu Layanan</span>
-              </NavLink>
-              <hr />
-              <span>Settings</span>
-              <NavLink to="/dashboard/queue-settings-display" className="btn my-2 d-flex align-items-center">
-                <FaTv className="me-2" />
-                <span>Setting Display Antrian</span>
-              </NavLink>
-              <NavLink to="/dashboard/queue-settings-menu" className="btn my-2 d-flex align-items-center">
-                <FaBars className="me-2" />
-                <span>Setting Menu Layanan</span>
-              </NavLink>
-            </>
-        </Modal.Body>
+  {[
+    {
+      title: "List Antrian",
+      items: [
+        { to: "/dashboard/queue-list", icon: <FaList className="me-2" />, label: "Daftar Antrian" },
+        { to: "/dashboard/queue-report", icon: <FaChartBar className="me-2" />, label: "Report Antrian" },
+      ],
+    },
+    {
+      title: "Display",
+      items: [
+        { to: "/leaderboard", icon: <FaTrophy className="me-2" />, label: "Leaderboard" },
+        { to: "/queue-display", icon: <FaTv className="me-2" />, label: "Display Antrian" },
+        { to: "/queue-menu", icon: <FaBars className="me-2" />, label: "Menu Layanan" },
+      ],
+    },
+    {
+      title: "Settings",
+      items: [
+        { to: "/dashboard/queue-settings-display", icon: <FaTv className="me-2" />, label: "Setting Display Antrian" },
+        { to: "/dashboard/queue-settings-menu", icon: <FaBars className="me-2" />, label: "Setting Menu Layanan" },
+      ],
+    },
+  ].map((section, idx) => (
+    <div key={idx}>
+      <span>{section.title}</span>
+      {section.items.map((item, i) => (
+        <NavLink
+          key={i}
+          to={item.to}
+          className="btn my-2 d-flex align-items-center w-100"
+          onClick={() => setShowModal(false)}
+        >
+          {item.icon}
+          <span>{item.label}</span>
+        </NavLink>
+      ))}
+      {idx < 2 && <hr />} {/* tambahkan <hr> kecuali di section terakhir */}
+    </div>
+  ))}
+</Modal.Body>
+
       </Modal>
     </div>
     

@@ -1,51 +1,81 @@
-import { useState, useCallback, useMemo } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { createQueueTicket } from "../../api/queueNewApi";
-import { Form, Card, Row, Col, Carousel, Modal } from "react-bootstrap";
+import { getType } from "../../redux/Slice/queueNewSlice";
+import { Card, Carousel, Col, Form, Modal, Row } from "react-bootstrap";
+import { FaCheckCircle } from "react-icons/fa";
+
+const normalizeQueueType = (rawName) => {
+  const lower = rawName.toLowerCase();
+
+  if (lower.includes("design") || lower.includes("edit") || lower.includes("kreatif")) return "design";
+  if (lower.includes("fotocopy")) return "fotocopy";
+  if (lower.includes("online")) return "online";
+  if (lower.includes("retur")) return "retur";
+  if (lower.includes("tamu")) return "tamu";
+  if (lower.includes("siap")) return "siap_print";
+
+  return lower.replace(/\s+/g, "_"); // fallback: ubah spasi jadi underscore
+};
+
+const iconMap = {
+  design: "/assets/icons/design.png",
+  fotocopy: "/assets/icons/fc.png",
+  online: "/assets/icons/pick.png",
+  retur: "/assets/icons/retur.webp",
+  tamu: "/assets/icons/tamu.webp",
+  siap_print: "/assets/icons/print.png",
+};
+
+const getIcon = (type) => iconMap[type] || "/assets/icons/default.png";
 
 const QueueServiceMenu = () => {
+  const dispatch = useDispatch();
+  const { type } = useSelector((state) => state.queueNew);
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
-  const [type, setType] = useState("");
   const [showModal, setShowModal] = useState(false);
-  const [queueNumber, setQueueNumber] = useState("");
 
-  const isValidPhoneNumber = (phone) => /^[0-9]{10,13}$/.test(phone);
-
-  // Data queue type & carousel di-memo agar tidak dibuat ulang
-  const queueTypes = useMemo(() => [
-    { id: "siap_print", label: "Print", kd_jenis_antrian: "J0001", icon: "/assets/icons/print.png" },
-    { id: "design", label: "Design", kd_jenis_antrian: "J0002", icon: "/assets/icons/design.png" },
-    { id: "fotocopy", label: "Fotocopy", kd_jenis_antrian: "J0003", icon: "/assets/icons/fc.png" },
-    { id: "retur", label: "Retur Barang", kd_jenis_antrian: "J0004", icon: "/assets/icons/retur.webp" },
-    { id: "pick", label: "Online Pick Up", kd_jenis_antrian: "J0005", icon: "/assets/icons/pick.png" },
-    { id: "tamu", label: "Tamu / Supplier", kd_jenis_antrian: "J0006", icon: "/assets/icons/tamu.webp" },
-  ], []);
+  useEffect(() => {
+    dispatch(getType());
+  }, [dispatch]);
 
   const carouselImages = useMemo(() => ["c1.png", "c2.jpg", "c3.jpg"], []);
+  const isValidPhoneNumber = (phone) => /^[0-9]{10,13}$/.test(phone);
+
+  // Ambil data aktif saja dari cachedData
+  const queueTypes = (type?.cachedData || [])
+    .filter((item) => item.aktif === "Y")
+    .map((item) => {
+      const normalizedId = normalizeQueueType(item.jenis_antrian);
+      return {
+        id: normalizedId,
+        label: item.jenis_antrian
+          .split(" ")
+          .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+          .join(" "),
+        icon: getIcon(normalizedId),
+      };
+    })
+    
 
   const handleSelectService = useCallback(async (selectedType) => {
-    setType(selectedType);
     try {
-      const response = await createQueueTicket(selectedType, name || "Guest", phone || "-");
-      console.log("Tiket berhasil dibuat:", response);
 
-      setQueueNumber(response.nomor);
+      const response = await createQueueTicket(
+        selectedType,
+        name.trim() || "Guest",
+        phone.trim() || "-"
+      );
       setShowModal(true);
-
-      // Tutup modal otomatis setelah 3 detik
       setTimeout(() => setShowModal(false), 3000);
 
-      // Reset form
-      setName("");
-      setPhone("");
-      setType("");
+      console.log("Data tiket:", response); // atau navigasi ke display
     } catch (error) {
       console.error("Gagal membuat tiket:", error);
-      alert("Gagal membuat tiket. Silakan coba lagi.");
     }
   }, [name, phone]);
 
-  // Handle Submit Form (Prevent Default)
   const handleSubmit = (e) => {
     e.preventDefault();
     if (type) {
@@ -135,12 +165,12 @@ const QueueServiceMenu = () => {
 
       {/* MODAL TIKET */}
       <Modal show={showModal} onHide={() => setShowModal(false)} centered>
-        <Modal.Header closeButton>
-          <Modal.Title>Tiket Berhasil Dibuat</Modal.Title>
-        </Modal.Header>
-        <Modal.Body className="text-center">
-          <h4>Nomor Antrian Anda:</h4>
-          <h2 className="fw-bold text-primary">{queueNumber}</h2>
+        <Modal.Body className="text-center py-4">
+          <div className="mb-3">
+            <FaCheckCircle className="text-success" size={50} />
+          </div>
+          <h5 className="mb-2">Tiket Berhasil Dibuat</h5>
+          <p className="text-muted mt-2 mb-0">Silahkan Menunggu</p>
         </Modal.Body>
       </Modal>
     </Row>

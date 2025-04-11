@@ -1,36 +1,60 @@
 /* eslint-disable react/prop-types */
-import { Row, Col, Card, ListGroup } from "react-bootstrap"
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getQueueLive } from "../../redux/Slice/queueNewSlice";
+import { Row, Col, Card, Alert, Spinner } from "react-bootstrap"
 
-const QueueList = ({ queueList }) => {
+const QueueList = () => {
+  const dispatch = useDispatch();
+  const { queueLive, loadingQueueLive, errorQueueLive } = useSelector(
+    (state) => state.queueNew
+  );
 
+  useEffect(() => {
+    dispatch(getQueueLive());
+  }, [dispatch]);
+
+  // Pastikan data ada sebelum mengaksesnya
   const themeColor = localStorage.getItem("themeColor") || "#007bff";
+  const queueData = queueLive?.data?.live_antrian?.slice(1) || [];
 
   return (
     <>
-    <Row className="flex-grow-1" style={{ width: "100%" }}>
-      {Array.from(new Set(queueList.map((queue) => queue.customer.nama_antrian))).map((serviceName, index) => (
-        <Col key={index} md={4} className="mb-3">
-          <Card className="shadow border-0">
-            <Card.Header className={`text-white text-capitalize`} style={{backgroundColor: themeColor}}>
-              <h5>List Antrian {serviceName}</h5>
-            </Card.Header>
-            <ListGroup variant="flush">
-              {queueList
-                .filter((q) => q.customer.status === "Waiting" && q.customer.nama_antrian === serviceName)
-                .sort((a, b) => new Date(a.created_at) - new Date(b.created_at))
-                .slice(0, 3)
-                .map((q, i) => (
-                  <ListGroup.Item key={i} className="d-flex justify-content-between flex-column">
-                    <div className="d-flex justify-content-between">
-                      <span className="fw-bold">{q.customer.nomor_antrian}</span>
-                      <span className="text-muted fw-bold">{q.customer.status} - {q.created_at ? new Date(q.created_at).toLocaleTimeString() : "Waktu Tidak Diketahui"}</span>
-                    </div>
-                  </ListGroup.Item>
-                ))}
-            </ListGroup>
-          </Card>
+    <Row className="flex-grow-1 g-2" style={{ width: "100%" }}>
+      {queueData.length > 0 ? (
+        queueData.map((queue, index) => (
+          <Col key={index}>
+            <Card className="shadow-sm">
+              <Card.Header className="d-flex justify-content-between" style={{backgroundColor: themeColor, color: "white"}}>
+                <h6 className="fw-semibold">
+                  {queue.jenis_antrian} 
+                </h6>
+                <h6>
+                  Jumlah: {queue.total}
+                </h6>
+              </Card.Header>
+              <Card.Body className="d-flex justify-content-between text-center">
+                {loadingQueueLive && <Spinner animation="border" className="d-block mx-auto my-3" />}
+
+                {/* Error State */}
+                {errorQueueLive && <Alert variant="danger">{errorQueueLive}</Alert>}
+                <span>
+                  <strong>Waiting:</strong> {queue.menunggu}
+                </span>
+                <span>
+                  <strong>Called:</strong> {queue.dipanggil}
+                </span>
+              </Card.Body>
+            </Card>
+          </Col>
+        ))
+      ) : (
+        <Col xs={12}>
+          <Alert variant="secondary" className="text-center">
+            Tidak ada data antrian.
+          </Alert>
         </Col>
-      ))}
+      )}
     </Row>
     </>
   )

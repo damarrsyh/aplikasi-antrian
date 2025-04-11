@@ -2,12 +2,14 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getQueueLive } from "../../redux/Slice/queueNewSlice";
 import { Spinner, Alert, Card, Col, Row } from "react-bootstrap";
+import { useMediaQuery } from "react-responsive";
 
 const QueueLive = () => {
   const dispatch = useDispatch();
   const { queueLive, loadingQueueLive, errorQueueLive } = useSelector(
     (state) => state.queueNew
   );
+  const isMobile = useMediaQuery({ maxWidth: 768 });
 
   useEffect(() => {
     dispatch(getQueueLive());
@@ -31,38 +33,61 @@ const QueueLive = () => {
         {errorQueueLive && <Alert variant="danger">{errorQueueLive}</Alert>}
 
         {/* Data Antrian */}
-        <Row className="g-3">
-          {queueData.length > 0 ? (
-            queueData.map((queue, index) => (
-              <Col key={index} xs={12} sm={6} md={4}>
-                <Card className="shadow-sm" style={{fontSize: 12}}>
-                  <Card.Header className="d-flex justify-content-between bg-info-subtle text-center">
-                    <span className="fw-semibold">
-                      {queue.jenis_antrian} 
-                    </span>
-                    <span>
-                      Jumlah: {queue.total}
-                    </span>
-                  </Card.Header>
-                  <Card.Body className="d-flex justify-content-between text-center">
+        {isMobile ? (
+          <div className="d-flex flex-column gap-3">
+            {queueData.length > 0 ? (
+              queueData.map((queue, index) => (
+                <div key={index} className="card shadow-sm p-3">
+                  <div className="d-flex justify-content-between text-center">
+                    <span className="fw-semibold">{queue.jenis_antrian}</span>
+                    <span>Jumlah: {queue.total}</span>
+                  </div>
+                  <div className="d-flex justify-content-between text-center">
                     <span>
                       <strong>Waiting:</strong> {queue.menunggu}
                     </span>
                     <span>
                       <strong>Called:</strong> {queue.dipanggil}
                     </span>
-                  </Card.Body>
-                </Card>
-              </Col>
-            ))
-          ) : (
-            <Col xs={12}>
+                  </div>
+                </div>
+              ))
+            ) : (
               <Alert variant="secondary" className="text-center">
                 Tidak ada data antrian.
               </Alert>
-            </Col>
-          )}
-        </Row>
+            )}
+          </div>
+        ) : (
+          <Row className="g-3">
+            {queueData.length > 0 ? (
+              queueData.map((queue, index) => (
+                <Col key={index} xs={12} sm={6} md={4}>
+                  <Card className="shadow-sm" style={{ fontSize: 12 }}>
+                    <Card.Header className="d-flex justify-content-between bg-info-subtle text-center">
+                      <span className="fw-semibold">{queue.jenis_antrian}</span>
+                      <span>Jumlah: {queue.total}</span>
+                    </Card.Header>
+                    <Card.Body className="d-flex justify-content-between text-center">
+                      <span>
+                        <strong>Waiting:</strong> {queue.menunggu}
+                      </span>
+                      <span>
+                        <strong>Called:</strong> {queue.dipanggil}
+                      </span>
+                    </Card.Body>
+                  </Card>
+                </Col>
+              ))
+            ) : (
+              <Col xs={12}>
+                <Alert variant="secondary" className="text-center">
+                  Tidak ada data antrian.
+                </Alert>
+              </Col>
+            )}
+          </Row>
+        )}
       </Card.Body>
     </Card>
   );

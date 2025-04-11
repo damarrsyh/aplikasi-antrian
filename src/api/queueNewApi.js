@@ -1,5 +1,6 @@
 import api from "../utils/api";
 import { loginSuccess, logout } from "../redux/Slice/authSlice";
+import Cookies from "js-cookie";
 
 //  LOGIN API  //
 
@@ -21,7 +22,13 @@ export const loginUser = (email, password, counter) => async (dispatch) => {
   try {
     const response = await api.post("/api/users/login", { email, password });
 
-    localStorage.setItem("token", response.data.token);
+    const token = response.data.token;
+
+    // Simpan token ke cookies (expired otomatis 8 jam)
+    Cookies.set("token", token, { expires: 1 / 3 });
+
+    // Simpan token & user ke localStorage (opsional, untuk akses lainnya)
+    localStorage.setItem("token", token);
     localStorage.setItem("user", JSON.stringify({
       user: response.data.namalengkap,
       email: response.data.email,
@@ -36,8 +43,10 @@ export const loginUser = (email, password, counter) => async (dispatch) => {
 
 // **LOGOUT USER**
 export const logoutUser = () => (dispatch) => {
-  localStorage.removeItem("token");
+  Cookies.remove("token"); // Hapus dari cookies
+  localStorage.removeItem("token"); // Hapus dari localStorage
   localStorage.removeItem("user");
+
   dispatch(logout());
 };
 
@@ -69,33 +78,23 @@ export const fetchType = async () => {
   }
 }
 
-// **BUAT TIKET ANTRIAN**
-export const createQueueTicket = async (type, nama, telp) => {
+export const updateTypeStatus = async (slug, aktif) => {
   try {
-    const response = await api.post(`/tiket?type=${type}&nama=${nama}&telp=${telp}`);
-    console.log("Response Tiket:", response.data);
+    const response = await api.put(`/jenis-antrian/${slug}`, { aktif });
     return response.data;
   } catch (error) {
     handleApiError(error);
   }
 };
 
-// **AMBIL KODE NEGARA**
-export const fetchCountryCodes = async () => {
+// **BUAT TIKET ANTRIAN**
+export const createQueueTicket = async (type, nama, telp) => {
   try {
-    const response = await api.get("https://restcountries.com/v3.1/all");
-    return response.data
-      .map((country) => ({
-        code: country.idd?.root
-          ? `${country.idd.root}${country.idd.suffixes ? country.idd.suffixes[0] : ""}`
-          : null,
-        name: country.name.common,
-        flag: country.flag,
-      }))
-      .filter((c) => c.code);
+    const response = await api.post(`/tiket?type=${type}&nama=${nama}&telp=${telp}`);
+    // console.log("Response Tiket:", response.data);
+    return response.data;
   } catch (error) {
     handleApiError(error);
-    return [];
   }
 };
 

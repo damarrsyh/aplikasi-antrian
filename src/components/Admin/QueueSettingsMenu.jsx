@@ -1,52 +1,63 @@
 import { useDispatch, useSelector } from "react-redux";
-import { Table, Form, Card } from "react-bootstrap";
-import { fetchServicesThunk, updateServiceStatusThunk } from "../../redux/Slice/queueSlice";
+import { getType, toggleQueueTypeStatus } from "../../redux/Slice/queueNewSlice";
+import { Card, Form, Table } from "react-bootstrap";
 import { useEffect } from "react";
 
-const QueueSettingsMenu = () => {
+export default function QueueTypeTable() {
   const dispatch = useDispatch();
-  const services = useSelector((state) => state.queue.services);
-  const servicesStatus = useSelector((state) => state.queue.servicesStatus);
+  const { type } = useSelector((state) => state.queueNew);
+  // console.log(type);
+  const layanan = type?.cachedData || [];
 
   useEffect(() => {
-    dispatch(fetchServicesThunk());
+    dispatch(getType());
   }, [dispatch]);
 
-  const handleToggle = (serviceId) => {
-    const newStatus = !servicesStatus[serviceId];
-    dispatch(updateServiceStatusThunk({ serviceId, newStatus }));
+  const handleToggle = (jenisAntrian, currentStatus) => {
+    dispatch(toggleQueueTypeStatus({ jenisAntrian, currentStatus }));
   };
 
   return (
     <Card className="shadow-sm">
-      <Card.Header className="fw-bold">Setting Layanan</Card.Header>
       <Card.Body>
-        <Table striped bordered hover className="w-100">
-          <thead className="text-center">
-            <tr>
-              <th style={{width: "70%"}}>Layanan</th>
-              <th style={{width: "30%", minWidth: "150px"}}>Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            {services.map((service) => (
-              <tr key={service.id}>
-                <td>{service.nama}</td>
-                <td>
-                  <Form.Check
-                    type="switch"
-                    className="custom-switch text-center"
-                    checked={servicesStatus[service.id]}
-                    onChange={() => handleToggle(service.id)}
-                  />
-                </td>
+        <Card.Title className="mb-3">Atur Jenis Layanan</Card.Title>
+        <div className="table-responsive">
+          <Table striped bordered hover size="sm">
+            <thead className="text-center">
+              <tr>
+                <th>#</th>
+                <th>Jenis Layanan</th>
+                <th>Status</th>
               </tr>
-            ))}
-          </tbody>
-        </Table>
+            </thead>
+            <tbody>
+              {layanan.map((item, index) => (
+                <tr key={item.jenis_antrian}>
+                  <td>{index + 1}</td>
+                  <td>{item.jenis_antrian}</td>
+                  <td className="text-center">
+                    <Form.Check
+                      type="switch"
+                      id={`switch-${item.jenis_antrian}`}
+                      checked={item.aktif === "Y"}
+                      onChange={() =>
+                        handleToggle(item.jenis_antrian, item.aktif)
+                      }
+                    />
+                  </td>
+                </tr>
+              ))}
+              {layanan.length === 0 && (
+                <tr>
+                  <td colSpan="3" className="text-center text-muted">
+                    Tidak ada data layanan.
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </Table>
+        </div>
       </Card.Body>
     </Card>
-  )
+  );
 }
-
-export default QueueSettingsMenu
