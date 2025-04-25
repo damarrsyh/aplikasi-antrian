@@ -10,7 +10,7 @@ const normalizeQueueType = (rawName) => {
 
   if (lower.includes("design") || lower.includes("edit") || lower.includes("kreatif")) return "design";
   if (lower.includes("fotocopy")) return "fotocopy";
-  if (lower.includes("online")) return "online";
+  if (lower.includes("online")) return "pick";
   if (lower.includes("retur")) return "retur";
   if (lower.includes("tamu")) return "tamu";
   if (lower.includes("siap")) return "siap_print";
@@ -21,13 +21,23 @@ const normalizeQueueType = (rawName) => {
 const iconMap = {
   design: "/assets/icons/design.png",
   fotocopy: "/assets/icons/fc.png",
-  online: "/assets/icons/pick.png",
+  pick: "/assets/icons/pick.png",
   retur: "/assets/icons/retur.webp",
   tamu: "/assets/icons/tamu.webp",
   siap_print: "/assets/icons/print.png",
 };
 
 const getIcon = (type) => iconMap[type] || "/assets/icons/default.png";
+
+const convertImageToBase64 = async (url) => {
+  const response = await fetch(url);
+  const blob = await response.blob();
+  return new Promise((resolve) => {
+    const reader = new FileReader();
+    reader.onloadend = () => resolve(reader.result);
+    reader.readAsDataURL(blob);
+  });
+};
 
 const QueueServiceMenu = () => {
   const dispatch = useDispatch();
@@ -40,41 +50,91 @@ const QueueServiceMenu = () => {
     dispatch(getType());
   }, [dispatch]);
 
-  const carouselImages = useMemo(() => ["c1.png", "c2.jpg", "c3.jpg"], []);
+  const carouselImages = useMemo(() => ["c1.jpg", "c2.jpg", "c3.jpg"], []);
   const isValidPhoneNumber = (phone) => /^[0-9]{10,13}$/.test(phone);
 
   // Ambil data aktif saja dari cachedData
   const queueTypes = (type?.cachedData || [])
-    .filter((item) => item.aktif === "Y")
-    .map((item) => {
-      const normalizedId = normalizeQueueType(item.jenis_antrian);
-      return {
-        id: normalizedId,
-        label: item.jenis_antrian
-          .split(" ")
-          .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-          .join(" "),
-        icon: getIcon(normalizedId),
-      };
-    })
-    
+  .filter((item) => item.aktif === "Y")
+  .map((item) => {
+    const normalizedId = normalizeQueueType(item.jenis_antrian);
+    return {
+      id: normalizedId,
+      label: item.jenis_antrian
+        .split(" ")
+        .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(" "),
+      icon: getIcon(normalizedId),
+      kd_jenis_antrian: item.kd_jenis_antrian, // ex: "J0001"
+      kd_identifikasi: item.kd_identifikasi,   // ex: "D"
+    };
+  }); 
 
   const handleSelectService = useCallback(async (selectedType) => {
     try {
 
+      const logoBase64 = await convertImageToBase64("/logopandawa.jpg");
+      console.log("🟡 Memulai pembuatan tiket...");
+  
       const response = await createQueueTicket(
         selectedType,
         name.trim() || "Guest",
         phone.trim() || "-"
       );
+  
+      console.log("✅ Tiket berhasil dibuat dari server:", response?.data);
+  
       setShowModal(true);
       setTimeout(() => setShowModal(false), 3000);
-
-      console.log("Data tiket:", response); // atau navigasi ke display
+      setName("");
+      setPhone("");
+  
+      const selectedQueue = queueTypes.find((type) => type.id === selectedType);
+      const prefix = selectedQueue?.kd_identifikasi || "X";
+      const nomor = response?.data?.nomor?.toString().padStart(3, "0") || "000";
+      const waktuCetak = new Date().toLocaleString("id-ID", {
+        dateStyle: "medium",
+        timeStyle: "short",
+      });
+  
+      const ticketHTML = `
+        <html>
+          <head>
+            <style>
+              body { font-family: 'Poppins', sans-serif; text-align: center; padding: 20px; }
+              .ticket-box { border: 2px dashed #000; padding: 10px 20px; width: 300px; margin: auto; }
+              .queue-number { font-size: 60px; font-weight: bold; margin: 10px 0; }
+              .service-info { font-size: 16px; margin: 10px 0; }
+              .timestamp { font-size: 14px; margin-top: 10px; color: #555; }
+              .logo { width: 100px; margin: 0 auto 10px; }
+            </style>
+          </head>
+          <body>
+            <div class="ticket-box">
+              <img src=${logoBase64} alt="Logo" class="logo" />
+              <div class="queue-number">${prefix}-${nomor}</div>
+              <div class="service-info">Layanan: ${selectedQueue?.label || "Layanan"}</div>
+              <div class="timestamp">Waktu Cetak: ${waktuCetak}</div>
+            </div>
+          </body>
+        </html>
+      `;
+    
+    console.log("🖨 Mengirim tiket ke Electron untuk dicetak...");
+  
+    window.electronAPI?.printTicket(ticketHTML)
+      .then((filePath) => {
+        console.log("✅ Tiket berhasil disimpan ke:", filePath);
+      })
+      .catch((err) => {
+        console.error("❌ Gagal menyimpan tiket:", err);
+      });
+      console.log(window.electronAPI);
     } catch (error) {
-      console.error("Gagal membuat tiket:", error);
+      console.error("❌ Gagal membuat tiket:", error);
     }
-  }, [name, phone]);
+  }, [name, phone, queueTypes]);
+    
 
   const handleSubmit = (e) => {
     e.preventDefault();

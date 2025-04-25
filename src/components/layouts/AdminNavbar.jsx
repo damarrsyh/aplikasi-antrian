@@ -3,7 +3,7 @@ import { FaSun, FaMoon, FaUsers, FaBars, FaCog, FaSignOutAlt } from "react-icons
 import useTheme from "../Shared/useTheme";
 import { useDispatch } from "react-redux";
 import { logoutUser } from "../../api/queueNewApi";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 
   
 const getUserData = () => {
@@ -15,14 +15,16 @@ const getUserData = () => {
 const AdminNavbar = ({ toggleSidebar, setShowModal }) => {
   const { darkMode, toggleTheme } = useTheme();
   const dispatch = useDispatch();
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   const user = getUserData(); // Ambil data user
   const userCounter = user?.counter || "-"; // Default "-" jika tidak ada data
 
-  const handleLogout = () => {
-    dispatch(logoutUser());
-    navigate("/login");
+const handleLogout = () => {
+  dispatch(logoutUser());
+  localStorage.setItem("logout", Date.now());
+  setTimeout(() => localStorage.removeItem("logout"), 1000);
+  window.location.href = "/login";
 };
 
   return (
@@ -67,11 +69,11 @@ const AdminNavbar = ({ toggleSidebar, setShowModal }) => {
               className="p-0 border-0 bg-transparent profile-toggle"
             >
               <Image 
-                src="/profile.jpg" 
+                src="/assets/profile.jpg" 
                 alt="Profile" 
                 roundedCircle 
-                width="36" 
-                height="36"
+                width="30" 
+                height="30"
                 className="profile-avatar"
               />
             </Dropdown.Toggle>

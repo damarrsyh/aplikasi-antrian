@@ -1,5 +1,4 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import MultiTabSync from "./components/MultiTabSync";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './styles/style.css';
 import AppRoutes from "./routes/AppRoutes";
@@ -14,16 +13,23 @@ const router = createBrowserRouter(
   {
     future: {
       v7_startTransition: true,
+      v7_relativeSplatPath: true,
     },
   }
 );
 
 const App = () => {
-  return (
-    <RouterProvider router={router}>
-      <MultiTabSync />
-    </RouterProvider>
-  );
+  const originalWarn = console.warn;
+  console.warn = (...args) => {
+    if (
+      typeof args[0] === 'string' &&
+      args[0].includes('React Router Future Flag Warning')
+    ) {
+      return; // skip this specific warning
+    }
+    originalWarn(...args); // keep other warnings
+  };
+  return <RouterProvider router={router} />;
 };
 
 export default App;

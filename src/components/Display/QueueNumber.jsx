@@ -8,9 +8,6 @@ const QueueNumber = () => {
   const dispatch = useDispatch();
 
   const calledQueue = useSelector((state) => state.queueCall.calledQueue);
-  const themeColor = localStorage.getItem("themeColor") || "#007bff";
-  const fontSize = localStorage.getItem("fontSize") || "16";
-  const largeQueueNumber = JSON.parse(localStorage.getItem("largeQueueNumber")) ?? true;
 
   useEffect(() => {
     const channel = new BroadcastChannel("queue_channel");
@@ -19,14 +16,10 @@ const QueueNumber = () => {
       console.log("📡 Menerima queue dari BroadcastChannel:", event.data);
       dispatch(setCalledQueue(event.data));
     };
-
-    return () => {
-      channel.close();
-    };
   }, [dispatch]);
 
   useEffect(() => {
-    const socket = new WebSocket("ws://192.168.4.141:3000/ws");
+    const socket = new WebSocket("ws://192.168.4.138:3000");
 
     socket.onopen = () => {
       console.log("✅ WebSocket connected (QueueNumber)");
@@ -70,19 +63,22 @@ const QueueNumber = () => {
   }, [dispatch]);
 
   return (
-    <Card className="shadow flex-grow-1 text-center" style={{ borderRadius: "10px", width: "100%", minHeight: "250px" }}>
-      <Card.Header className="d-flex justify-content-center" style={{ backgroundColor: themeColor, color: "white" }}>
-        <h3 className="fw-bold" style={{ fontSize: `${fontSize}px` }}>NOMOR ANTRIAN</h3>
-      </Card.Header>
+    <Card className="shadow flex-grow-1 text-center mb-2" 
+      style={{
+        borderRadius: "8px",
+        width: "100%",
+        minHeight: "200px",
+        border: "2px solid #FF6961",
+      }}>
       <Card.Body>
-        <h1 className="display-3 fw-bold p-3" style={{ fontSize: largeQueueNumber ? "60px" : "30px" }}>
-          {calledQueue?.number || "-"}
+        <h1 className="fw-semibold m-0" style={{fontSize: 80}}>
+          {calledQueue?.queueIdentification || ""}{calledQueue?.number?.toString().padStart(3, "0") || "-"}
         </h1>
       </Card.Body>
-      <Card.Footer style={{ backgroundColor: themeColor, color: "white" }}>
-        <h4 className="fw-bold" style={{ fontSize: `${fontSize}px` }}>
+      <Card.Footer style={{ backgroundColor: "#FF6961" }}>
+        <h3 className="fw-bold m-0 text-white">
           Loket {calledQueue?.counter || "-"}
-        </h4>
+        </h3>
       </Card.Footer>
     </Card>
   );

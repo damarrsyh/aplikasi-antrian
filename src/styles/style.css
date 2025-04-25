@@ -55,10 +55,6 @@ body {
   color: var(--text-light);
 }
 
-body {
-  transition: background-color var(--transition-speed), color var(--transition-speed);
-}
-
 .btn {
   font-weight: 500;
   transition: all var(--transition-speed);
@@ -77,6 +73,14 @@ body {
 @keyframes skeleton-loading {
   0% { background-position: 200% 0; }
   100% { background-position: -200% 0; }
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.fa-spin {
+  animation: spin 1s linear infinite;
 }
 
 /* END UMUM DARK/LIGHT THEME & FONT */

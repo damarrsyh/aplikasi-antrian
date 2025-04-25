@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getQueueWait, getType } from "../../redux/Slice/queueNewSlice";
 import { Alert, Card, Spinner, Table } from "react-bootstrap";
 import { useMediaQuery } from "react-responsive";
+import { isEmptyQueueError } from "../Shared/isEmpetyQueueError";
 
 const QueueWait = () => {
   const dispatch = useDispatch();
@@ -30,7 +31,7 @@ const QueueWait = () => {
 
   const formatNomorAntrian = (kdJenis, nomor) => {
     const prefix = jenisAntrianMap[kdJenis] || "";
-    return `${prefix}${nomor}`;
+    return `${prefix}${String(nomor).padStart(3, "0")}`;
   };
 
   const totalQueueWait = queueWait?.data?.reduce(
@@ -48,7 +49,9 @@ const QueueWait = () => {
         {loadingQueueWait && (
           <Spinner animation="border" className="d-block mx-auto my-3" />
         )}
-        {errorQueueWait && <Alert variant="danger">{errorQueueWait}</Alert>}
+        {errorQueueWait && !isEmptyQueueError(errorQueueWait) && (
+          <Alert variant="danger">{errorQueueWait}</Alert>
+        )}
 
           {isMobile ? (
           <div className="d-flex flex-column gap-3">
@@ -78,7 +81,7 @@ const QueueWait = () => {
             )}
           </div>
         ) : (
-          <Table striped bordered responsive hover className="mt-2 mb-0">
+          <Table striped bordered responsive hover size="sm" className="mb-0" style={{ fontSize: 12 }}>
             <thead>
               <tr className="text-center">
                 <th>Jenis Antrian</th>
@@ -92,15 +95,15 @@ const QueueWait = () => {
                 queueWait?.data?.map((item) =>
                   item.list_menunggu?.map((queue) => (
                     <tr key={queue._id} className="text-center">
-                      <td className="p-3">{queue.jenis_antrian}</td>
-                      <td className="p-3">
+                      <td className="p-2">{queue.jenis_antrian}</td>
+                      <td className="p-2">
                         {formatNomorAntrian(queue.kd_jenis_antrian, queue.nomor)}
                       </td>
-                      <td className="p-3">
+                      <td className="p-2">
                         {new Date(queue.waktu_cetak).toLocaleString()}
                       </td>
-                      <td className="p-3">
-                        <span className="fw-semibold bg-warning p-2 rounded text-dark">
+                      <td className="p-2">
+                        <span className="fw-semibold bg-warning p-1 rounded-1 text-dark">
                           Waiting
                         </span>
                       </td>

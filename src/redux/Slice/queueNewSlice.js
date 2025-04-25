@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { fetchCustomers, fetchType, updateTypeStatus, fetchQueueWait, fetchQueueDone, fetchQueueDateNow, fetchQueueLive } from "../../api/queueNewApi";
+import { fetchCustomers, fetchType, updateTypeStatus, fetchQueueWait, fetchQueueDone, fetchQueueDateNow, fetchQueueLive, fetchMonthlyReport } from "../../api/queueNewApi";
 
 // Thunk untuk mengambil daftar pelanggan
 export const getCustomers = createAsyncThunk(
@@ -104,27 +104,44 @@ export const getQueueDateNow = createAsyncThunk(
   }
 );
 
+// Thunk untuk mengambil laporan bulanan berdasarkan bulan tertentu
+export const getMonthlyReport = createAsyncThunk(
+  "queueNew/getMonthlyReport",
+  async (bulan, { rejectWithValue }) => {
+    try {
+      const data = await fetchMonthlyReport(bulan);
+      return data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data?.message || "Gagal mengambil laporan bulanan");
+    }
+  }
+);
+
+
 const queueNewSlice = createSlice({
   name: "queueNew",
   initialState: {
     customers: [],
-    type: [],
-    queueWait: [],
-    queueLive: [],
-    queueDone: [],
-    queueDateNow: [],
     loadingCustomers: false,
-    loadingType: false,
-    loadingQueueWait: false,
-    loadingQueueLive: false,
-    loadingQueueDone: false,
-    loadingQueueDateNow: false,
     errorCustomers: null,
+    type: [],
+    loadingType: false,
     errorType: null,
+    queueWait: [],
+    loadingQueueWait: false,
     errorQueueWait: null,
+    queueLive: [],
+    loadingQueueLive: false,
     errorQueueLive: null,
+    queueDone: [],
+    loadingQueueDone: false,
     errorQueueDone: null,
+    queueDateNow: [],
+    loadingQueueDateNow: false,
     errorQueueDateNow: null,
+    monthlyReport: [],
+    loadingMonthlyReport: false,
+    errorMonthlyReport: null,
   },
   reducers: {},
   extraReducers: (builder) => {
@@ -143,7 +160,7 @@ const queueNewSlice = createSlice({
       state.errorCustomers = action.payload;
     })
 
-    // ✅ State untuk daftar customer
+    // ✅ State untuk daftar type
     .addCase(getType.pending, (state) => {
       state.loadingType = true;
       state.errorType = null;
@@ -238,6 +255,19 @@ const queueNewSlice = createSlice({
     .addCase(getQueueDateNow.rejected, (state, action) => {
       state.loadingQueueDateNow = false;
       state.errorQueueDateNow = action.payload;
+    })
+
+    .addCase(getMonthlyReport.pending, (state) => {
+      state.loadingMonthlyReport = true;
+      state.errorMonthlyReport = null;
+    })
+    .addCase(getMonthlyReport.fulfilled, (state, action) => {
+      state.loadingMonthlyReport = false;
+      state.monthlyReport = action.payload;
+    })
+    .addCase(getMonthlyReport.rejected, (state, action) => {
+      state.loadingMonthlyReport = false;
+      state.errorMonthlyReport = action.payload;
     });
   },
 });

@@ -1,8 +1,8 @@
 import { Col, Container, Row } from "react-bootstrap";
 import ErrorBoundary from "../../components/ErrorBoundary";
 import QueueCall from "../../components/Admin/QueueCall";
+// import QueueRecall from "../../components/Admin/QueueRecall"
 import QueueWait from "../../components/Admin/QueueWait";
-import QueueDone from "../../components/Admin/QueueDone";
 import QueueLive from "../../components/Admin/QueueLive";
 
 const QueueListPage = () => {
@@ -17,26 +17,20 @@ const QueueListPage = () => {
       {/* Section: Queue Call & Queue Wait */}
       <Row className="mb-3 g-3">
         <ErrorBoundary>
-          {/* QueueLive di sebelah kanan (lebih besar) */}
-          <Col xs={12} md={9}>
+          {/* QueueLive di sebelah kiri (lebih besar) */}
+          <Col xs={12} md={8}>
+            <QueueWait />
+          </Col>
+
+          {/* QueueCall di sebelah kanan (lebih kecil) */}
+          <Col xs={12} md={4}>
+            <QueueCall />
+            {/* <QueueRecall /> */}
             <QueueLive />
           </Col>
 
-          {/* QueueCall di sebelah kiri (lebih kecil) */}
-          <Col xs={12} md={3}>
-            <QueueCall />
-          </Col>
+          {/* QueueRecall di sebelah kanan (lebih kecil) */}
         </ErrorBoundary>
-      </Row>
-
-      {/* Section: Queue Wait & Done */}
-      <Row className="mb-3 g-3">
-        <Col md={6} xs={12}>
-          <QueueWait />
-        </Col>
-        <Col md={6} xs={12}>
-          <QueueDone />
-        </Col>
       </Row>
     </Container>
   );

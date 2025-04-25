@@ -1,22 +1,14 @@
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { fetchQueueList, selectAllQueues } from "../../redux/Slice/queueSlice";
 import { Container, Row, Col } from "react-bootstrap";
 import QueueHeader from "../../components/Display/QueueHeader";
 import QueueNumber from "../../components/Display/QueueNumber";
 import QueueMedia from "../../components/Display/QueueMedia";
-import QueueList from "../../components/Display/QueueList";
+import QueueDone from "../../components/Display/QueueDone";
 
 const QueueDisplayPage = () => {
 
-  const dispatch = useDispatch();
-  const queueList = useSelector(selectAllQueues);
   const [currentTime, setCurrentTime] = useState(new Date());
   const [showVideo, setShowVideo] = useState(true);
-
-  useEffect(() => {
-      dispatch(fetchQueueList());
-  }, [dispatch]);
 
   // Jam
   useEffect(() => {
@@ -29,22 +21,25 @@ const QueueDisplayPage = () => {
     return () => clearInterval(interval);
   }, []);
 
-  const missedCustomers = queueList.filter(q => q.customer.status === "Missed");
-
   return (
-    <Container fluid className="p-3" style={{ overflowX: "hidden", maxHeight: "100vh", overflow: "hidden" }}>
-      <Row className="g-2 mb-2">
-      <Col md={4} className="g-2 d-flex flex-column justify-content-between">
-        <QueueHeader currentTime={currentTime} />
-        <QueueNumber/>
-      </Col>
-      <Col md={8} className="d-flex align-items-stretch">
-        <QueueMedia showVideo={showVideo} queueList={queueList} missedCustomers={missedCustomers}/>
-      </Col>
+    <Container fluid className="p-2" style={{ overflowX: "hidden", maxHeight: "100vh", overflow: "hidden" }}>
+      <Row className="g-2">
+        <Col>
+          <QueueHeader currentTime={currentTime} />
+        </Col>
+      </Row>
+      <Row className="g-2">
+        <Col md={8} className="d-flex flex-column align-items-stretch">
+          <QueueMedia showVideo={showVideo}/>
+        </Col>
+        <Col md={4} className="d-flex flex-column">
+          <QueueNumber/>
+          <QueueDone/>
+        </Col>
       </Row>
       <Row>
-        <Col className="d-flex justify-content-center">
-          <QueueList/>
+        <Col>
+          
         </Col>
       </Row>
     </Container>

@@ -1,11 +1,10 @@
 import { useState, useEffect, useRef, useMemo, useCallback } from "react";
 import { callQueue } from "../../api/queueNewApi";
-// import { playQueueAudio } from "../../utils/audio";
 import { Form, Card, Modal, Button } from "react-bootstrap";
 import { FaBullhorn, FaCheckCircle } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import { setCalledQueue } from "../../redux/Slice/queueCallSlice";
-import { getQueueWait } from "../../redux/Slice/queueNewSlice";
+import { getQueueWait, getQueueLive } from "../../redux/Slice/queueNewSlice";
 
 const QueueCall = () => {
   const dispatch = useDispatch();
@@ -14,7 +13,7 @@ const QueueCall = () => {
   const [counter, setCounter] = useState("");
   const [type, setType] = useState("");
   const [queueNumber, setQueueNumber] = useState("");
-  const [queueIdentification, setQueueIdentification] = useState(""); // Menyimpan kd_identifikasi
+  const [queueIdentification, setQueueIdentification] = useState("");
   const [showModal, setShowModal] = useState(false);
 
   const queueTypes = useMemo(() => [
@@ -36,63 +35,8 @@ const QueueCall = () => {
 
   useEffect(() => {
     dispatch(getQueueWait());
+    dispatch(getQueueLive());
   }, [dispatch]);
-
-  // useEffect(() => {
-  //   const socket = new WebSocket("ws://192.168.4.141:3000/ws");
-
-  //   socket.onopen = () => {
-  //     console.log("✅ WebSocket connected (QueueCall)");
-  //   };
-
-  //   socket.onmessage = async (event) => {
-  //     try {
-  //       const data = JSON.parse(event.data);
-  //       // console.log("Data dari WebSocket:", data);
-
-  //       let sequenceData = [];
-
-  //       if (Array.isArray(data) && typeof data[0] === "string") {
-  //         // Jika data langsung berupa array audio URL
-  //         sequenceData = data;
-  //       } else {
-  //         // Jika bentuknya array of object
-  //         const foundItem = data.find(
-  //           (item) => Array.isArray(item.sequence) && item.sequence.length > 0
-  //         );
-  //         sequenceData = foundItem?.sequence || [];
-
-  //         if (foundItem?.number) {
-  //           dispatch(setCalledQueue({ number: foundItem.number, counter }));
-  //         }
-  //       }
-
-  //       if (sequenceData.length > 0) {
-  //         await playQueueAudio(sequenceData);
-  //         setShowModal(true);
-  //         // Setelah 3 detik, tutup modal dan reload halaman
-  //         setTimeout(() => {
-  //           setShowModal(false);
-  //           window.location.reload(); // 🔄 Auto-refresh
-  //         }, 3000);
-  //       } else {
-  //         console.warn("🔍 Tidak ada item valid untuk diputar audionya.");
-  //       }
-  //     } catch (err) {
-  //       console.error("❌ WebSocket message error:", err);
-  //     }
-  //   };
-
-  //   socket.onerror = (error) => {
-  //     console.error("🚨 WebSocket error:", error);
-  //   };
-
-  //   socket.onclose = () => {
-  //     console.log("🔌 WebSocket disconnected (QueueCall)");
-  //   };
-
-  //   return () => socket.close();
-  // }, [counter, dispatch]);
 
   const handleServiceChange = (e) => {
     const selectedType = e.target.value;
@@ -103,20 +47,20 @@ const QueueCall = () => {
       console.warn("Layanan tidak ditemukan:", selectedType);
       return;
     }
-
+    
     const foundQueue = Array.isArray(queueWait?.data)
-      ? queueWait.data
-          .flatMap(item => item.list_menunggu ?? [])
-          .find(queue => queue.kd_jenis_antrian === selectedQueueType.kd_jenis_antrian)
-      : null;
-
-      if (foundQueue) {
-        setQueueNumber(foundQueue.nomor);
-        setQueueIdentification(selectedQueueType.kd_identifikasi);
-      } else {
+    ? queueWait.data
+    .flatMap(item => item.list_menunggu ?? [])
+    .find(queue => queue.kd_jenis_antrian === selectedQueueType.kd_jenis_antrian)
+    : null;
+    
+    if (foundQueue) {
+      setQueueNumber(foundQueue.nomor);
+      setQueueIdentification(selectedQueueType.kd_identifikasi);
+    } else {
         // Jika tidak ditemukan antrian, set nilai kosong
-        setQueueNumber("");
         setQueueIdentification("");
+        setQueueNumber("");
       }
   };
 
@@ -130,27 +74,33 @@ const QueueCall = () => {
       const response = await callQueue(counter, type, queueNumber);
       console.log("Antrian Dipanggil:", response);
   
-      dispatch(setCalledQueue({ number: queueNumber, counter }));
-      channelRef.current.postMessage({ number: queueNumber, counter });
+      dispatch(setCalledQueue({ 
+        queueIdentification, 
+        number: queueNumber, 
+        counter
+      }));
+      channelRef.current.postMessage({ queueIdentification, number: queueNumber, counter });
       setShowModal(true);
   
       // Setelah 3 detik, tutup modal dan reload halaman
       setTimeout(() => {
         setShowModal(false);
-        window.location.reload(); // 🔄 Auto-refresh
+        dispatch(getQueueWait());
+        dispatch(getQueueLive());
       }, 3000);
   
-      setQueueNumber("");
       setType("");
+      setQueueIdentification("");
+      setQueueNumber("");
     } catch (error) {
       console.error("Gagal memanggil antrian:", error);
       alert("Gagal memanggil antrian. Silakan coba lagi.");
     }
-  }, [counter, type, queueNumber, dispatch]);
+  }, [counter, type, queueNumber, queueIdentification, dispatch]);
   
 
   return (
-    <Card className="shadow-sm">
+    <Card className="shadow-sm mb-3">
       <Card.Header className="d-flex bg-primary-subtle justify-content-between align-items-center">
         <span className="fw-bold">Loket: {counter}</span>
         <Form.Select
@@ -168,7 +118,11 @@ const QueueCall = () => {
       </Card.Header>
       <Card.Body className="d-flex flex-column gap-2">
         <div className="text-center py-3">
-          <h1 className="fw-bold text-primary">{queueIdentification || "-"}{queueNumber || "-"}</h1>
+        <h1 className="fw-bold text-primary">
+          {queueIdentification && queueNumber
+            ? `${queueIdentification}${String(queueNumber).padStart(3, "0")}`
+            : "-"}
+        </h1>
         </div>
 
         <Button

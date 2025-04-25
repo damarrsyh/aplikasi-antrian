@@ -1,5 +1,6 @@
 import { Container, Row, Col } from "react-bootstrap";
 import ReportQueueList from "../../components/Report/ReportQueueList";
+import MonthlyReport from "../../components/Report/MonthlyReport";
 import ErrorBoundary from "../../components/ErrorBoundary";
 
 const QueueReportPage = () => {
@@ -10,6 +11,7 @@ const QueueReportPage = () => {
       <Row className="mt-3">
         <Col>
           <ErrorBoundary>
+            <MonthlyReport/>
             <ReportQueueList/>
           </ErrorBoundary>
         </Col>

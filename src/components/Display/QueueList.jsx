@@ -23,7 +23,7 @@ const QueueList = () => {
     <Row className="flex-grow-1 g-2" style={{ width: "100%" }}>
       {queueData.length > 0 ? (
         queueData.map((queue, index) => (
-          <Col key={index}>
+          <Col key={index} xs={12} sm={6} md={4}>
             <Card className="shadow-sm">
               <Card.Header className="d-flex justify-content-between" style={{backgroundColor: themeColor, color: "white"}}>
                 <h6 className="fw-semibold">

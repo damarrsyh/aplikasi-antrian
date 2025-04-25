@@ -1,18 +1,31 @@
 /* eslint-disable react/prop-types */
+import { Container, Row, Col, Image } from "react-bootstrap";
 
 const QueueHeader = ({currentTime}) => {
-  const themeColor = localStorage.getItem("themeColor") || "#007bff";
 
   return (
-    <div className="shadow mb-2 pt-3 ps-3 text-white d-flex justify-content-between align-items-center position-relative rounded" style={{ backgroundColor: themeColor }}>
-    <div className="flex-grow-1">
-      <h4 className="fw-bold">PANDAWA24JAM</h4>
-      <p>CS: 081234567891</p>
+    <div className="shadow-sm mb-2 rounded text-white" style={{ backgroundColor: "#FF6961" }}>
+      <Container fluid className="py-3 px-4">
+        <Row className="align-items-center">
+          {/* Logo */}
+          <Col xs="auto">
+            <Image src="/assets/logoPandawa.jpg" alt="Logo Pandawa" width={50} height={50} rounded />
+          </Col>
+    
+          {/* Informasi Perusahaan */}
+          <Col>
+            <h5 className="fw-bold mb-1">PANDAWA24JAM</h5>
+            <p className="mb-0">Customer Service: 0812-3456-7891</p>
+          </Col>
+    
+          {/* Jam */}
+          <Col xs="auto" className="text-end">
+            <h1 className="mb-0 fw-bold">{currentTime.toLocaleTimeString()}</h1>
+          </Col>
+        </Row>
+      </Container>
     </div>
-    <div className="position-absolute top-50 end-0 translate-middle-y me-3">
-      <h4 className="mb-0">{currentTime.toLocaleTimeString()}</h4>
-    </div>
-  </div>
+    
   )
 }
 

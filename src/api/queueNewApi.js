@@ -59,7 +59,7 @@ export const logoutUser = () => (dispatch) => {
 // **AMBIL DATA CUSTOMER**
 export const fetchCustomers = async () => {
   try {
-    const response = await api.get("/customer");
+    const response = await api.get("/queue/customer");
     // console.log("Data Customer", response.data); DEBUGGING
     return response.data;
   } catch (error) {
@@ -70,7 +70,7 @@ export const fetchCustomers = async () => {
 // **AMBIL DATA JENIS ANTRIAN**
 export const fetchType = async () => {
   try {
-    const response = await api.get("/type");
+    const response = await api.get("/queue/type");
     // console.log("Data Type Antrian", response.data)
     return response.data;
   } catch (error) {
@@ -80,7 +80,7 @@ export const fetchType = async () => {
 
 export const updateTypeStatus = async (slug, aktif) => {
   try {
-    const response = await api.put(`/jenis-antrian/${slug}`, { aktif });
+    const response = await api.put(`/queue/jenis-antrian/${slug}`, { aktif });
     return response.data;
   } catch (error) {
     handleApiError(error);
@@ -90,7 +90,7 @@ export const updateTypeStatus = async (slug, aktif) => {
 // **BUAT TIKET ANTRIAN**
 export const createQueueTicket = async (type, nama, telp) => {
   try {
-    const response = await api.post(`/tiket?type=${type}&nama=${nama}&telp=${telp}`);
+    const response = await api.post(`/queue/tiket?type=${type}&nama=${nama}&telp=${telp}`);
     // console.log("Response Tiket:", response.data);
     return response.data;
   } catch (error) {
@@ -101,7 +101,7 @@ export const createQueueTicket = async (type, nama, telp) => {
 // PANGGIL DATA ANTRIAN MENUNGGU
 export const fetchQueueWait = async () => {
   try {
-    const response = await api.get("/menunggu");
+    const response = await api.get("/queue/menunggu");
     // console.log("Data Menunggu", response.data);
     return response.data;
   } catch (error) {
@@ -122,7 +122,7 @@ export const callQueue = async (counter, type, nomor) => {
 
     // Kirim request POST dengan body yang sesuai
     const response = await api.post(
-      `/panggil?counter=${counter}&type=${type}&nomor=${nomor}`,
+      `/queue/panggil?counter=${counter}&type=${type}&nomor=${nomor}`,
       { user, email } // Request body
     );
 
@@ -132,10 +132,25 @@ export const callQueue = async (counter, type, nomor) => {
   }
 };
 
+// PANGGIL ULANG ANTRIAN
+export const recallQueue = async (counter, type, nomor) => {
+  try {
+    const response = await api.post("/queue/panggil-ulang", {
+      counter,
+      type,
+      nomor,
+    });
+    return response.data;
+  } catch (error) {
+    handleApiError(error);
+  }
+};
+
+
 // PANGGIL DATA LIVE ANTRIAN
 export const fetchQueueLive = async () => {
   try {
-    const response = await api.get("/live");
+    const response = await api.get("/queue/live");
     // console.log("Data Live", response.data);
     return response.data;
   } catch (error) {
@@ -146,7 +161,7 @@ export const fetchQueueLive = async () => {
 // PANGGIL DATA ANTRIAN SELESAI
 export const fetchQueueDone = async () => {
   try {
-    const response = await api.get("/selesai");
+    const response = await api.get("/queue/selesai");
     // console.log("Data Selesai", response.data);
     return response.data;
   } catch (error) {
@@ -162,7 +177,16 @@ export const fetchQueueDone = async () => {
 
 export const fetchQueueDateNow = async () => {
   try {
-    const response = await api.get("/date");
+    const response = await api.get("/queue/date");
+    return response.data;
+  } catch (error) {
+    handleApiError(error);
+  }
+}
+
+export const fetchMonthlyReport = async (bulan) => {
+  try {
+    const response = await api.get(`/queue/monthly-report?bulan=${bulan}`);
     return response.data;
   } catch (error) {
     handleApiError(error);
