@@ -34,8 +34,7 @@ const ServiceComponents = () => {
       await printTicketAndShowModal(ticketHTML, setPrintStatusModal);
   
       setShowModal(true);
-      setTimeout(() => setShowModal(false), 3000);
-  
+      setTimeout(() => setShowModal(false), 2000);
       setName("");
       setPhone("");
       setType("");
@@ -158,7 +157,7 @@ const ServiceComponents = () => {
           <div className="mb-3">
             <FaCheckCircle className="text-success" size={50} />
           </div>
-          <h5 className="mb-2">Tiket Berhasil Dicetak</h5>
+          <h5 className="mb-2">Tiket Berhasil Dibuat</h5>
           <p className="text-muted mt-2 mb-0">Silakan tunggu hingga nomor Anda dipanggil</p>
         </Modal.Body>
       </Modal>

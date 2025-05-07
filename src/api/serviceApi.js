@@ -24,26 +24,44 @@ export const createQueueTicket = async (type, nama, telp) => {
   }
 };
 
+let isSyncing = false;
+
 export const syncOfflineTickets = async () => {
+  if (isSyncing) return; // Cegah double sync
+
+  isSyncing = true;
   const offlineTickets = getOfflineTickets();
+
   for (const ticket of offlineTickets) {
     try {
       const response = await api.post(`/queue/tiket?type=${ticket.type}&nama=${ticket.nama}&telp=${ticket.telp}`);
       console.log("✅ Tiket berhasil disinkronkan ke server:", response.data);
-      removeOfflineTicket(ticket); // Hapus tiket yang berhasil dikirim
+      removeOfflineTicket(ticket); 
     } catch (error) {
       console.error("❌ Gagal sinkronkan tiket:", error);
     }
   }
+
+  isSyncing = false;
 };
 
 export const useSyncOfflineTickets = () => {
-  const isOnline = navigator.onLine; // Cek status online atau offline
-
   useEffect(() => {
-    if (isOnline) {
-      syncOfflineTickets(); // Sinkronisasi tiket offline saat online
+    const handleOnline = () => {
+      console.log("✅ Koneksi kembali online, mencoba sync tiket...");
+      syncOfflineTickets();
+    };
+
+    window.addEventListener('online', handleOnline);
+
+    // Optional: Kalau mau langsung sync kalau pas pertama load udah online
+    if (navigator.onLine) {
+      handleOnline();
     }
-  }, []); // Trigger ketika status online/offline berubah
+
+    return () => {
+      window.removeEventListener('online', handleOnline);
+    };
+  }, []);
 };
 

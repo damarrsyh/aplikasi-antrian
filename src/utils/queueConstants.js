@@ -2,7 +2,7 @@
 export const queueTypes = [
   {
     id: "siap_print",
-    label: "Print",
+    label: "Siap Print",
     icon: "/assets/iconServices/print.png",
     kd_identifikasi: "P",
   },
