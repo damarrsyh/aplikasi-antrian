@@ -1,0 +1,21 @@
+.footer-monitor {
+  z-index: 999;
+}
+
+.running-text {
+  display: inline-block;
+  white-space: nowrap;
+  animation: slide 15s linear infinite;
+  font-size: 20px;
+  color: #333;
+  font-style: italic;
+}
+
+@keyframes slide {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}

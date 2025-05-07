@@ -5,6 +5,7 @@ import CurrentQueue from '../components/Monitor/CurrentQueue';
 import HistoryQueue from '../components/Monitor/HistoryQueue';
 import HeaderMonitor from '../components/Monitor/HeaderMonitor';
 import { Container, Row, Col } from 'react-bootstrap';
+import FooterMonitor from '../components/Monitor/FooterMonitor';
 
 const MonitorPage = () => {
   const [currentTime, setCurrentTime] = useState(new Date());
@@ -23,7 +24,7 @@ const MonitorPage = () => {
 
   return (
     <Container fluid className="p-2" style={{ overflowX: "hidden", maxHeight: "100vh", overflow: "hidden" }}>
-      <Row className="g-2">
+      <Row className="g-2 mb-2">
         <Col>
           <HeaderMonitor currentTime={currentTime} />
         </Col>
@@ -35,6 +36,11 @@ const MonitorPage = () => {
         <Col md={4} className="d-flex flex-column">
           <CurrentQueue/>
           <HistoryQueue/>
+        </Col>
+      </Row>
+      <Row className='g-2 mt-1'>
+        <Col>
+          <FooterMonitor/>
         </Col>
       </Row>
     </Container>

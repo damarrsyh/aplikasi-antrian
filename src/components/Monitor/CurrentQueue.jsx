@@ -1,58 +1,50 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { Card } from "react-bootstrap";
+import { useDispatch } from "react-redux";
+import { getQueueDone } from "../../redux/Slice/monitorSlice";
 
 const CurrentQueue = () => {
+  const dispatch = useDispatch();
   const [calledQueue, setCalledQueue] = useState({
     queueIdentification: "",
     number: "",
     counter: "",
   });
 
-  const [isPlayingAudio, setIsPlayingAudio] = useState(false); // Menandakan apakah audio sedang diputar
+  const audioQueue = useRef([]); // UPDATE: pakai useRef untuk audio queue
+  const isPlayingRef = useRef(false); // UPDATE: pakai useRef untuk playing status
 
-  // Fungsi untuk memutar audio satu per satu dalam array
-  const playQueueAudio = async (audioList) => {
-    setIsPlayingAudio(true); // Menandakan audio mulai diputar
-    console.log("🔊 Memulai grup audio...");
-
-    // Memutar audio satu per satu dalam urutan yang benar
-    for (let audioUrl of audioList) {
-      console.log(`🎵 Memutar audio: ${audioUrl}`);
-      await new Promise((resolve) => {
-        const audio = new Audio(audioUrl);
-        audio.onended = resolve; // Setelah selesai, resolve untuk lanjut ke audio berikutnya
-        audio.onerror = resolve; // Jika ada error, resolve agar tidak stuck
-        audio.play();
-      });
+  const playNextAudio = async () => {
+    if (isPlayingRef.current || audioQueue.current.length === 0) {
+      return; // sudah main atau tidak ada audio
     }
 
-    console.log("🎵 Semua audio dalam grup selesai diputar.");
-    setIsPlayingAudio(false); // Menandakan audio selesai diputar
+    isPlayingRef.current = true;
+    const { url } = audioQueue.current.shift(); // ambil audio pertama dari queue
+    const audio = new Audio(url);
 
-    // Cek apakah ada audio yang tersisa di localStorage
-    const storedAudioList = JSON.parse(localStorage.getItem("audioQueue")) || [];
-    if (storedAudioList.length > 0) {
-      // Jika ada, ambil dan putar audio dari localStorage
-      localStorage.removeItem("audioQueue"); // Hapus setelah diambil
-      playQueueAudio(storedAudioList); // Mainkan audio dari localStorage
-    }
+    audio.onended = () => {
+      isPlayingRef.current = false;
+      playNextAudio(); // setelah selesai, lanjutkan
+    };
+
+    audio.onerror = () => {
+      console.error("❌ Error saat memutar audio");
+      isPlayingRef.current = false;
+      playNextAudio(); // kalau error tetap lanjutkan
+    };
+
+    audio.play();
   };
 
-  // Fungsi untuk menambahkan audio baru ke dalam antrian
-  const enqueueAudio = (audioList) => {
-    console.log("⏳ Audio sedang berjalan, menambahkan ke localStorage");
+  const handleNewAudio = (audioList) => {
+    const newAudios = audioList.map((url, index) => ({
+      id: `${Date.now()}-${index}`,
+      url,
+    }));
 
-    // Jika tidak ada audio yang sedang diputar, mulai memutar audio
-    if (!isPlayingAudio) {
-      console.log("🎶 Memulai pemutaran audio.");
-      playQueueAudio(audioList);
-    } else {
-      // Simpan audio yang belum bisa diputar ke localStorage
-      const storedAudioList = JSON.parse(localStorage.getItem("audioQueue")) || [];
-      const newAudioList = [...storedAudioList, ...audioList];
-      localStorage.setItem("audioQueue", JSON.stringify(newAudioList));
-      console.log("📥 Menyimpan audio ke localStorage untuk pemutaran selanjutnya.");
-    }
+    audioQueue.current.push(...newAudios); // masukkan semua audio baru ke queue
+    playNextAudio(); // mulai mainkan jika belum
   };
 
   useEffect(() => {
@@ -75,13 +67,14 @@ const CurrentQueue = () => {
           const number = kode[1].toString().padStart(3, "0");
           const counter = kode[2];
 
-          // Set data antrian di state lokal
           setCalledQueue({ queueIdentification, number, counter });
         }
 
         if (audioList.length > 0) {
-          enqueueAudio(audioList); // Tambahkan audio ke dalam queue
+          handleNewAudio(audioList);
         }
+
+        dispatch(getQueueDone());
       } catch (err) {
         console.error("❌ WebSocket message error:", err);
       }
@@ -96,12 +89,14 @@ const CurrentQueue = () => {
     };
 
     return () => socket.close();
-  }, []); // WebSocket akan di-connect saat komponen pertama kali di-render
+  }, []);
 
   return (
     <Card
-      className="shadow flex-grow-1 text-center mb-2 border-primary-subtle"
+      className="shadow text-center mb-2"
       style={{
+        backgroundColor: '#c1e0f5',
+        borderColor: '#c1e0f5'
       }}
     >
       <Card.Body>
@@ -110,7 +105,12 @@ const CurrentQueue = () => {
           {calledQueue?.number?.toString().padStart(3, "0") || "-"}
         </h1>
       </Card.Body>
-      <Card.Footer className="bg-primary-subtle">
+      <Card.Footer
+        style={{
+          backgroundColor: '#a3d2f2',
+          borderTop: '1px solid #90c8ef'
+        }}
+      >
         <h3 className="fw-bold m-0">
           Loket {calledQueue?.counter || "-"}
         </h3>

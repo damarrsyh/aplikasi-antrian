@@ -3,17 +3,16 @@ import { Container, Row, Col, Image } from "react-bootstrap";
 const HeaderMonitor = ({currentTime}) => {
 
   return (
-    <div className="shadow-sm mb-2 rounded bg-primary-subtle">
-      <Container fluid className="py-3 px-4">
+    <Container fluid className="shadow-sm rounded p-3" style={{ backgroundColor: "#c1e0f5"}}>
         <Row className="align-items-center">
           {/* Logo */}
           <Col xs="auto">
-            <Image src="/assets/logoPandawa.jpg" alt="Logo Pandawa" width={50} height={50} rounded />
+            <Image src="/assets/logoPandawa.jpg" alt="Logo Pandawa" width={70} height={70} rounded />
           </Col>
     
           {/* Informasi Perusahaan */}
           <Col>
-            <h5 className="fw-bold mb-1">PANDAWA24JAM</h5>
+            <h3 className="fw-bold mb-1">PANDAWA24JAM</h3>
             <p className="mb-0">Customer Service: 0812-3456-7891</p>
           </Col>
     
@@ -22,8 +21,7 @@ const HeaderMonitor = ({currentTime}) => {
             <h1 className="mb-0 fw-bold">{currentTime.toLocaleTimeString()}</h1>
           </Col>
         </Row>
-      </Container>
-    </div>
+    </Container>
   )
 }
 

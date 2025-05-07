@@ -1,7 +1,4 @@
-import ReactPlayer from "react-player"
-
 const QueueMedia = () => {
-  const videoUrl = localStorage.getItem("videoUrl") || "";
 
   return (
     <div
@@ -9,30 +6,16 @@ const QueueMedia = () => {
       style={{
         borderRadius: "10px",
         overflow: "hidden",
-        flexGrow: 1,
-        backgroundColor: "#f8f9fa",
+        backgroundColor: "#c1e0f5",
         minHeight: "250px",
+        maxHeight: "565px"
       }}
     >
-      {videoUrl ? (
-        <ReactPlayer
-          url={videoUrl}
-          controls
-          width="100%"
-          height="100%"
-          className="react-player"
-        />
-      ) : (
-        <img
-          src="/assets/no-video.jpg"
-          alt="Tidak ada video tersedia"
-          style={{
-            maxWidth: "100%",
-            height: "auto",
-            objectFit: "contain",
-          }}
-        />
-      )}
+      <img
+        src="/assets/Print.gif"
+        controls
+        className="react-player"
+      />
     </div>
   )
 }

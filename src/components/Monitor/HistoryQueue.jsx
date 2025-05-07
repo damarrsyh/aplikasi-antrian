@@ -39,15 +39,11 @@ const HistoryQueue = () => {
       )}
         <div className="d-flex flex-column gap-2">
           {totalQueueDone > 0 ? (
-            queueDone.data.map((queue) => (
-              <Card key={queue._id} className="shadow-sm border-0" style={{ backgroundColor: "#E6F4EA" }}>
-                <Card.Header className="py-2 d-flex justify-content-between align-items-center" style={{ backgroundColor: "#ACE1AF" }}>
-                  <span className="fw-bold text-success">Nomor Terpanggil</span>
-                  <small className="text-muted">Menunggu: {formatDateTime(queue.waktu_cetak)}</small>
-                </Card.Header>
+            queueDone.data.slice(0, 4).map((queue) => (
+              <Card key={queue._id} className="shadow-sm border-0" style={{ backgroundColor: "#c1e0f5" }}>
 
-                <Card.Body className="py-3 text-center d-flex justify-content-between">
-                  <h1 className="fw-bold mb-1" style={{ fontSize: 35 }}>
+                <Card.Body className="p-2 text-center d-flex justify-content-between align-items-center">
+                  <h1 className="fw-bold mb-0" style={{ fontSize: 35 }}>
                     {formatNomorAntrian(queue.kode_letter_antrian, queue.nomor)}
                   </h1>
                   <p className="mb-0 fw-semibold" style={{ fontSize: 18 }}>
@@ -55,9 +51,14 @@ const HistoryQueue = () => {
                   </p>
                 </Card.Body>
 
-                <Card.Footer className="py-2 d-flex justify-content-between align-items-center" style={{ backgroundColor: "#ACE1AF" }}>
-                  <span className="badge bg-success">Sudah Dipanggil</span>
-                  <small className="text-muted">Terpanggil: {formatDateTime(queue.waktu_dilayani)}</small>
+                <Card.Footer 
+                  className="p-1 d-flex justify-content-between align-items-center"         
+                  style={{
+                    backgroundColor: '#a3d2f2', // sedikit lebih gelap dari body supaya footer kelihatan beda
+                    borderTop: '1px solid #90c8ef' // opsional: kasih garis tipis
+                  }}>
+                  <span className="badge bg-primary">Sudah Dipanggil</span>
+                  <small className="fw-semibold">Terpanggil: {formatDateTime(queue.waktu_dilayani)}</small>
                 </Card.Footer>
               </Card>
             ))
